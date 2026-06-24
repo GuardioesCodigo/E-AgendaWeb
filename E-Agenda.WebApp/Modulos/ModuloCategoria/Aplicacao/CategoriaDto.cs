@@ -1,0 +1,13 @@
+using System;
+
+namespace E_Agenda.WebApp.Modulos.ModuloCategoria.Aplicacao;
+
+public record DetalhesCategoriasDto(
+    Guid Id,
+    string Titulo
+);
+
+public record ListarCategoriasDto(
+    Guid Id,
+    string Titulo
+);
