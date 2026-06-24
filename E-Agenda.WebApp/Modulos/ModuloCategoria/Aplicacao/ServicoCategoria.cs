@@ -15,11 +15,29 @@ public class ServicoCategoria
 
     public Result Cadastrar(CadastrarCategoriasDto dtos)
     { 
+        if (ExisteCategoriaComTitulo(dtos.Titulo))
+            return Falha("Titulo", "Já existe uma Categoria com este Título.");
+
         Categoria novaCategoria = new Categoria(dtos.Titulo);
  
         repositorioCategorias.Cadastrar(novaCategoria);
  
         return Result.Ok();
+    }
+
+    private bool ExisteCategoriaComTitulo(string titulo, Guid? idIgnorado = null)
+    {
+        List<Categoria> categorias = repositorioCategorias.SelecionarTodos();
+ 
+        foreach(Categoria c in categorias)
+        {
+            if (c.Id != idIgnorado && string.Equals(c.Titulo, titulo, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+ 
+        return false;
     }
 
     public List<ListarCategoriasDto> SelecionarTodos()
