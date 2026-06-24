@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using E_Agenda.WebApp.Modulos.ModuloCategoria.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 
 namespace E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
 
@@ -8,6 +9,7 @@ public sealed class ContextoJson
 {
     private readonly string caminhoArquivo;
     public List<Categoria> categorias {get; set;} = new List<Categoria>();
+    public List<Despesas> despesas {get; set;} = new List<Despesas>();
 
     public ContextoJson()
     {
@@ -54,5 +56,6 @@ public sealed class ContextoJson
             return;
 
         categorias = contextoSalvo.categorias;
+        despesas = contextoSalvo.despesas;
     }
 }

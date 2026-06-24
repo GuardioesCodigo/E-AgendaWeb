@@ -21,6 +21,7 @@
     <Folder Include="Modulos\ModuloCategoria\Infra\" />
     <Folder Include="Modulos\ModuloDespesas\" />
     <Folder Include="Modulos\ModuloDespesas\Dominio\" />
+    <Folder Include="Modulos\ModuloDespesas\Infra\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
