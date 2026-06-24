@@ -45,6 +45,18 @@ public class ServicoCategoria
         return Result.Ok();
     }
 
+       public Result Excluir(Guid id)
+    {
+        Categoria? categorias = repositorioCategorias.SelecionarPorId(id);
+ 
+        if (categorias == null)
+            return Result.Fail("Categoria não encontrada.");
+ 
+        repositorioCategorias.Excluir(id);
+ 
+        return Result.Ok();
+    }
+
     private bool ExisteCategoriaComTitulo(string titulo, Guid? idIgnorado = null)
     {
         List<Categoria> categorias = repositorioCategorias.SelecionarTodos();

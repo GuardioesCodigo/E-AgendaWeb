@@ -20,3 +20,9 @@ public record EditarCategoriasViewModel(
     [StringLength(100, MinimumLength = 2, ErrorMessage = "O campo \"Título\" deve conter entre 2 e 100 caracteres.")]
     string Titulo
 );
+
+public record ExcluirCategoriasViewModel(
+    Guid Id,
+    string Titulo,
+    int QuantidadeDespesasVinculadas
+);
