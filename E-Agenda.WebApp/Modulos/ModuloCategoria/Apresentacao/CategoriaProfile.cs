@@ -8,5 +8,6 @@ public class CategoriaProfile : Profile
     public CategoriaProfile()
     {
         CreateMap<ListarCategoriasDto, ListarCategoriasViewModel>();
+        CreateMap<CadastrarCategoriasViewModel, CadastrarCategoriasDto>();
     }
 }

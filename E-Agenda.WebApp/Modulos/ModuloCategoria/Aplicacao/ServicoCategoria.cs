@@ -13,6 +13,15 @@ public class ServicoCategoria
         this.repositorioCategorias = repositorioCategorias;
     }
 
+    public Result Cadastrar(CadastrarCategoriasDto dtos)
+    { 
+        Categoria novaCategoria = new Categoria(dtos.Titulo);
+ 
+        repositorioCategorias.Cadastrar(novaCategoria);
+ 
+        return Result.Ok();
+    }
+
     public List<ListarCategoriasDto> SelecionarTodos()
     {
         List<Categoria> categorias = repositorioCategorias.SelecionarTodos();
