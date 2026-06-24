@@ -25,6 +25,26 @@ public class ServicoCategoria
         return Result.Ok();
     }
 
+    public Result Editar(EditarCategoriasDto dto)
+    {
+        if (ExisteCategoriaComTitulo(dto.Titulo, dto.Id))
+            return Falha(nameof(dto.Titulo), "Já existe uma Categoria com este Título.");
+ 
+        Categoria categoriaAtualizada = new Categoria(dto.Titulo);
+ 
+        Result resultadoValidacao = ValidarEntidade(categoriaAtualizada);
+ 
+        if (resultadoValidacao.IsFailed)
+            return resultadoValidacao;
+ 
+        bool conseguiuEditar = repositorioCategorias.Editar(dto.Id, categoriaAtualizada);
+ 
+        if (!conseguiuEditar)
+            return Result.Fail("Categoria não encontrada.");
+ 
+        return Result.Ok();
+    }
+
     private bool ExisteCategoriaComTitulo(string titulo, Guid? idIgnorado = null)
     {
         List<Categoria> categorias = repositorioCategorias.SelecionarTodos();

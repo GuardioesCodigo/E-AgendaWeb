@@ -1,5 +1,6 @@
 using AutoMapper;
 using E_Agenda.WebApp.Modulos.ModuloCategoria.Aplicacao;
+using E_Agenda.WebApp.Compartilhado.Apresentacao.Extensions;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,4 +54,42 @@ public class CategoriasController(IMapper mapeador, ServicoCategoria servicoCate
  
         return RedirectToAction(nameof(Listar)); 
     }  
+
+    [HttpGet]
+    public ActionResult Editar(Guid id)
+    {
+        Result<DetalhesCategoriasDto> resultado = servicoCategorias.SelecionarPorId(id);
+ 
+        if (resultado.IsFailed)
+        {
+            TempData.AddErrorMessage(resultado);
+ 
+            return RedirectToAction(nameof(Listar));
+        }
+ 
+        DetalhesCategoriasDto categorias = resultado.Value;
+ 
+        EditarCategoriasViewModel editarVm = mapeador.Map<EditarCategoriasViewModel>(resultado.Value);
+ 
+        return View(editarVm);
+    } 
+ 
+    [HttpPost]
+    public ActionResult Editar(EditarCategoriasViewModel editarVm)
+    {
+        if (!ModelState.IsValid)
+            return View(editarVm);
+ 
+        EditarCategoriasDto dto = mapeador.Map<EditarCategoriasDto>(editarVm);
+        Result resultado =  servicoCategorias.Editar(dto);
+ 
+        if (resultado.IsFailed)
+        {
+            ModelState.AddModelError(resultado);
+ 
+            return View(editarVm);
+        }
+ 
+        return RedirectToAction(nameof(Listar));
+    }
 }

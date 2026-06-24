@@ -13,3 +13,8 @@ public record ListarCategoriasDto(
 public record CadastrarCategoriasDto(
     string Titulo
 );
+
+public record EditarCategoriasDto(
+    Guid Id,
+    string Titulo
+);
