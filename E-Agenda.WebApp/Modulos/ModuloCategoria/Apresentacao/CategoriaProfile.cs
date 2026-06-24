@@ -1,0 +1,12 @@
+using AutoMapper;
+using E_Agenda.WebApp.Modulos.ModuloCategoria.Aplicacao;
+
+namespace E_Agenda.WebApp.Modulos.ModuloCategoria.Apresentacao;
+
+public class CategoriaProfile : Profile
+{
+    public CategoriaProfile()
+    {
+        CreateMap<ListarCategoriasDto, ListarCategoriasViewModel>();
+    }
+}
