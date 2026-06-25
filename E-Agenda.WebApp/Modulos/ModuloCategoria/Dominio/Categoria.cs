@@ -6,7 +6,7 @@ namespace E_Agenda.WebApp.Modulos.ModuloCategoria.Dominio;
 public class Categoria : EntidadeBase<Categoria>
 {
     public string Titulo { get; set; } = string.Empty;
-    public List<Despesas> Despesas { get; set; } = new List<Despesas>();
+    public List<Despesa> Despesas { get; set; } = new List<Despesa>();
 
     public Categoria() { }
 

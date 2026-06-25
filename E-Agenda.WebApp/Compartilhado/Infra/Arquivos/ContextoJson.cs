@@ -9,7 +9,7 @@ public sealed class ContextoJson
 {
     private readonly string caminhoArquivo;
     public List<Categoria> categorias {get; set;} = new List<Categoria>();
-    public List<Despesas> despesas {get; set;} = new List<Despesas>();
+    public List<Despesa> despesas {get; set;} = new List<Despesa>();
 
     public ContextoJson()
     {

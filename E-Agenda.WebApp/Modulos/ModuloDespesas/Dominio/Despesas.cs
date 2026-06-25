@@ -3,28 +3,28 @@ using E_Agenda.WebApp.Modulos.ModuloCategoria.Dominio;
 
 namespace E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 
-public class Despesas : EntidadeBase<Despesas>
+public class Despesa : EntidadeBase<Despesa>
 {
     public string Descricao { get; set; } = string.Empty;
     public DateTime DataOcorrencia { get; set; } = DateTime.Now;
     public decimal Valor { get; set; }
     public FormaPagamento FormaPagamento { get; set; }
-    public List<Categoria> Categorias { get; set; } = new List<Categoria>();
+    public Categoria Categoria { get; set; } = null!;
 
-    public Despesas() { }
+    public Despesa() { }
 
-    public Despesas(
+    public Despesa(
         string descricao,
         decimal valor,
         FormaPagamento formaPagamento,
-        List<Categoria> categorias,
+        Categoria categorias,
         DateTime? dataOcorrencia = null
     )
     {
         Descricao = descricao;
         Valor = valor;
         FormaPagamento = formaPagamento;
-        Categorias = categorias;
+        Categoria = categorias;
         DataOcorrencia = dataOcorrencia ?? DateTime.Now;
     }
 
@@ -44,19 +44,19 @@ public class Despesas : EntidadeBase<Despesas>
         if (!Enum.IsDefined(typeof(FormaPagamento), FormaPagamento))
             erros.Add("O campo \"Forma de Pagamento\" é inválido.");
 
-        if (Categorias == null || Categorias.Count == 0)
+        if (Categoria == null)
             erros.Add("O campo \"Categorias\" deve conter ao menos uma categoria.");
 
         return erros;
     }
 
-    public override void Atualizar(Despesas entidadeAtualizada)
+    public override void Atualizar(Despesa entidadeAtualizada)
     {
         Descricao = entidadeAtualizada.Descricao;
         DataOcorrencia = entidadeAtualizada.DataOcorrencia;
         Valor = entidadeAtualizada.Valor;
         FormaPagamento = entidadeAtualizada.FormaPagamento;
-        Categorias = entidadeAtualizada.Categorias;
+        Categoria = entidadeAtualizada.Categoria;
     }
 
 }

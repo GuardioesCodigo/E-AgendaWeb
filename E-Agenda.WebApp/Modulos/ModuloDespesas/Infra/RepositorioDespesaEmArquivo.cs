@@ -4,13 +4,13 @@ using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 
 namespace E_Agenda.WebApp.Modulos.ModuloDespesas.Infra;
 
-public class RepositorioDespesaEmArquivo : RepositorioBaseEmArquivo<Despesas>, IRepositorioDepesa
+public class RepositorioDespesaEmArquivo : RepositorioBaseEmArquivo<Despesa>, IRepositorioDepesa
 {
     public RepositorioDespesaEmArquivo(ContextoJson contexto) : base(contexto)
     {
     }
 
-    protected override List<Despesas> CarregarRegistros()
+    protected override List<Despesa> CarregarRegistros()
     {
         return contexto.despesas;
     }
