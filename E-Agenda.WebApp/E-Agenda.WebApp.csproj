@@ -13,15 +13,13 @@
     <Folder Include="Compartilhado\Dominio\" />
     <Folder Include="Compartilhado\Infra\" />
     <Folder Include="Compartilhado\Infra\Arquivos\" />
-    <Folder Include="Modulos\" />
     <Folder Include="Modulos\ModuloCategoria\" />
     <Folder Include="Modulos\ModuloCategoria\Aplicacao\" />
     <Folder Include="Modulos\ModuloCategoria\Apresentacao\" />
     <Folder Include="Modulos\ModuloCategoria\Dominio\" />
     <Folder Include="Modulos\ModuloCategoria\Infra\" />
-    <Folder Include="Modulos\ModuloDespesas\" />
     <Folder Include="Modulos\ModuloDespesas\Aplicacao\" />
-    <Folder Include="Modulos\ModuloDespesas\Apresentacao\" />
+    <Folder Include="Modulos\ModuloDespesas\Apresentacao\Views\" />
     <Folder Include="Modulos\ModuloDespesas\Dominio\" />
     <Folder Include="Modulos\ModuloDespesas\Infra\" />
     <Folder Include="wwwroot\" />
