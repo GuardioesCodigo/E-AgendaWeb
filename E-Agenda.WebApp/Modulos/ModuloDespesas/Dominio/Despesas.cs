@@ -17,14 +17,14 @@ public class Despesa : EntidadeBase<Despesa>
         string descricao,
         decimal valor,
         FormaPagamento formaPagamento,
-        Categoria categorias,
+        Categoria categoria,
         DateTime? dataOcorrencia = null
     )
     {
         Descricao = descricao;
         Valor = valor;
         FormaPagamento = formaPagamento;
-        Categoria = categorias;
+        Categoria = categoria;
         DataOcorrencia = dataOcorrencia ?? DateTime.Now;
     }
 

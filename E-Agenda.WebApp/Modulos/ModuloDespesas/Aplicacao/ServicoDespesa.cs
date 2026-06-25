@@ -1,4 +1,5 @@
 using E_Agenda.WebApp.Modulos.ModuloCategoria.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloDespesas.Apresentacao;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 using FluentResults;
 using Microsoft.Extensions.DependencyModel;
@@ -14,6 +15,31 @@ public class ServicoDespesa
     {
         this.repositorioDespesa = repositorioDespesa;
         this.repositorioCategoria = repositorioCategoria;
+    }
+
+    public Result Cadastrar(CadastrarDespesaDto dto)
+    {
+        Categoria? categoriaSelecionada = repositorioCategoria.SelecionarPorId(dto.CategoriaId);
+ 
+        if (categoriaSelecionada == null)
+            return Falha(nameof(dto.CategoriaId), "Selecione uma Categoria válida!");
+ 
+        Despesa novaDespesa = new Despesa(
+            dto.Descricao,
+            dto.Valor,
+            dto.FormaPagamento,
+            categoriaSelecionada,
+            dto.DataOcorrencia
+        );
+ 
+        Result resultadoValidacao = ValidarEntidade(novaDespesa);
+ 
+        if (resultadoValidacao.IsFailed)
+            return resultadoValidacao;
+ 
+        repositorioDespesa.Cadastrar(novaDespesa);
+ 
+        return Result.Ok();
     }
 
     public List<ListarDespesaDto> SelecionarTodos()
@@ -49,10 +75,18 @@ public class ServicoDespesa
             despesas.Categoria.Titulo
         ));
     }
- 
-    private static Result ValidarEntidade(Categoria categorias)
+
+    public List<OpcaoCategoriaDto> SelecionarCategorias()
     {
-        List<string> erros = categorias.Validar();
+        return repositorioCategoria
+            .SelecionarTodos()
+            .Select(c => new OpcaoCategoriaDto(c.Id, c.Titulo))
+            .ToList();
+    }
+ 
+     private static Result ValidarEntidade(Despesa despesa)
+    {
+        List<string> erros = despesa.Validar();
  
         if (erros.Count == 0)
             return Result.Ok();

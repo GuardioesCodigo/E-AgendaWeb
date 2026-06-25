@@ -13,6 +13,21 @@ public record ListarDespesaDto(
     string CategoriaTitulo
 );
 
+public record CadastrarDespesaDto(
+    string Descricao,
+    DateTime? DataOcorrencia,
+    decimal Valor,
+    FormaPagamento FormaPagamento,
+    Guid CategoriaId,
+    string CategoriaTitulo
+);
+
+
+public record OpcaoCategoriaDto(
+    Guid Id,
+    string Titulo
+);
+
 public record DetalhesDespesaDto(
     Guid Id,
     string Descricao,
