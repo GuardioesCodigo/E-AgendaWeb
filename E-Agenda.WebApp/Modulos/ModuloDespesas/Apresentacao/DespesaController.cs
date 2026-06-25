@@ -1,6 +1,5 @@
 using AutoMapper;
-using E_Agenda.WebApp.Modulos.ModuloCategoria.Aplicacao;
-using E_Agenda.WebApp.Modulos.ModuloCategoria.Dominio;
+using E_Agenda.WebApp.Compartilhado.Apresentacao.Extensions;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Aplicacao;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 using FluentResults;
@@ -59,6 +58,45 @@ public class DespesaController(ServicoDespesa servicoDespesa, IMapper mapeador) 
             }
  
             return View(cadastrarVm);
+        }
+ 
+        return RedirectToAction(nameof(Listar));
+    }
+
+    [HttpGet]
+    public ActionResult Editar(Guid id)
+    {
+        Result<DetalhesDespesaDto> resultado = servicoDespesa.SelecionarPorId(id);
+ 
+        if (resultado.IsFailed)
+        {
+            TempData.AddErrorMessage(resultado);
+ 
+            return RedirectToAction(nameof(Listar));
+        }
+ 
+        EditarDespesaViewModel editarVm = mapeador.Map<EditarDespesaViewModel>(resultado.Value);
+ 
+        return View(editarVm);
+    }
+ 
+    [HttpPost]
+    public ActionResult Editar(EditarDespesaViewModel editarVm)
+    {
+        if (!ModelState.IsValid)
+            return View(editarVm);
+ 
+        EditarDespesaDto dto = mapeador.Map<EditarDespesaDto>(editarVm);
+        
+        Result resultado = servicoDespesa.Editar(dto);
+ 
+        if (resultado.IsFailed)
+        {
+            ModelState.AddModelError(resultado);
+
+            ModelState.Remove(nameof(CadastrarDespesaViewModel.Categorias));
+ 
+            return View(editarVm);
         }
  
         return RedirectToAction(nameof(Listar));

@@ -9,5 +9,7 @@ public class DespesaProfile : Profile
     public DespesaProfile()
     {
         CreateMap<ListarDespesaDto, ListarDespesasViewModel>();
+        CreateMap<CadastrarDespesaViewModel, CadastrarDespesaDto>();
+        CreateMap<EditarDespesaViewModel, EditarDespesaDto>();
     }
 }

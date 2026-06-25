@@ -42,6 +42,33 @@ public class ServicoDespesa
         return Result.Ok();
     }
 
+    public Result Editar(EditarDespesaDto dto)
+    {
+        Despesa? despesa = repositorioDespesa.SelecionarPorId(dto.Id);
+ 
+        if (despesa == null)
+            return Result.Fail("Despesa não encontrada.");
+ 
+        Categoria? categoriaSelecionada = repositorioCategoria.SelecionarPorId(dto.CategoriaId);
+ 
+        if (categoriaSelecionada == null)
+            return Falha(nameof(dto.CategoriaId), "Selecione uma Categoria válida!");
+ 
+        despesa.Descricao = dto.Descricao;
+        despesa.Valor = dto.Valor;
+        despesa.FormaPagamento = dto.FormaPagamento;
+        despesa.Categoria = categoriaSelecionada;
+        despesa.DataOcorrencia = dto.DataOcorrencia ?? despesa.DataOcorrencia;
+ 
+        Result resultadoValidacao = ValidarEntidade(despesa);
+ 
+        if (resultadoValidacao.IsFailed)
+            return resultadoValidacao;
+ 
+        repositorioDespesa.Editar(dto.Id, despesa);
+ 
+        return Result.Ok();
+    }
     public List<ListarDespesaDto> SelecionarTodos()
     {
         List<Despesa> despesas = repositorioDespesa.SelecionarTodos();
