@@ -11,5 +11,10 @@ public class DespesaProfile : Profile
         CreateMap<ListarDespesaDto, ListarDespesasViewModel>();
         CreateMap<CadastrarDespesaViewModel, CadastrarDespesaDto>();
         CreateMap<EditarDespesaViewModel, EditarDespesaDto>();
+
+        CreateMap<OpcaoCategoriaDto, OpcaoCategoriaViewModel>();
+ 
+        CreateMap<DetalhesDespesaDto, EditarDespesaViewModel>();
+        CreateMap<DetalhesDespesaDto, ExcluirDespesaViewModel>();
     }
 }

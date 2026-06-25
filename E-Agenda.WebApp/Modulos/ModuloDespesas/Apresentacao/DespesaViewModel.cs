@@ -58,3 +58,12 @@ public record EditarDespesaViewModel(
     [Required(ErrorMessage = "Selecione uma Categoria.")]
     Guid CategoriaId
 );
+
+public record ExcluirDespesaViewModel(
+    Guid Id,
+    string Descricao,
+    DateTime DataOcorrencia,
+    decimal Valor,
+    FormaPagamento FormaPagamento,
+    string CategoriaTitulo
+);

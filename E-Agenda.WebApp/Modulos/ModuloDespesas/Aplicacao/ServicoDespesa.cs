@@ -69,6 +69,19 @@ public class ServicoDespesa
  
         return Result.Ok();
     }
+
+    public Result Excluir(Guid id)
+    {
+        Despesa? despesa = repositorioDespesa.SelecionarPorId(id);
+ 
+        if (despesa == null)
+            return Result.Fail("Despesa não encontrada.");
+ 
+        repositorioDespesa.Excluir(id);
+ 
+        return Result.Ok();
+    }
+
     public List<ListarDespesaDto> SelecionarTodos()
     {
         List<Despesa> despesas = repositorioDespesa.SelecionarTodos();

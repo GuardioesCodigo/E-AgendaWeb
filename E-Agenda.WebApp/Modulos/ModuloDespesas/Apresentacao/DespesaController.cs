@@ -87,7 +87,7 @@ public class DespesaController(ServicoDespesa servicoDespesa, IMapper mapeador) 
             return View(editarVm);
  
         EditarDespesaDto dto = mapeador.Map<EditarDespesaDto>(editarVm);
-        
+
         Result resultado = servicoDespesa.Editar(dto);
  
         if (resultado.IsFailed)
@@ -98,6 +98,34 @@ public class DespesaController(ServicoDespesa servicoDespesa, IMapper mapeador) 
  
             return View(editarVm);
         }
+ 
+        return RedirectToAction(nameof(Listar));
+    }
+
+    [HttpGet]
+    public ActionResult Excluir(Guid id)
+    {
+        Result<DetalhesDespesaDto> resultado = servicoDespesa.SelecionarPorId(id);
+ 
+        if (resultado.IsFailed)
+        {
+            TempData.AddErrorMessage(resultado);
+ 
+            return RedirectToAction(nameof(Listar));
+        }
+ 
+        ExcluirDespesaViewModel excluirVm = mapeador.Map<ExcluirDespesaViewModel>(resultado.Value);
+ 
+        return View(excluirVm);
+    }
+ 
+    [HttpPost]
+    public ActionResult Excluir(ExcluirDespesaViewModel excluirVm)
+    {
+        Result resultado = servicoDespesa.Excluir(excluirVm.Id);
+ 
+        if (resultado.IsFailed)
+            TempData.AddErrorMessage(resultado);
  
         return RedirectToAction(nameof(Listar));
     }
