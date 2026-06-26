@@ -5,7 +5,9 @@
 }
 @model List<ListarCategoriasViewModel>
 
-<a class="btn btn-outline-primary rounded-pill px-4 mb-3" asp-action="Cadastrar">Cadastrar Novo</a>
+<a class="btn btn-primary rounded-pill px-4 mb-3" asp-action="Cadastrar">
+    <i class="bi bi-plus-lg me-1"></i> Nova Categoria
+</a>
 
 @if (TempData["MensagemErro"] is string mensagemErro)
 {
