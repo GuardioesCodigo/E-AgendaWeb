@@ -111,7 +111,6 @@ public class ServicoDespesa
             despesas.DataOcorrencia,
             despesas.Valor,
             despesas.FormaPagamento,
-            despesas.Categoria.Id,
             despesas.Categoria.Titulo
         ));
     }

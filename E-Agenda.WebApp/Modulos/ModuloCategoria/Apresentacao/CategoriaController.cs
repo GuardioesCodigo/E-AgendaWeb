@@ -3,6 +3,7 @@ using E_Agenda.WebApp.Modulos.ModuloCategoria.Aplicacao;
 using E_Agenda.WebApp.Compartilhado.Apresentacao.Extensions;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
+using E_Agenda.WebApp.Modulos.ModuloDespesas.Apresentacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloCategoria.Apresentacao;
 
@@ -119,5 +120,21 @@ public class CategoriaController(IMapper mapeador, ServicoCategoria servicoCateg
             TempData.AddErrorMessage(resultado);
  
         return RedirectToAction(nameof(Listar));
+    }
+
+
+    [HttpGet]
+    public ActionResult VisualizarDespesas(Guid id)
+    {
+        Result<DetalhesCategoriasDto> resultado = servicoCategorias.SelecionarPorId(id);
+
+        if (resultado.IsFailed)
+            return RedirectToAction(nameof(Listar));
+
+        DetalhesCategoriasDto dto = resultado.Value;
+
+        DetalhesCategoriaViewModel vm = new(dto.Id, dto.Titulo, dto.Despesas);
+
+        return View(vm);
     }
 }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using E_Agenda.WebApp.Modulos.ModuloDespesas.Apresentacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloCategoria.Apresentacao;
 
@@ -26,4 +27,10 @@ public record ExcluirCategoriasViewModel(
     Guid Id,
     string Titulo,
     int QuantidadeDespesasVinculadas
+);
+
+public record DetalhesCategoriaViewModel(
+    Guid Id,
+    string Titulo,
+    List<ListarDespesasViewModel> Despesas
 );

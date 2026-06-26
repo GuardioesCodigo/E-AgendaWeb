@@ -1,5 +1,7 @@
 using System;
 using AutoMapper;
+using E_Agenda.WebApp.Modulos.ModuloCategoria.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloCategoria.Apresentacao;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Aplicacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloDespesas.Apresentacao;
@@ -16,5 +18,7 @@ public class DespesaProfile : Profile
  
         CreateMap<DetalhesDespesaDto, EditarDespesaViewModel>();
         CreateMap<DetalhesDespesaDto, ExcluirDespesaViewModel>();
+
+        CreateMap<ListarDespesaDto, ListarDespesasViewModel>();
     }
 }

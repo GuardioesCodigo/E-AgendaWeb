@@ -1,0 +1,66 @@
+﻿@using E_Agenda.WebApp.Modulos.ModuloCategoria.Apresentacao
+@{
+    Layout = "_Layout";
+}
+@model DetalhesCategoriaViewModel
+
+<a class="btn btn-outline-secondary rounded-pill px-4 mb-3" asp-action="Listar">
+    <i class="bi bi-arrow-left me-1"></i> Voltar
+</a>
+
+<h2 class="mb-4">@Model.Titulo</h2>
+
+@if (Model.Despesas.Count == 0)
+{
+    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+        Nenhuma despesa vinculada a esta categoria.
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2">
+        @foreach (var d in Model.Despesas)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                            <h5 class="card-title mb-0">@d.Descricao</h5>
+
+                            <span class="badge text-bg-primary rounded-pill">
+                                @d.Id.ToString().Substring(0, 8)
+                            </span>
+                        </div>
+
+                        <dl class="row g-2 mb-4">
+
+                            <dt class="col-5 text-secondary fw-semibold">
+                                Valor
+                            </dt>
+                            <dd class="col-7 mb-0">
+                                @d.Valor.ToString("C")
+                            </dd>
+
+                            <dt class="col-5 text-secondary fw-semibold">
+                                Data
+                            </dt>
+                            <dd class="col-7 mb-0">
+                                @d.DataOcorrencia.ToShortDateString()
+                            </dd>
+
+                            <dt class="col-5 text-secondary fw-semibold">
+                                Pagamento
+                            </dt>
+                            <dd class="col-7 mb-0">
+                                @d.FormaPagamento
+                            </dd>
+
+                        </dl>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

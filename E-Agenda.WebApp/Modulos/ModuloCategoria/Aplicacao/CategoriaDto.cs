@@ -1,8 +1,11 @@
+using E_Agenda.WebApp.Modulos.ModuloDespesas.Apresentacao;
+
 namespace E_Agenda.WebApp.Modulos.ModuloCategoria.Aplicacao;
 
 public record DetalhesCategoriasDto(
     Guid Id,
-    string Titulo
+    string Titulo,
+    List<ListarDespesasViewModel> Despesas
 );
 
 public record ListarCategoriasDto(

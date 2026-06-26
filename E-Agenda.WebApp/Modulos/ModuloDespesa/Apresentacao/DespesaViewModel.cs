@@ -73,3 +73,12 @@ public record ExcluirDespesaViewModel(
     FormaPagamento FormaPagamento,
     string CategoriaTitulo
 );
+
+public record DetalhesDespesaViewModel(
+    Guid Id,
+    string Descricao,
+    DateTime DataOcorrencia,
+    decimal Valor,
+    FormaPagamento FormaPagamento,
+    string CategoriaTitulo
+);

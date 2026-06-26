@@ -41,6 +41,5 @@ public record DetalhesDespesaDto(
     DateTime DataOcorrencia,
     decimal Valor,
     FormaPagamento FormaPagamento,
-    Guid CategoriaId,
     string CategoriaTitulo
 );

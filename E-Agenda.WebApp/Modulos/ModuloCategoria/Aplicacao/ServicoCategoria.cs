@@ -1,5 +1,7 @@
 using System;
 using E_Agenda.WebApp.Modulos.ModuloCategoria.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloDespesas.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloDespesas.Apresentacao;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 using FluentResults;
 
@@ -93,13 +95,27 @@ public class ServicoCategoria
  
     public Result<DetalhesCategoriasDto> SelecionarPorId(Guid id)
     {
-        Categoria? categorias = repositorioCategorias.SelecionarPorId(id);
- 
-        if (categorias == null)
+        Categoria? categoria = repositorioCategorias.SelecionarPorId(id);
+
+        if (categoria == null)
             return Result.Fail("Categoria não encontrada");
- 
+
+        List<ListarDespesasViewModel> despesasVinculadas = repositorioDepesa
+            .SelecionarTodos()
+            .Where(d => d.Categoria.Id == categoria.Id)
+            .Select(d => new ListarDespesasViewModel(
+                d.Id,
+                d.Descricao,
+                d.DataOcorrencia,
+                d.Valor,
+                d.FormaPagamento,
+                d.Categoria.Id,
+                d.Categoria.Titulo
+            ))
+            .ToList();
+
         return Result.Ok(
-            new DetalhesCategoriasDto(categorias.Id, categorias.Titulo)
+            new DetalhesCategoriasDto(categoria.Id, categoria.Titulo, despesasVinculadas)
         );
     }
  

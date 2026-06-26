@@ -139,5 +139,18 @@ public class DespesaController(ServicoDespesa servicoDespesa, IMapper mapeador) 
 
         return mapeador.Map<List<OpcaoCategoriaViewModel>>(dtos);
     }
+    
+    [HttpGet]
+    public ActionResult Visualizar(Guid id)
+    {
+        Result<DetalhesDespesaDto> resultado = servicoDespesa.SelecionarPorId(id);
+
+        if (resultado.IsFailed)
+            return RedirectToAction(nameof(Listar));
+
+        DetalhesDespesaViewModel vm = mapeador.Map<DetalhesDespesaViewModel>(resultado.Value);
+
+        return View(vm);
+    }
 }
 
