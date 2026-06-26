@@ -10,16 +10,21 @@ public static class InjecaoDependencia
 {
     public static void AddInfraRepositories(this IServiceCollection services)
     {
-        services.AddScoped(provider =>
-        {
-            ContextoJson contextoJson = new ContextoJson();
+        // services.AddScoped(provider =>
+        // {
+        //     ContextoJson contextoJson = new ContextoJson();
 
-            contextoJson.Carregar();
+        //     contextoJson.Carregar();
 
+<<<<<<< HEAD
             return contextoJson;
         });
 
         services.AddScoped<IRepositorioCategoria, RepositorioCategoriaEmArquivo>();
         services.AddScoped<IRepositorioDepesa, RepositorioDespesaEmArquivo>();
+=======
+        //     return contextoJson;
+        // });
+>>>>>>> Contatos
     }
 }

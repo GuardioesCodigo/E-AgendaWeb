@@ -1,19 +1,28 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+<<<<<<< HEAD
 using E_Agenda.WebApp.Modulos.ModuloCategoria.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
+=======
+using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
+>>>>>>> Contatos
 
 namespace E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
 
 public sealed class ContextoJson
 {
     private readonly string caminhoArquivo;
+<<<<<<< HEAD
     public List<Categoria> categorias {get; set;} = new List<Categoria>();
     public List<Despesa> despesas {get; set;} = new List<Despesa>();
     public List<Tarefa> tarefas {get; set;} = new List<Tarefa>();
     public List<ItensTarefa> itensTarefas {get; set;} = new List<ItensTarefa>();
+=======
+    public List<Contatos> contatos{get; set;} = new List<Contatos>();
+
+>>>>>>> Contatos
 
     public ContextoJson()
     {
