@@ -96,5 +96,45 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
         return RedirectToAction(nameof(Listar));
     }
 
+    [HttpGet]
+    public ActionResult Excluir(Guid id)
+    {
+        Result<DetalhesTarefaDto> resultado = servicoTarefa.SelecionarPorId(id);
+
+        if (resultado.IsFailed)
+        {
+            TempData.AddErrorMessage(resultado);
+
+            return RedirectToAction(nameof(Listar));
+        }
+
+        ExcluirTarefaViewModel excluirVm = mapeador.Map<ExcluirTarefaViewModel>(resultado.Value);
+
+        return View(excluirVm);
+    }
+
+    [HttpPost]
+    public ActionResult Excluir(ExcluirTarefaViewModel excluirVm)
+    {
+        Result resultado = servicoTarefa.Excluir(excluirVm.Id);
+
+        if (resultado.IsFailed)
+            TempData.AddErrorMessage(resultado);
+
+        return RedirectToAction(nameof(Listar));
+    }
+
+    [HttpGet]
+    public ActionResult Visualizar(Guid id)
+    {
+        Result<DetalhesTarefaDto> resultado = servicoTarefa.SelecionarPorId(id);
+
+        if (resultado.IsFailed)
+            return RedirectToAction(nameof(Listar));
+
+        DetalhesTarefaViewModel vm = mapeador.Map<DetalhesTarefaViewModel>(resultado.Value);
+
+        return View(vm);
+    }
 }
 

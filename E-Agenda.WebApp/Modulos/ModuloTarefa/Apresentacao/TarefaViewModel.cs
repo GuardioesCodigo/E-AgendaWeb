@@ -57,3 +57,23 @@ public record EditarTarefaViewModel(
 
     List<ItemTarefaViewModel> Itens
 );
+
+public record ExcluirTarefaViewModel(
+    Guid Id,
+    string Titulo,
+    PrioridadeTarefa PrioridadeTarefa,
+    DateTime DataConclusao,
+    bool StatusConclusao,
+    int PercentualConcluido
+);
+
+public record DetalhesTarefaViewModel(
+    Guid Id,
+    string Titulo,
+    PrioridadeTarefa PrioridadeTarefa,
+    DateTime DataCriacao,
+    DateTime DataConclusao,
+    bool StatusConclusao,
+    int PercentualConcluido,
+    List<ItemTarefaViewModel> Itens
+);
