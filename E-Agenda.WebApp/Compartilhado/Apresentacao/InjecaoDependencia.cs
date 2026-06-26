@@ -12,8 +12,6 @@ public static class InjecaoDependencia
             // Localização das Views dos módulos: Modulos/ModuloCaixa/Apresentacao/Views/Listar.cshtml
             options.ViewLocationFormats.Add("/Modulos/Modulo{1}/Apresentacao/Views/{0}.cshtml");
 
-            options.ViewLocationFormats.Add("/Modulos/Modulo{1}s/Apresentacao/Views/{0}.cshtml");
-
             // Localização das Views compartilhadas: /Compartilhado/Apresentacao/Views/_Layout.cshtml
             options.ViewLocationFormats.Add("/Compartilhado/Apresentacao/Views/{0}.cshtml");
         });
