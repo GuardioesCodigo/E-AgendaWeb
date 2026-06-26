@@ -12,7 +12,9 @@ public class CategoriaProfile : Profile
         CreateMap<EditarCategoriasViewModel, EditarCategoriasDto>();
 
         CreateMap<DetalhesCategoriasDto, EditarCategoriasViewModel>();
-        CreateMap<DetalhesCategoriasDto, ExcluirCategoriasViewModel>();
+        CreateMap<DetalhesCategoriasDto, ExcluirCategoriasViewModel>()
+            .ForCtorParam(nameof(ExcluirCategoriasViewModel.QuantidadeDespesasVinculadas),
+                opt => opt.MapFrom(src => src.Despesas.Count));
 
         CreateMap<DetalhesCategoriasDto, DetalhesCategoriaViewModel>();
     }
