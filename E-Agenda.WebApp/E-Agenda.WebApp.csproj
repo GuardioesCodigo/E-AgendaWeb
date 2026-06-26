@@ -23,6 +23,7 @@
     <Folder Include="Modulos\ModuloItensTarefa\" />
     <Folder Include="Modulos\ModuloItensTarefa\Dominio\" />
     <Folder Include="Modulos\ModuloItensTarefa\Infra\" />
+    <Folder Include="Modulos\ModuloTarefa\Aplicacao\" />
     <Folder Include="Modulos\ModuloTarefa\Dominio\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
