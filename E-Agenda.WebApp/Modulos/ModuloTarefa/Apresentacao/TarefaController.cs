@@ -169,5 +169,29 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
 
         return View("Cadastrar", cadastrarVm with { Itens = itens });
     }
+
+    [HttpPost]
+    public ActionResult AdicionarItemEditar(EditarTarefaViewModel editarVm)
+    {
+        List<ItemTarefaViewModel> itens = editarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
+        itens.Add(new ItemTarefaViewModel(null, string.Empty, false));
+
+        ModelState.Clear();
+
+        return View("Editar", editarVm with { Itens = itens });
+    }
+
+    [HttpPost]
+    public ActionResult RemoverItemEditar(EditarTarefaViewModel editarVm, int index)
+    {
+        List<ItemTarefaViewModel> itens = editarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
+
+        if (index >= 0 && index < itens.Count)
+            itens.RemoveAt(index);
+
+        ModelState.Clear();
+
+        return View("Editar", editarVm with { Itens = itens });
+    }
 }
 
