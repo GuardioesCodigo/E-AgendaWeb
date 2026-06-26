@@ -1,5 +1,6 @@
 using E_Agenda.WebApp.Modulos.ModuloCategoria.Aplicacao;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloTarefa.Aplicacao;
 
 public static class InjecaoDependencia
 {
@@ -7,5 +8,6 @@ public static class InjecaoDependencia
     {
         services.AddScoped<ServicoCategoria>();
         services.AddScoped<ServicoDespesa>();
+        services.AddScoped<ServicoTarefa>();
     }
 }
