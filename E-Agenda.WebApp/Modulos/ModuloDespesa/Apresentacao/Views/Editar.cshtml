@@ -76,9 +76,10 @@
 
                 <div class="mb-4">
                     <label asp-for="CategoriaId" class="form-label fw-semibold text-secondary">Categoria</label>
-                    <select asp-for="CategoriaId" class="form-select rounded-3"
-                            asp-items="@(new SelectList(ViewBag.Categorias, "Id", "Titulo"))">
-                        <option value="">Selecione uma categoria...</option>
+                    <select asp-for="CategoriaId"
+                            asp-items="@(new SelectList(Model.Categorias, nameof(OpcaoCategoriaViewModel.Id), nameof(OpcaoCategoriaViewModel.Titulo)))"
+                            class="form-select">
+                        <option value="">Selecione uma categoria</option>
                     </select>
                     <span asp-validation-for="CategoriaId" class="text-danger small"></span>
                 </div>

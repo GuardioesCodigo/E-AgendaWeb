@@ -16,7 +16,9 @@ public class DespesaProfile : Profile
 
         CreateMap<OpcaoCategoriaDto, OpcaoCategoriaViewModel>();
  
-        CreateMap<DetalhesDespesaDto, EditarDespesaViewModel>();
+        CreateMap<DetalhesDespesaDto, EditarDespesaViewModel>()
+            .ForCtorParam(nameof(EditarDespesaViewModel.Categorias),
+                opt => opt.MapFrom(src => new List<OpcaoCategoriaViewModel>()));
         CreateMap<DetalhesDespesaDto, ExcluirDespesaViewModel>();
 
         CreateMap<ListarDespesaDto, ListarDespesasViewModel>();

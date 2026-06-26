@@ -70,16 +70,19 @@ public class DespesaController(ServicoDespesa servicoDespesa, IMapper mapeador) 
     public ActionResult Editar(Guid id)
     {
         Result<DetalhesDespesaDto> resultado = servicoDespesa.SelecionarPorId(id);
- 
+
         if (resultado.IsFailed)
         {
             TempData.AddErrorMessage(resultado);
- 
+
             return RedirectToAction(nameof(Listar));
         }
- 
-        EditarDespesaViewModel editarVm = mapeador.Map<EditarDespesaViewModel>(resultado.Value);
- 
+
+        EditarDespesaViewModel editarVm = mapeador.Map<EditarDespesaViewModel>(resultado.Value) with
+        {
+            Categorias = ObterCategoriasDisponiveis()
+        };
+
         return View(editarVm);
     }
  
