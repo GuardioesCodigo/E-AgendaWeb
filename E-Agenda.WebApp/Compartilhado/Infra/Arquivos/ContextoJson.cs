@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using E_Agenda.WebApp.Modulos.ModuloCategoria.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
 
 namespace E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
@@ -12,6 +13,7 @@ public sealed class ContextoJson
     public List<Categoria> categorias {get; set;} = new List<Categoria>();
     public List<Despesa> despesas {get; set;} = new List<Despesa>();
     public List<Tarefa> tarefas {get; set;} = new List<Tarefa>();
+    public List<ItensTarefa> itensTarefas {get; set;} = new List<ItensTarefa>();
 
     public ContextoJson()
     {
@@ -60,5 +62,6 @@ public sealed class ContextoJson
         categorias = contextoSalvo.categorias;
         despesas = contextoSalvo.despesas;
         tarefas = contextoSalvo.tarefas;
+        itensTarefas = contextoSalvo.itensTarefas;
     }
 }

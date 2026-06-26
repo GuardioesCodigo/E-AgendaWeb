@@ -20,6 +20,9 @@
     <Folder Include="Modulos\ModuloDespesas\Apresentacao\Views\" />
     <Folder Include="Modulos\ModuloDespesas\Dominio\" />
     <Folder Include="Modulos\ModuloDespesas\Infra\" />
+    <Folder Include="Modulos\ModuloItensTarefa\" />
+    <Folder Include="Modulos\ModuloItensTarefa\Dominio\" />
+    <Folder Include="Modulos\ModuloItensTarefa\Infra\" />
     <Folder Include="Modulos\ModuloTarefa\Dominio\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
