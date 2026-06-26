@@ -35,6 +35,9 @@ public record CadastrarDespesaViewModel(
     [Required(ErrorMessage = "O campo \"Forma de Pagamento\" deve ser preenchido.")]
     FormaPagamento FormaPagamento,
  
+    [Required(ErrorMessage = "Selecione uma Categoria.")]
+    Guid CategoriaId,
+
     [ValidateNever]
     List<OpcaoCategoriaViewModel> Categorias
 );
@@ -56,7 +59,10 @@ public record EditarDespesaViewModel(
     FormaPagamento FormaPagamento,
  
     [Required(ErrorMessage = "Selecione uma Categoria.")]
-    Guid CategoriaId
+    Guid CategoriaId,
+
+    [ValidateNever]
+    List<OpcaoCategoriaViewModel> Categorias
 );
 
 public record ExcluirDespesaViewModel(

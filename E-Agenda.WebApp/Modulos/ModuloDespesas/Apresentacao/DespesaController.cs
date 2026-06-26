@@ -30,8 +30,11 @@ public class DespesaController(ServicoDespesa servicoDespesa, IMapper mapeador) 
             null,
             0,
             FormaPagamento.AVista,
+            Guid.Empty,
             ObterCategoriasDisponiveis()
         );
+
+        ViewBag.Categorias = ObterCategoriasDisponiveis();
  
         return View(cadastrarVm);
     }
