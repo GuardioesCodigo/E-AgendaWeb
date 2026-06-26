@@ -5,13 +5,12 @@
 }
 @model EditarDespesaViewModel
 
-<div style="max-width:640px;">
-
     <a asp-action="Listar" class="btn btn-outline-secondary rounded-pill px-4 mb-4">
         <i class="bi bi-arrow-left me-1"></i> Voltar
     </a>
-
-    <div class="card border-0 shadow-sm rounded-4">
+    
+<div class="container d-flex justify-content-center">
+    <div class="card border-0 shadow-sm rounded-4" style="max-width: 620px; width:100%;">
         <div class="card-body p-4">
             <form asp-action="Editar" method="post">
                 <input asp-for="Id" type="hidden" />
