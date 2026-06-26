@@ -5,10 +5,21 @@ namespace E_Agenda.WebApp.Modulos.ModuloTarefa.Aplicacao;
 public record ListarTarefaDto(
     Guid Id,
     string Titulo,
-    PrioridadeTarefa Prioridade,
+    PrioridadeTarefa PrioridadeTarefa,
     DateTime DataConclusao,
     bool StatusConclusao,
     int PercentualConcluido
+);
+
+public record CadastrarItemTarefaDto(
+    string Titulo
+);
+
+public record CadastrarTarefaDto(
+    string Titulo,
+    PrioridadeTarefa PrioridadeTarefa,
+    DateTime DataConclusao,
+    List<CadastrarItemTarefaDto> Itens
 );
 
 public record ItemTarefaDto(
@@ -20,7 +31,7 @@ public record ItemTarefaDto(
 public record DetalhesTarefaDto(
     Guid Id,
     string Titulo,
-    PrioridadeTarefa Prioridade,
+    PrioridadeTarefa PrioridadeTarefa,
     DateTime DataCriacao,
     DateTime DataConclusao,
     bool StatusConclusao,

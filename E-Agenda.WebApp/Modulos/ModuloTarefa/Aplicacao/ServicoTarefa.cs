@@ -1,4 +1,5 @@
 using System;
+using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
 using FluentResults;
 
@@ -11,6 +12,21 @@ public class ServicoTarefa
     public ServicoTarefa(IRepositorioTarefa repositorioTarefa)
     {
         this.repositorioTarefa = repositorioTarefa;
+    }
+
+    public Result Cadastrar(CadastrarTarefaDto dto)
+    {
+        Tarefa novaTarefa = new Tarefa(dto.Titulo, dto.PrioridadeTarefa, dto.DataConclusao);
+
+        List<ItensTarefa> itens = dto.Itens
+            .Select(i => new ItensTarefa(i.Titulo, novaTarefa))
+            .ToList();
+
+        novaTarefa.ItemTarefa = itens;
+
+        repositorioTarefa.Cadastrar(novaTarefa);
+
+        return Result.Ok();
     }
 
     public List<ListarTarefaDto> SelecionarTodos()
