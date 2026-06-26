@@ -145,5 +145,29 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
 
         return View(vm);
     }
+
+    [HttpPost]
+    public ActionResult AdicionarItemCadastro(CadastrarTarefaViewModel cadastrarVm)
+    {
+        List<ItemTarefaViewModel> itens = cadastrarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
+        itens.Add(new ItemTarefaViewModel(null, string.Empty, false));
+
+        ModelState.Clear();
+
+        return View("Cadastrar", cadastrarVm with { Itens = itens });
+    }
+
+    [HttpPost]
+    public ActionResult RemoverItemCadastro(CadastrarTarefaViewModel cadastrarVm, int index)
+    {
+        List<ItemTarefaViewModel> itens = cadastrarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
+
+        if (index >= 0 && index < itens.Count)
+            itens.RemoveAt(index);
+
+        ModelState.Clear();
+
+        return View("Cadastrar", cadastrarVm with { Itens = itens });
+    }
 }
 
