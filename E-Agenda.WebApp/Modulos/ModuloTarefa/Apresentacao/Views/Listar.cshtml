@@ -1,0 +1,108 @@
+﻿@using E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao
+@using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio
+@{
+    Layout = "_Layout";
+    string filtroAtual = ViewBag.FiltroAtual as string ?? "todas";
+}
+@model List<E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao.ListarTarefaViewModel>
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <a class="btn btn-primary rounded-pill px-4" asp-action="Cadastrar">
+        <i class="bi bi-plus-lg me-1"></i> Nova Tarefa
+    </a>
+
+    <div class="btn-group" role="group">
+        <a asp-action="Listar" asp-route-filtro="todas"
+           class="btn btn-sm rounded-pill px-3 @(filtroAtual == "todas" ? "btn-primary" : "btn-outline-primary")">
+            Todas
+        </a>
+        <a asp-action="Listar" asp-route-filtro="pendentes"
+           class="btn btn-sm rounded-pill px-3 ms-2 @(filtroAtual == "pendentes" ? "btn-primary" : "btn-outline-primary")">
+            Pendentes
+        </a>
+        <a asp-action="Listar" asp-route-filtro="concluidas"
+           class="btn btn-sm rounded-pill px-3 ms-2 @(filtroAtual == "concluidas" ? "btn-primary" : "btn-outline-primary")">
+            Concluídas
+        </a>
+    </div>
+</div>
+
+@if (TempData["MensagemErro"] is string mensagemErro)
+{
+    <div class="alert alert-danger border-start border-danger border-4 rounded-3" role="alert">
+        @mensagemErro
+    </div>
+}
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+        Nenhuma tarefa encontrada.
+    </div>
+}
+else
+{
+    @foreach (PrioridadeTarefa prioridade in new[] { PrioridadeTarefa.Alta, PrioridadeTarefa.Normal, PrioridadeTarefa.Baixa })
+    {
+        List<ListarTarefaViewModel>? tarefasDaPrioridade = Model.Where(t => t.PrioridadeTarefa == prioridade).ToList();
+
+        if (tarefasDaPrioridade.Count > 0)
+        {
+            string corBadge = prioridade switch
+            {
+                PrioridadeTarefa.Alta => "danger",
+                PrioridadeTarefa.Normal => "warning",
+                _ => "secondary"
+            };
+
+            <div class="d-flex align-items-center gap-2 mb-2 mt-4">
+                <span class="badge text-bg-@corBadge rounded-pill px-3">@prioridade</span>
+                <span class="text-secondary small">(@tarefasDaPrioridade.Count tarefa(s))</span>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2 mb-3">
+                @foreach (ListarTarefaViewModel t in tarefasDaPrioridade)
+                {
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="card-body">
+
+                                <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                                    <h5 class="card-title mb-0">@t.Titulo</h5>
+                                    <span class="badge @(t.StatusConclusao ? "text-bg-success" : "text-bg-secondary") rounded-pill">
+                                        @(t.StatusConclusao ? "Concluída" : "Pendente")
+                                    </span>
+                                </div>
+
+                                <dl class="row g-2 mb-3">
+                                    <dt class="col-5 text-secondary fw-semibold">Conclusão</dt>
+                                    <dd class="col-7 mb-0">@t.DataConclusao.ToShortDateString()</dd>
+
+                                    <dt class="col-5 text-secondary fw-semibold">Progresso</dt>
+                                    <dd class="col-7 mb-0">
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar" role="progressbar" style="width: @t.PercentualConcluido%;"></div>
+                                        </div>
+                                        <span class="small text-secondary">@t.PercentualConcluido%</span>
+                                    </dd>
+                                </dl>
+
+                                <div class="d-flex flex-wrap gap-2 mt-auto justify-content-end">
+                                    <a class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                                       asp-action="Visualizar" asp-route-id="@t.Id">
+                                        Ver Detalhes
+                                    </a>
+                                    <a class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                                       asp-action="Editar" asp-route-id="@t.Id">Editar</a>
+                                    <a class="btn btn-outline-danger btn-sm rounded-pill px-3"
+                                       asp-action="Excluir" asp-route-id="@t.Id">Excluir</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+}

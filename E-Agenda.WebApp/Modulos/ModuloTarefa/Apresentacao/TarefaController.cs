@@ -11,11 +11,20 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
 {
     
     [HttpGet]
-    public ActionResult Listar()
+    public ActionResult Listar(string filtro = "todas")
     {
         List<ListarTarefaDto> dtos = servicoTarefa.SelecionarTodos();
 
         List<ListarTarefaViewModel> listarVms = mapeador.Map<List<ListarTarefaViewModel>>(dtos);
+
+        listarVms = filtro switch
+        {
+            "pendentes" => listarVms.Where(t => !t.StatusConclusao).ToList(),
+            "concluidas" => listarVms.Where(t => t.StatusConclusao).ToList(),
+            _ => listarVms
+        };
+
+        ViewBag.FiltroAtual = filtro;
 
         return View(listarVms);
     }

@@ -25,6 +25,7 @@
     <Folder Include="Modulos\ModuloItensTarefa\Infra\" />
     <Folder Include="Modulos\ModuloTarefa\Aplicacao\" />
     <Folder Include="Modulos\ModuloTarefa\Apresentacao\" />
+    <Folder Include="Modulos\ModuloTarefa\Apresentacao\Views\" />
     <Folder Include="Modulos\ModuloTarefa\Dominio\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
