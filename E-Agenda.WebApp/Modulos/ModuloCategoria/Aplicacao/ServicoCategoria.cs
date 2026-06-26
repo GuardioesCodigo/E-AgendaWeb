@@ -87,9 +87,14 @@ public class ServicoCategoria
     public List<ListarCategoriasDto> SelecionarTodos()
     {
         List<Categoria> categorias = repositorioCategorias.SelecionarTodos();
- 
+        List<Despesa> despesas = repositorioDepesa.SelecionarTodos();
+
         return categorias
-            .Select(c => new ListarCategoriasDto(c.Id, c.Titulo, c.Despesas.Count))
+            .Select(c => new ListarCategoriasDto(
+                c.Id,
+                c.Titulo,
+                despesas.Count(d => d.Categoria.Id == c.Id)
+            ))
             .ToList();
     }
  
