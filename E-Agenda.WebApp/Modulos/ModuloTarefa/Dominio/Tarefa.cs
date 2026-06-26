@@ -1,5 +1,6 @@
 using System;
 using E_Agenda.WebApp.Compartilhado.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Dominio;
 
 namespace E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
 
@@ -11,13 +12,15 @@ public class Tarefa : EntidadeBase<Tarefa>
     public DateTime DataConclusao {get; set;} = DateTime.Now;
     public bool StatusConclusao { get; set; }
     public int PercentualConcluido { get; set; }
+    public List<ItensTarefa> ItemTarefa { get; set; } = null!;
 
     public Tarefa() { }
 
     public Tarefa(
         string titulo,
         PrioridadeTarefa prioridadeTarefa,
-        DateTime dataConclusao
+        DateTime dataConclusao,
+        List<ItensTarefa>? itemTarefa = null
     )
     {
         Titulo = titulo;
@@ -26,6 +29,7 @@ public class Tarefa : EntidadeBase<Tarefa>
         DataConclusao = dataConclusao;
         StatusConclusao = false;
         PercentualConcluido = 0;
+        ItemTarefa = itemTarefa ?? new List<ItensTarefa>();
     }
 
     public override List<string> Validar()
@@ -63,5 +67,6 @@ public class Tarefa : EntidadeBase<Tarefa>
         DataConclusao = entidadeAtualizada.DataConclusao;
         StatusConclusao = entidadeAtualizada.StatusConclusao;
         PercentualConcluido = entidadeAtualizada.PercentualConcluido;
+        ItemTarefa = entidadeAtualizada.ItemTarefa;
     }
 }
