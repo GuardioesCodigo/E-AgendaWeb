@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Agenda.WebApp.Modulos.ModuloCategoria.Apresentacao;
 
-public class CategoriasController(IMapper mapeador, ServicoCategoria servicoCategorias) : Controller
+public class CategoriaController(IMapper mapeador, ServicoCategoria servicoCategorias) : Controller
 {
     [HttpGet]
     public ActionResult Listar()

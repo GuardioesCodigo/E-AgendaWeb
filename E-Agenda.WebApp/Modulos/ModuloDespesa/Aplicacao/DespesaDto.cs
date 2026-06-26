@@ -18,8 +18,7 @@ public record CadastrarDespesaDto(
     DateTime? DataOcorrencia,
     decimal Valor,
     FormaPagamento FormaPagamento,
-    Guid CategoriaId,
-    string CategoriaTitulo
+    Guid CategoriaId
 );
 
 public record EditarDespesaDto(
