@@ -1,11 +1,14 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 
 namespace E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
 
 public sealed class ContextoJson
 {
     private readonly string caminhoArquivo;
+    public List<Contatos> contatos{get; set;} = new List<Contatos>();
+
 
     public ContextoJson()
     {
