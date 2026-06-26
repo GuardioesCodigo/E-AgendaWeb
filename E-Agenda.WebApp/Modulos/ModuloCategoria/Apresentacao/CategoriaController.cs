@@ -14,7 +14,7 @@ public class CategoriaController(IMapper mapeador, ServicoCategoria servicoCateg
         List<ListarCategoriasDto> dtos = servicoCategorias.SelecionarTodos();
 
         List<ListarCategoriasViewModel> listarVms = mapeador.Map<List<ListarCategoriasDto>>(dtos)
-            .Select(c => new ListarCategoriasViewModel(c.Id, c.Titulo))
+            .Select(c => new ListarCategoriasViewModel(c.Id, c.Titulo, c.QuantidadeDespesasVinculadas))
             .ToList();
 
         return View(listarVms);

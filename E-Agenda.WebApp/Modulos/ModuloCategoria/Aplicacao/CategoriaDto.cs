@@ -7,7 +7,8 @@ public record DetalhesCategoriasDto(
 
 public record ListarCategoriasDto(
     Guid Id,
-    string Titulo
+    string Titulo,
+    int QuantidadeDespesasVinculadas
 );
 
 public record CadastrarCategoriasDto(
