@@ -11,17 +11,6 @@ public record ListarTarefaDto(
     int PercentualConcluido
 );
 
-public record CadastrarItemTarefaDto(
-    string Titulo
-);
-
-public record CadastrarTarefaDto(
-    string Titulo,
-    PrioridadeTarefa PrioridadeTarefa,
-    DateTime DataConclusao,
-    List<CadastrarItemTarefaDto> Itens
-);
-
 public record ItemTarefaDto(
     Guid Id,
     string Titulo,
@@ -37,4 +26,31 @@ public record DetalhesTarefaDto(
     bool StatusConclusao,
     int PercentualConcluido,
     List<ItemTarefaDto> Itens
+);
+
+public record CadastrarItemTarefaDto(
+    string Titulo
+);
+
+public record CadastrarTarefaDto(
+    string Titulo,
+    PrioridadeTarefa PrioridadeTarefa,
+    DateTime DataConclusao,
+    List<CadastrarItemTarefaDto> Itens
+);
+
+public record EditarItemTarefaDto(
+    Guid? Id,
+    string Titulo,
+    bool StatusConclusao
+);
+
+public record EditarTarefaDto(
+    Guid Id,
+    string Titulo,
+    PrioridadeTarefa PrioridadeTarefa,
+    bool StatusConclusao,
+    int PercentualConcluido,
+    DateTime DataConclusao,
+    List<EditarItemTarefaDto> Itens
 );

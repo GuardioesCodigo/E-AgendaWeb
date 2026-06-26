@@ -9,6 +9,7 @@ namespace E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao;
 
 public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : Controller
 {
+    
     [HttpGet]
     public ActionResult Listar()
     {
@@ -59,6 +60,41 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
         return RedirectToAction(nameof(Listar));
     }
 
+    [HttpGet]
+    public ActionResult Editar(Guid id)
+    {
+        Result<DetalhesTarefaDto> resultado = servicoTarefa.SelecionarPorId(id);
+
+        if (resultado.IsFailed)
+        {
+            TempData.AddErrorMessage(resultado);
+
+            return RedirectToAction(nameof(Listar));
+        }
+
+        EditarTarefaViewModel editarVm = mapeador.Map<EditarTarefaViewModel>(resultado.Value);
+
+        return View(editarVm);
+    }
+
+    [HttpPost]
+    public ActionResult Editar(EditarTarefaViewModel editarVm)
+    {
+        if (!ModelState.IsValid)
+            return View(editarVm);
+
+        EditarTarefaDto dto = mapeador.Map<EditarTarefaDto>(editarVm);
+        Result resultado = servicoTarefa.Editar(dto);
+
+        if (resultado.IsFailed)
+        {
+            ModelState.AddModelError(resultado);
+
+            return View(editarVm);
+        }
+
+        return RedirectToAction(nameof(Listar));
+    }
 
 }
 

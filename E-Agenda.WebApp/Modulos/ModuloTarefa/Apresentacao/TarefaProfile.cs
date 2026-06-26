@@ -8,5 +8,13 @@ public class MapeadorTarefa : Profile
     public MapeadorTarefa()
     {
         CreateMap<ListarTarefaDto, ListarTarefaViewModel>();
+        
+        CreateMap<ItemTarefaDto, ItemTarefaViewModel>();
+
+        CreateMap<ItemTarefaViewModel, CadastrarItemTarefaDto>();
+        CreateMap<CadastrarTarefaViewModel, CadastrarTarefaDto>();
+
+        CreateMap<ItemTarefaViewModel, EditarItemTarefaDto>();
+        CreateMap<EditarTarefaViewModel, EditarTarefaDto>();
     }
 }

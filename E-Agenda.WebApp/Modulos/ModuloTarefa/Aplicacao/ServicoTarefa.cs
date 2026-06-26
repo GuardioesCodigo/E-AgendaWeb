@@ -29,6 +29,37 @@ public class ServicoTarefa
         return Result.Ok();
     }
 
+    public Result Editar(EditarTarefaDto dto)
+    {
+        Tarefa? tarefa = repositorioTarefa.SelecionarPorId(dto.Id);
+
+        if (tarefa == null)
+            return Result.Fail("Tarefa não encontrada.");
+
+        Tarefa tarefaAtualizada = new Tarefa(dto.Titulo, dto.PrioridadeTarefa, dto.DataConclusao)
+        {
+            StatusConclusao = dto.StatusConclusao,
+            PercentualConcluido = dto.PercentualConcluido
+        };
+
+        List<ItensTarefa> itens = dto.Itens
+            .Select(i => new ItensTarefa(i.Titulo, tarefaAtualizada) { StatusConclusao = i.StatusConclusao })
+            .ToList();
+
+        tarefaAtualizada.ItemTarefa = itens;
+
+        tarefa.Atualizar(tarefaAtualizada);
+
+        Result resultadoValidacao = ValidarEntidade(tarefa);
+
+        if (resultadoValidacao.IsFailed)
+            return resultadoValidacao;
+
+        repositorioTarefa.Editar(dto.Id, tarefa);
+
+        return Result.Ok();
+    }
+
     public List<ListarTarefaDto> SelecionarTodos()
     { 
         List<Tarefa> tarefas = repositorioTarefa.SelecionarTodos();
