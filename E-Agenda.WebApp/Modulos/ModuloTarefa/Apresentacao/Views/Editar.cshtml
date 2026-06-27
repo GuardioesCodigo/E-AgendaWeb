@@ -61,7 +61,7 @@
                         </button>
                     </div>
 
-                    @for (int i = 0; i < Model.Itens.Count; i++)
+                    @for (int i = 0; i < (Model.Itens?.Count ?? 0); i++)
                     {
                         <div class="input-group mb-2">
                             <span class="input-group-text bg-light">

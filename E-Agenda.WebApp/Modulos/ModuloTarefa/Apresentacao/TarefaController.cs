@@ -42,9 +42,12 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
         return View(cadastrarVm);
     }
 
-    [HttpPost]
+   [HttpPost]
     public ActionResult Cadastrar(CadastrarTarefaViewModel cadastrarVm)
     {
+        if (cadastrarVm.Itens == null)
+            cadastrarVm = cadastrarVm with { Itens = new List<ItemTarefaViewModel>() };
+
         if (!ModelState.IsValid)
             return View(cadastrarVm);
 
@@ -89,6 +92,9 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
     [HttpPost]
     public ActionResult Editar(EditarTarefaViewModel editarVm)
     {
+        if (editarVm.Itens == null)
+            editarVm = editarVm with { Itens = new List<ItemTarefaViewModel>() };
+
         if (!ModelState.IsValid)
             return View(editarVm);
 
