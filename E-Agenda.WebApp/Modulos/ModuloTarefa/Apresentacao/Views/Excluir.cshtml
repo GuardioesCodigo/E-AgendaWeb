@@ -1,0 +1,46 @@
+﻿@using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio
+@{
+    Layout = "_Layout";
+}
+@model E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao.ExcluirTarefaViewModel
+
+<a asp-action="Listar" class="btn btn-outline-secondary rounded-pill px-4 mb-4">
+    <i class="bi bi-arrow-left me-1"></i> Voltar
+</a>
+
+<div class="container d-flex justify-content-center">
+    <div class="card border-0 shadow-sm rounded-4" style="max-width: 620px; width:100%;">
+        <div class="card-body p-4">
+
+            <p class="text-secondary">Tem certeza que deseja excluir esta tarefa?</p>
+
+            <dl class="row g-2 mb-4">
+                <dt class="col-5 text-secondary fw-semibold">Título</dt>
+                <dd class="col-7 mb-0">@Model.Titulo</dd>
+
+                <dt class="col-5 text-secondary fw-semibold">Prioridade</dt>
+                <dd class="col-7 mb-0">@Model.PrioridadeTarefa</dd>
+
+                <dt class="col-5 text-secondary fw-semibold">Data de Conclusão</dt>
+                <dd class="col-7 mb-0">@Model.DataConclusao.ToShortDateString()</dd>
+
+                <dt class="col-5 text-secondary fw-semibold">Status</dt>
+                <dd class="col-7 mb-0">@(Model.StatusConclusao ? "Concluída" : "Pendente")</dd>
+            </dl>
+
+            <form asp-action="Excluir" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-semibold flex-fill">
+                        <i class="bi bi-trash me-1"></i> Excluir
+                    </button>
+                    <a asp-action="Listar" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

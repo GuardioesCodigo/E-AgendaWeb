@@ -11,11 +11,20 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
 {
     
     [HttpGet]
-    public ActionResult Listar()
+    public ActionResult Listar(string filtro = "todas")
     {
         List<ListarTarefaDto> dtos = servicoTarefa.SelecionarTodos();
 
         List<ListarTarefaViewModel> listarVms = mapeador.Map<List<ListarTarefaViewModel>>(dtos);
+
+        listarVms = filtro switch
+        {
+            "pendentes" => listarVms.Where(t => !t.StatusConclusao).ToList(),
+            "concluidas" => listarVms.Where(t => t.StatusConclusao).ToList(),
+            _ => listarVms
+        };
+
+        ViewBag.FiltroAtual = filtro;
 
         return View(listarVms);
     }
@@ -33,9 +42,12 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
         return View(cadastrarVm);
     }
 
-    [HttpPost]
+   [HttpPost]
     public ActionResult Cadastrar(CadastrarTarefaViewModel cadastrarVm)
     {
+        if (cadastrarVm.Itens == null)
+            cadastrarVm = cadastrarVm with { Itens = new List<ItemTarefaViewModel>() };
+
         if (!ModelState.IsValid)
             return View(cadastrarVm);
 
@@ -80,6 +92,9 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
     [HttpPost]
     public ActionResult Editar(EditarTarefaViewModel editarVm)
     {
+        if (editarVm.Itens == null)
+            editarVm = editarVm with { Itens = new List<ItemTarefaViewModel>() };
+
         if (!ModelState.IsValid)
             return View(editarVm);
 
@@ -135,6 +150,54 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
         DetalhesTarefaViewModel vm = mapeador.Map<DetalhesTarefaViewModel>(resultado.Value);
 
         return View(vm);
+    }
+
+    [HttpPost]
+    public ActionResult AdicionarItemCadastro(CadastrarTarefaViewModel cadastrarVm)
+    {
+        List<ItemTarefaViewModel> itens = cadastrarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
+        itens.Add(new ItemTarefaViewModel(null, string.Empty, false));
+
+        ModelState.Clear();
+
+        return View("Cadastrar", cadastrarVm with { Itens = itens });
+    }
+
+    [HttpPost]
+    public ActionResult RemoverItemCadastro(CadastrarTarefaViewModel cadastrarVm, int index)
+    {
+        List<ItemTarefaViewModel> itens = cadastrarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
+
+        if (index >= 0 && index < itens.Count)
+            itens.RemoveAt(index);
+
+        ModelState.Clear();
+
+        return View("Cadastrar", cadastrarVm with { Itens = itens });
+    }
+
+    [HttpPost]
+    public ActionResult AdicionarItemEditar(EditarTarefaViewModel editarVm)
+    {
+        List<ItemTarefaViewModel> itens = editarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
+        itens.Add(new ItemTarefaViewModel(null, string.Empty, false));
+
+        ModelState.Clear();
+
+        return View("Editar", editarVm with { Itens = itens });
+    }
+
+    [HttpPost]
+    public ActionResult RemoverItemEditar(EditarTarefaViewModel editarVm, int index)
+    {
+        List<ItemTarefaViewModel> itens = editarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
+
+        if (index >= 0 && index < itens.Count)
+            itens.RemoveAt(index);
+
+        ModelState.Clear();
+
+        return View("Editar", editarVm with { Itens = itens });
     }
 }
 

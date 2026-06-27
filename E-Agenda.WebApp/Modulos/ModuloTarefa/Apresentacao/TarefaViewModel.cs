@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao;
 
@@ -34,6 +35,7 @@ public record CadastrarTarefaViewModel(
     [Required(ErrorMessage = "O campo \"Data de Conclusão\" deve ser preenchido.")]
     DateTime DataConclusao,
 
+    [ValidateNever]
     List<ItemTarefaViewModel> Itens
 );
 
@@ -55,6 +57,7 @@ public record EditarTarefaViewModel(
     [Range(0, 100, ErrorMessage = "O campo \"Percentual Concluído\" deve estar entre 0 e 100.")]
     int PercentualConcluido,
 
+    [ValidateNever]
     List<ItemTarefaViewModel> Itens
 );
 

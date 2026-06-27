@@ -16,9 +16,11 @@ public class ServicoTarefa
 
     public Result Cadastrar(CadastrarTarefaDto dto)
     {
+        List<CadastrarItemTarefaDto> itensDto = dto.Itens ?? new List<CadastrarItemTarefaDto>();
+
         Tarefa novaTarefa = new Tarefa(dto.Titulo, dto.PrioridadeTarefa, dto.DataConclusao);
 
-        List<ItensTarefa> itens = dto.Itens
+        List<ItensTarefa> itens = itensDto
             .Select(i => new ItensTarefa(i.Titulo, novaTarefa))
             .ToList();
 
@@ -36,13 +38,15 @@ public class ServicoTarefa
         if (tarefa == null)
             return Result.Fail("Tarefa não encontrada.");
 
+        List<EditarItemTarefaDto> itensDto = dto.Itens ?? new List<EditarItemTarefaDto>();
+
         Tarefa tarefaAtualizada = new Tarefa(dto.Titulo, dto.PrioridadeTarefa, dto.DataConclusao)
         {
             StatusConclusao = dto.StatusConclusao,
             PercentualConcluido = dto.PercentualConcluido
         };
 
-        List<ItensTarefa> itens = dto.Itens
+        List<ItensTarefa> itens = itensDto
             .Select(i => new ItensTarefa(i.Titulo, tarefaAtualizada) { StatusConclusao = i.StatusConclusao })
             .ToList();
 
@@ -58,7 +62,7 @@ public class ServicoTarefa
         repositorioTarefa.Editar(dto.Id, tarefa);
 
         return Result.Ok();
-    }   
+    }  
 
     public Result Excluir(Guid id)
     {
