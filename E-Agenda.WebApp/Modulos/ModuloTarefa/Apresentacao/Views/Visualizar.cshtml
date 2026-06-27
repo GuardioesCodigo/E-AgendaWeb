@@ -1,0 +1,84 @@
+﻿@using E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao
+@{
+    Layout = "_Layout";
+}
+@model DetalhesTarefaViewModel
+
+<a class="btn btn-outline-secondary rounded-pill px-4 mb-3" asp-action="Listar">
+    <i class="bi bi-arrow-left me-1"></i> Voltar
+</a>
+
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
+    <h2 class="mb-0">@Model.Titulo</h2>
+    <span class="badge @(Model.StatusConclusao ? "text-bg-success" : "text-bg-secondary") rounded-pill px-3">
+        @(Model.StatusConclusao ? "Concluída" : "Pendente")
+    </span>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="text-secondary small fw-semibold">Prioridade</div>
+                <div class="fs-5">@Model.PrioridadeTarefa</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="text-secondary small fw-semibold">Data de Criação</div>
+                <div class="fs-5">@Model.DataCriacao.ToShortDateString()</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="text-secondary small fw-semibold">Data de Conclusão</div>
+                <div class="fs-5">@Model.DataConclusao.ToShortDateString()</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="text-secondary small fw-semibold">Progresso</div>
+                <div class="progress mt-2" style="height: 8px;">
+                    <div class="progress-bar" role="progressbar" style="width: @Model.PercentualConcluido%;"></div>
+                </div>
+                <div class="small text-secondary mt-1">@Model.PercentualConcluido%</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h5 class="mb-3">Itens da Tarefa</h5>
+
+@if (Model.Itens.Count == 0)
+{
+    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+        Nenhum item cadastrado para esta tarefa.
+    </div>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var item in Model.Itens)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="@(item.StatusConclusao ? "text-decoration-line-through text-secondary" : "")">
+                    @item.Titulo
+                </span>
+                <span class="badge @(item.StatusConclusao ? "text-bg-success" : "text-bg-secondary") rounded-pill">
+                    @(item.StatusConclusao ? "Concluído" : "Pendente")
+                </span>
+            </li>
+        }
+    </ul>
+}
+
+<div class="d-flex justify-content-end gap-2 mt-4">
+    <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Editar" asp-route-id="@Model.Id">Editar</a>
+    <a class="btn btn-outline-danger rounded-pill px-4" asp-action="Excluir" asp-route-id="@Model.Id">Excluir</a>
+</div>
