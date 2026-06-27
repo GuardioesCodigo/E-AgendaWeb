@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
-using E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
-using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
 
-namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
+namespace ControleDeMedicamentos.WebApp.ModuloFuncionario.Apresentacao
 {
-    public class ContatosController : Controller
+    public class FuncionariosController : Controller
     {
-        private readonly ServicoContatos _servico;
+        private readonly ServicoFuncionario _servico;
         private readonly IMapper _mapper;
 
-        public ContatosController(ServicoContatos servico, IMapper mapper)
+        public FuncionariosController(ServicoFuncionario servico, IMapper mapper)
         {
             _servico = servico;
             _mapper = mapper;
@@ -21,21 +19,22 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
 
         public IActionResult Listar()
         {
-            var contatos = _servico.SelecionarTodos();
-            var model = _mapper.Map<IEnumerable<ListarContatosViewModel>>(contatos);
+            var funcionarios = _servico.SelecionarTodos();
+            var model = _mapper.Map<IEnumerable<FuncionarioViewModel>>(funcionarios);
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Cadastrar() => View(new CadastrarContatosViewModel());
+        public IActionResult Cadastrar() => View(new FuncionarioViewModel());
 
         [HttpPost]
-        public IActionResult Cadastrar(CadastrarContatosViewModel model)
+        public IActionResult Cadastrar(FuncionarioViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
             try
             {
+                // O controller apenas passa o modelo para o serviço
                 _servico.Cadastrar(model); 
                 return RedirectToAction("Listar");
             }
@@ -49,22 +48,26 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
         [HttpGet]
         public IActionResult Editar(Guid id)
         {
-            // Alterado de 'funcionario' para 'contato'
-            var contato = _servico.SelecionarPorId(id);
-            if (contato == null) return NotFound();
+            var funcionario = _servico.SelecionarPorId(id);
+            if (funcionario == null) return NotFound();
 
-            var model = _mapper.Map<CadastrarContatosViewModel>(contato);
+            var model = _mapper.Map<EditarFuncionarioViewModel>(funcionario);
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Editar(Guid id, EditarContatosViewModel model)
+        public IActionResult Editar(Guid id, EditarFuncionarioViewModel model)
         {
+            // 1. O tipo aqui deve ser o seu modelo de Edição
             if (!ModelState.IsValid) return View(model);
 
             try
             {
+                // 2. Garanta que o ID da URL seja passado para o modelo
                 model.Id = id;
+
+                // 3. O Controller não deve mapear para Funcionario aqui.
+                // O seu serviço já faz o trabalho de Mapear e Salvar!
                 _servico.Editar(model); 
                 
                 return RedirectToAction("Listar");
@@ -79,11 +82,10 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
         [HttpGet]
         public IActionResult Excluir(Guid id)
         {
-            // Alterado de 'funcionario' para 'contato'
-            var contato = _servico.SelecionarPorId(id);
-            if (contato == null) return NotFound();
+            var funcionario = _servico.SelecionarPorId(id);
+            if (funcionario == null) return NotFound();
 
-            var model = _mapper.Map<ExcluirContatosViewModel>(contato);
+            var model = _mapper.Map<ExcluirFuncionarioViewModel>(funcionario);
             return View(model);
         }
 

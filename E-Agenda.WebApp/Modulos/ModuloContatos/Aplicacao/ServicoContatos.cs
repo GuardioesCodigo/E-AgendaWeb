@@ -2,7 +2,9 @@ using E_Agenda.WebApp.Compartilhado.Dominio;
 using E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 using AutoMapper;
-using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
+using ControleDeMedicamentos.WebApp.ModuloFuncionarios.Apresentacao;
+
+namespace E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
 
 public class ServicoContatos
 {
@@ -20,35 +22,33 @@ public class ServicoContatos
     public void Cadastrar(CadastrarContatosViewModel model)
     {
         // 1. Mapeia a ViewModel para o domínio
-        var novoFuncionario = _mapper.Map<Contatos>(model);
+        var novoContato = _mapper.Map<Contatos>(model);
 
         // 2. Executa as validações do domínio
-        var erros = novoFuncionario.Validar();
+        var erros = novoContato.Validar();
         if (erros.Count > 0)
             throw new Exception(string.Join(" | ", erros));
 
-        // 4. Persistência
-        novoFuncionario.Id = Guid.NewGuid();
-        _repositorio.Cadastrar(novoFuncionario);
+        // 3. Persistência
+        novoContato.Id = Guid.NewGuid();
+        _repositorio.Cadastrar(novoContato);
         _contexto.Salvar();
     }
 
     public void Editar(EditarContatosViewModel model)
     {
         // 1. Mapeia a ViewModel para o domínio
-        var funcionarioEditado = _mapper.Map<Contatos>(model);
+        var compromissoEditado = _mapper.Map<Contatos>(model);
 
         // 2. Executa as validações do domínio
-        var erros = funcionarioEditado.Validar();
+        var erros = compromissoEditado.Validar();
         if (erros.Count > 0)
             throw new Exception(string.Join(" | ", erros));
 
-        // 4. Persistência (não geramos Guid.NewGuid pois o ID já existe)
-        _repositorio.Editar(funcionarioEditado.Id, funcionarioEditado);
+        // 3. Persistência
+        _repositorio.Editar(compromissoEditado.Id, compromissoEditado);
         _contexto.Salvar();
     }
-
-    
 
     public void Excluir(Guid id)
     {
@@ -57,8 +57,6 @@ public class ServicoContatos
     }
 
     public List<Contatos> SelecionarTodos() => _repositorio.SelecionarTodos();
-    
-    public Contatos? SelecionarPorId(Guid id) => _repositorio.SelecionarPorId(id);
 
-    // Implementar Editar e Excluir seguindo a mesma lógica...
+    public Contatos? SelecionarPorId(Guid id) => _repositorio.SelecionarPorId(id);
 }
