@@ -1,0 +1,72 @@
+@using E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao
+@using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio
+@model CadastrarCompromissoViewModel
+
+@{
+    ViewData["Title"] = "Cadastrar Compromisso";
+    Layout = "_Layout";
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white border-bottom-0 pt-4">
+        <h2 class="text-primary"><i class="bi bi-plus-circle"></i> Novo Compromisso</h2>
+    </div>
+    
+    <div class="card-body">
+        <form asp-action="Cadastrar" method="post">
+            
+            <!-- Exibição de erros de validação (ModelState) -->
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Assunto" class="form-label">Assunto</label>
+                    <input asp-for="Assunto" class="form-control" placeholder="Ex: Reunião de Planejamento" />
+                    <span asp-validation-for="Assunto" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Data" class="form-label">Data</label>
+                    <input asp-for="Data" class="form-control" type="date" />
+                    <span asp-validation-for="Data" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="HoraInicio" class="form-label">Hora de Início</label>
+                    <input asp-for="HoraInicio" class="form-control" type="time" />
+                    <span asp-validation-for="HoraInicio" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="HoraTermino" class="form-label">Hora de Término</label>
+                    <input asp-for="HoraTermino" class="form-control" type="time" />
+                    <span asp-validation-for="HoraTermino" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Tipo" class="form-label">Tipo</label>
+                    <select asp-for="Tipo" class="form-select" asp-items="Html.GetEnumSelectList<TipoCompromisso>()">
+                        <option value="">Selecione...</option>
+                    </select>
+                    <span asp-validation-for="Tipo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Local" class="form-label">Local</label>
+                <input asp-for="Local" class="form-control" placeholder="Endereço ou link da reunião..." />
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary px-4">Salvar</button>
+                <a asp-action="Listar" class="btn btn-outline-secondary px-4">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

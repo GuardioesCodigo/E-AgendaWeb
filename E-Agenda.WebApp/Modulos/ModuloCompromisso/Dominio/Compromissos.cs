@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using E_Agenda.WebApp.Compartilhado.Dominio;
 
-namespace E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
+namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
 
-public class Contatos : EntidadeBase<Contatos>
+public class Compromisso : EntidadeBase<Compromisso>
 {
     // Propriedades (Fora do construtor)
     public string Assunto { get; set; } = string.Empty;
@@ -15,10 +15,10 @@ public class Contatos : EntidadeBase<Contatos>
     public string? Local { get; set; }
 
     // Construtor padrão necessário para frameworks (ex: EF ou Serialização)
-    public Contatos() { }
+    public Compromisso() { }
 
     // Construtor para novas instâncias
-    public Contatos(string assunto, DateTime data, TimeSpan horaInicio, TimeSpan horaTermino, TipoCompromisso tipo, string? local)
+    public Compromisso(string assunto, DateTime data, TimeSpan horaInicio, TimeSpan horaTermino, TipoCompromisso tipo, string? local)
     {
         Assunto = assunto;
         Data = data;
@@ -28,7 +28,7 @@ public class Contatos : EntidadeBase<Contatos>
         Local = local;
     }
 
-    public override void Atualizar(Contatos entidadeAtualizada)
+    public override void Atualizar(Compromisso entidadeAtualizada)
     {
         Assunto = entidadeAtualizada.Assunto;
         Data = entidadeAtualizada.Data;

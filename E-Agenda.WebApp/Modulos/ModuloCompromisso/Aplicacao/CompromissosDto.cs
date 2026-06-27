@@ -1,7 +1,8 @@
 using System;
+using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 
-namespace ControleDeMedicamentos.WebApp.ModuloCompromissos.Aplicacao;
+namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Aplicacao;
 
 // DTO para a criação de um novo compromisso
 public record CadastrarCompromissoDto(

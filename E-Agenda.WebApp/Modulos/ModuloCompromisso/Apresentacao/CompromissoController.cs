@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromissos.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
 
-namespace ControleDeMedicamentos.WebApp.ModuloFuncionario.Apresentacao
+namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao
 {
-    public class FuncionariosController : Controller
+    public class CompromissoController : Controller
     {
-        private readonly ServicoFuncionario _servico;
+        private readonly ServicoCompromisso _servico;
         private readonly IMapper _mapper;
 
-        public FuncionariosController(ServicoFuncionario servico, IMapper mapper)
+        public CompromissoController(ServicoCompromisso servico, IMapper mapper)
         {
             _servico = servico;
             _mapper = mapper;
@@ -19,24 +20,31 @@ namespace ControleDeMedicamentos.WebApp.ModuloFuncionario.Apresentacao
 
         public IActionResult Listar()
         {
-            var funcionarios = _servico.SelecionarTodos();
-            var model = _mapper.Map<IEnumerable<FuncionarioViewModel>>(funcionarios);
+                    // 1. Chame o serviço
+            var listaCompromissos = _servico.SelecionarTodos(); 
+            
+            // 2. O AutoMapper precisa converter de 'Compromisso' (Domínio) para 'ListarCompromissoViewModel'
+            var model = _mapper.Map<IEnumerable<ListarCompromissoViewModel>>(listaCompromissos);
+            
+            // 3. Retorne o modelo mapeado
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Cadastrar() => View(new FuncionarioViewModel());
+        public IActionResult Cadastrar() => View(new CadastrarCompromissoViewModel());
 
         [HttpPost]
-        public IActionResult Cadastrar(FuncionarioViewModel model)
+        public IActionResult Cadastrar(CadastrarCompromissoViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
             try
             {
                 // O controller apenas passa o modelo para o serviço
-                _servico.Cadastrar(model); 
-                return RedirectToAction("Listar");
+               var dto = _mapper.Map<CadastrarCompromissoDto>(model);
+               _servico.Cadastrar(dto);
+
+               return RedirectToAction("Listar");
             }
             catch (Exception ex)
             {
@@ -48,15 +56,15 @@ namespace ControleDeMedicamentos.WebApp.ModuloFuncionario.Apresentacao
         [HttpGet]
         public IActionResult Editar(Guid id)
         {
-            var funcionario = _servico.SelecionarPorId(id);
-            if (funcionario == null) return NotFound();
+            var compromisso = _servico.SelecionarPorId(id);
+            if (compromisso is null) return NotFound();
 
-            var model = _mapper.Map<EditarFuncionarioViewModel>(funcionario);
+            var model = _mapper.Map<EditarCompromissoViewModel>(compromisso);
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Editar(Guid id, EditarFuncionarioViewModel model)
+        public IActionResult Editar(Guid id, EditarCompromissoViewModel model)
         {
             // 1. O tipo aqui deve ser o seu modelo de Edição
             if (!ModelState.IsValid) return View(model);
@@ -68,7 +76,9 @@ namespace ControleDeMedicamentos.WebApp.ModuloFuncionario.Apresentacao
 
                 // 3. O Controller não deve mapear para Funcionario aqui.
                 // O seu serviço já faz o trabalho de Mapear e Salvar!
-                _servico.Editar(model); 
+                var dto = _mapper.Map<EditarCompromissoDto>(model);
+
+                _servico.Editar(dto);
                 
                 return RedirectToAction("Listar");
             }
@@ -82,10 +92,10 @@ namespace ControleDeMedicamentos.WebApp.ModuloFuncionario.Apresentacao
         [HttpGet]
         public IActionResult Excluir(Guid id)
         {
-            var funcionario = _servico.SelecionarPorId(id);
-            if (funcionario == null) return NotFound();
+            var compromisso = _servico.SelecionarPorId(id);
+            if (compromisso == null) return NotFound();
 
-            var model = _mapper.Map<ExcluirFuncionarioViewModel>(funcionario);
+            var model = _mapper.Map<ExcluirCompromissoViewModel>(compromisso);
             return View(model);
         }
 

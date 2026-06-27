@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
+namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao;
 
-namespace ControleDeMedicamentos.WebApp.ModuloFuncionarios.Apresentacao;
-
-public class CadastrarContatosViewModel
+public class CadastrarCompromissoViewModel
 {
     [Required(ErrorMessage = "O assunto é obrigatório.")]
     [StringLength(100, MinimumLength = 2, ErrorMessage = "O assunto deve ter entre 2 e 100 caracteres.")]
@@ -29,6 +28,8 @@ public class ListarCompromissoViewModel
     public Guid Id { get; set; }
     public string Assunto { get; set; } = string.Empty;
     public DateTime Data { get; set; }
+    public TimeSpan HoraTermino { get; set; } // Adicionado
+    public string? Local { get; set; }
     public TimeSpan HoraInicio { get; set; }
     public TipoCompromisso Tipo { get; set; }
 }
@@ -38,9 +39,13 @@ public class ExcluirCompromissoViewModel
     public Guid Id { get; set; }
     public string Assunto { get; set; } = string.Empty;
     public DateTime Data { get; set; }
+    public TimeSpan HoraTermino { get; set; } // Adicionado
+    public TimeSpan HoraInicio { get; set; }
+
+    public string? Local { get; set; }
 }
 
-public class EditarContatosViewModel
+public class EditarCompromissoViewModel
 {
     public Guid Id { get; set; }
 
