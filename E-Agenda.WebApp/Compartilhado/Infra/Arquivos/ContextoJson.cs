@@ -4,6 +4,7 @@ using E_Agenda.WebApp.Modulos.ModuloCategoria.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 
 
@@ -16,6 +17,7 @@ public sealed class ContextoJson
     public List<Despesa> despesas {get; set;} = new List<Despesa>();
     public List<Tarefa> tarefas {get; set;} = new List<Tarefa>();
     public List<ItensTarefa> itensTarefas {get; set;} = new List<ItensTarefa>();
+    public List<Compromisso> compromissos {get; set;} = new List<Compromisso>();
     public List<Contatos> contatos{get; set;} = new List<Contatos>();
 
 

@@ -1,0 +1,64 @@
+@using E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao
+@model IEnumerable<ListarCompromissoViewModel>
+
+@{
+    ViewData["Title"] = "Listagem de Compromissos";
+    Layout = "_Layout";
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="text-primary m-0"><i class="bi bi-calendar-event"></i> Compromissos</h2>
+            <a asp-action="Cadastrar" class="btn btn-primary px-4">
+                <i class="bi bi-plus-circle"></i> Novo Compromisso
+            </a>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Assunto</th>
+                    <th>Data</th>
+                    <th>Início</th>
+                    <th>Término</th>
+                    <th>Local</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    @foreach (var compromisso in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@compromisso.Assunto</td>
+                            <td>@compromisso.Data.ToShortDateString()</td>
+                            <td>@compromisso.HoraInicio</td>
+                            <td>@compromisso.HoraTermino</td>
+                            <td>@compromisso.Local</td>
+                            <td class="text-center">
+                                <a asp-action="Editar" asp-route-id="@compromisso.Id" class="btn btn-outline-warning btn-sm me-2">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a asp-action="Excluir" asp-route-id="@compromisso.Id" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">
+                            Nenhum compromisso cadastrado até o momento.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
