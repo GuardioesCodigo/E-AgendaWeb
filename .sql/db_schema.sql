@@ -6,12 +6,17 @@ END;
 USE [EAgendaWeb]
 GO
 
-CREATE TABLE [dbo].[TBCategoria] (
-[Id] uniqueidentifier NOT NULL,
-[Titulo] nvarchar(100) NOT NULL,
-PRIMARY KEY ([Id])
-);
+IF OBJECT_ID('dbo.TBCategoria', 'U') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[TBCategoria] (
+        [Id] uniqueidentifier NOT NULL,
+        [Titulo] nvarchar(100) NOT NULL,
+        PRIMARY KEY ([Id])
+    );
+END;
 
+IF OBJECT_ID('dbo.TBDespesa', 'U') IS NULL
+BEGIN
 CREATE TABLE [dbo].[TBDespesa] (
 [Id] uniqueidentifier NOT NULL,
 [Descrição] nvarchar(100) NOT NULL,
@@ -21,7 +26,10 @@ CREATE TABLE [dbo].[TBDespesa] (
 [CategoriaId] uniqueidentifier NOT NULL,
 PRIMARY KEY ([Id])
 );
+END;
 
+IF OBJECT_ID('dbo.TBTarefa', 'U') IS NULL
+BEGIN
 CREATE TABLE [dbo].[TBTarefa] (
 [Id] uniqueidentifier NOT NULL,
 [Título] nvarchar(100) NOT NULL,
@@ -33,14 +41,17 @@ CREATE TABLE [dbo].[TBTarefa] (
 [Item de Tarefa] uniqueidentifier NOT NULL,
 PRIMARY KEY ([Id])
 );
+END;
 
-
-ALTER TABLE [dbo].[TBDespesa]
-ADD CONSTRAINT [FK_TBDespesas_TBCategoria]
-FOREIGN KEY ([CategoriaId]) 
-REFERENCES [dbo].[TBCategoria]([Id])
-ON DELETE NO ACTION
-ON UPDATE NO ACTION;
-
-
-
+IF NOT EXISTS (
+    SELECT 1 FROM sys.foreign_keys 
+    WHERE name = 'FK_TBDespesas_TBCategoria'
+)
+BEGIN
+    ALTER TABLE [dbo].[TBDespesa]
+    ADD CONSTRAINT [FK_TBDespesas_TBCategoria]
+    FOREIGN KEY ([CategoriaId]) 
+    REFERENCES [dbo].[TBCategoria]([Id])
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+END;

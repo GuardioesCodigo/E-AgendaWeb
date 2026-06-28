@@ -26,6 +26,7 @@ public static class InjecaoDependencia
 
             return contextoJson;
         });
+        services.AddScoped<ISqlConnectionFactory, SqlConnectionFactory>();
 
         services.AddScoped<IRepositorioCategoria, RepositorioCategoriaEmArquivo>();
         services.AddScoped<IRepositorioDepesa, RepositorioDespesaEmArquivo>();
