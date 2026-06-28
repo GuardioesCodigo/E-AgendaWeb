@@ -12,7 +12,7 @@ public class Tarefa : EntidadeBase<Tarefa>
     public DateTime DataConclusao {get; set;} = DateTime.Now;
     public bool StatusConclusao { get; set; }
     public int PercentualConcluido { get; set; }
-    public List<ItensTarefa> ItemTarefa { get; set; } = null!;
+    public List<ItensTarefa> ItemTarefa { get; set; } = [];
 
     public Tarefa() { }
 

@@ -14,12 +14,9 @@ public static class InjecaoDependencia
     {
         services.AddScoped<ServicoCategoria>();
         services.AddScoped<ServicoDespesa>();
-        services.AddScoped<ServicoTarefa>();       
-        services.AddSingleton<ContextoJson>();
+        services.AddScoped<ServicoTarefa>();
         services.AddScoped<ServicoContatos>();
         services.AddScoped<ServicoCompromisso>();
-
-        services.AddSingleton<ContextoJson>();
         services.AddScoped<ServicoContatos>();
     }
 }
