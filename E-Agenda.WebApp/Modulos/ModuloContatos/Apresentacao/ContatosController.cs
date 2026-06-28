@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
-
+using E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
@@ -36,7 +36,6 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
 
             try
             {
-                // O controller apenas passa o modelo para o serviço
                 _servico.Cadastrar(model); 
                 return RedirectToAction("Listar");
             }
@@ -50,26 +49,22 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
         [HttpGet]
         public IActionResult Editar(Guid id)
         {
-            var funcionario = _servico.SelecionarPorId(id);
-            if (funcionario == null) return NotFound();
+            // Alterado de 'funcionario' para 'contato'
+            var contato = _servico.SelecionarPorId(id);
+            if (contato == null) return NotFound();
 
-            var model = _mapper.Map<CadastrarContatosViewModel>(funcionario);
+            var model = _mapper.Map<CadastrarContatosViewModel>(contato);
             return View(model);
         }
 
         [HttpPost]
         public IActionResult Editar(Guid id, EditarContatosViewModel model)
         {
-            // 1. O tipo aqui deve ser o seu modelo de Edição
             if (!ModelState.IsValid) return View(model);
 
             try
             {
-                // 2. Garanta que o ID da URL seja passado para o modelo
                 model.Id = id;
-
-                // 3. O Controller não deve mapear para Funcionario aqui.
-                // O seu serviço já faz o trabalho de Mapear e Salvar!
                 _servico.Editar(model); 
                 
                 return RedirectToAction("Listar");
@@ -84,10 +79,11 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
         [HttpGet]
         public IActionResult Excluir(Guid id)
         {
-            var funcionario = _servico.SelecionarPorId(id);
-            if (funcionario == null) return NotFound();
+            // Alterado de 'funcionario' para 'contato'
+            var contato = _servico.SelecionarPorId(id);
+            if (contato == null) return NotFound();
 
-            var model = _mapper.Map<ExcluirContatosViewModel>(funcionario);
+            var model = _mapper.Map<ExcluirContatosViewModel>(contato);
             return View(model);
         }
 

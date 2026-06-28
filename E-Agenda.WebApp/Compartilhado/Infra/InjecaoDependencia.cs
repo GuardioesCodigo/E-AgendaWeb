@@ -8,12 +8,17 @@ using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Infra;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Infra;
+using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromissos.Infra;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Infra;
 
 namespace E_Agenda.WebApp.Compartilhado.Infra;
 
 public static class InjecaoDependencia
 {
     public static void AddInfraRepositories(this IServiceCollection services)
+
     {
         services.AddScoped(provider =>
         {
@@ -29,5 +34,9 @@ public static class InjecaoDependencia
         services.AddScoped<IRepositorioTarefa, RepositorioTarefaEmArquivo>();
 
         services.AddScoped<IRepositorio<Contatos>, RepositorioContatosEmArquivo>();
+        services.AddScoped<IRepositorioContatos, RepositorioContatosEmArquivo>();
+        services.AddScoped<IRepositorio<Contatos>, RepositorioContatosEmArquivo>();
+        services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoEmArquivo>();
+        services.AddScoped<IRepositorio<Compromisso>, RepositorioCompromissoEmArquivo>();
     }
 }

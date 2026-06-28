@@ -3,6 +3,10 @@ using E_Agenda.WebApp.Modulos.ModuloDespesas.Aplicacao;
 using E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Aplicacao;
 
+using E_Agenda.WebApp.Modulos.ModuloCompromissos.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Infra;
 
 public static class InjecaoDependencia
 {
@@ -11,6 +15,8 @@ public static class InjecaoDependencia
         services.AddScoped<ServicoCategoria>();
         services.AddScoped<ServicoDespesa>();
         services.AddScoped<ServicoTarefa>();
+        services.AddScoped<ServicoContatos>();
+        services.AddScoped<ServicoCompromisso>();
         services.AddScoped<ServicoContatos>();
     }
 }
