@@ -7,8 +7,6 @@ public static class InjecaoDependencia
 {
     public static void AddApplicationServices(this IServiceCollection services)
     {
-        services.AddSingleton<ContextoJson>();
-        services.AddScoped<IRepositorio<Contatos>, RepositorioContatosEmArquivo>();
         services.AddScoped<ServicoContatos>();
 
     }

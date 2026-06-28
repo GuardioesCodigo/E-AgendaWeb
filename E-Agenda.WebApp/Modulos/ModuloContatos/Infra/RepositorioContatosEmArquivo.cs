@@ -9,7 +9,7 @@ using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 
 namespace E_Agenda.WebApp.Modulos.ModuloContatos.Infra;
 
-public class RepositorioContatosEmArquivo : RepositorioBaseEmArquivo<Contatos>, IRepositorio<Contatos>
+public class RepositorioContatosEmArquivo : RepositorioBaseEmArquivo<Contatos>, IRepositorio<Contatos>,IRepositorioContatos
 {
     public RepositorioContatosEmArquivo(ContextoJson contexto) : base(contexto)
     {

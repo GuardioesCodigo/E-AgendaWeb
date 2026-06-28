@@ -13,8 +13,9 @@
     <div class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-4">
             <h4 class="card-title fw-bold text-secondary mb-4">Novo Contato</h4>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             
-            <form asp-action="Inserir" method="post">
+            <form asp-action="Cadastrar" method="post">
                 
                 <div class="mb-3">
                     <label asp-for="Nome" class="form-label fw-semibold text-secondary">Nome</label>
@@ -30,7 +31,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label asp-for="Telefone" class="form-label fw-semibold text-secondary">Telefone</label>
-                        <input asp-for="Telefone" class="form-control rounded-3" placeholder="(00) 00000-0000" />
+                        <input asp-for="Telefone" id="telefone" class="form-control rounded-3" placeholder="(00) 00000-0000" />
                         <span asp-validation-for="Telefone" class="text-danger small"></span>
                     </div>
                 </div>
@@ -56,6 +57,17 @@
                 </div>
 
             </form>
+           @section Scripts {
+            <partial name="/Compartilhado/Apresentacao/Views/_ValidationScriptsPartial.cshtml" />
+
+            <script>
+                $(document).ready(function(){
+                    $('#txtTelefone').mask('(00) 00000-0000');
+                });
+            </script>
+            }
+
+            
         </div>
     </div>
 </div>

@@ -8,6 +8,7 @@ using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
 {
+    [Route("Contatos/[action]/{id?}")]
     public class ContatosController : Controller
     {
         private readonly ServicoContatos _servico;
@@ -31,29 +32,45 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
 
         [HttpPost]
         public IActionResult Cadastrar(CadastrarContatosViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
+    {
+        // 1. Validação automática dos Data Annotations da ViewModel
+        if (!ModelState.IsValid) return View(model);
 
-            try
+        // 2. Mapeia para a entidade de Domínio
+        var contato = _mapper.Map<Contatos>(model);
+
+        // 3. CHAMA A SUA VALIDAÇÃO MANUAL
+        List<string> erros = contato.Validar();
+
+        // 4. Se houver erros, devolve para a tela
+        if (erros.Count > 0)
+        {
+            foreach (var erro in erros)
             {
-                // O controller apenas passa o modelo para o serviço
-                _servico.Cadastrar(model); 
-                return RedirectToAction("Listar");
+                ModelState.AddModelError("", erro); // Adiciona o erro ao ModelState
             }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                return View(model);
-            }
+            return View(model); // Retorna a tela com a lista de erros
         }
+
+        try
+        {
+            _servico.Cadastrar(contato);
+            return RedirectToAction("Listar");
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", ex.Message);
+            return View(model);
+        }
+    }
 
         [HttpGet]
         public IActionResult Editar(Guid id)
         {
-            var funcionario = _servico.SelecionarPorId(id);
-            if (funcionario == null) return NotFound();
+            var contato = _servico.SelecionarPorId(id);
+            if (contato == null) return NotFound();
 
-            var model = _mapper.Map<CadastrarContatosViewModel>(funcionario);
+            var model = _mapper.Map<EditarContatosViewModel>(contato);
             return View(model);
         }
 

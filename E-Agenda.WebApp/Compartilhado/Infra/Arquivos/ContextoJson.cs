@@ -6,6 +6,7 @@ namespace E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
 
 public sealed class ContextoJson
 {
+    [JsonIgnore]
     private readonly string caminhoArquivo;
     public List<Contatos> contatos{get; set;} = new List<Contatos>();
 
@@ -20,6 +21,8 @@ public sealed class ContextoJson
         Directory.CreateDirectory(caminhoDiretorio);
 
         caminhoArquivo = Path.Combine(caminhoDiretorio, "dados.json");
+
+        Carregar();
     }
 
     public void Salvar()
@@ -52,7 +55,9 @@ public sealed class ContextoJson
             .Deserialize<ContextoJson>(jsonString, opcoesJson);
 
         if (contextoSalvo == null)
-            return;
-
+        {
+        // AQUI ESTÁ A CORREÇÃO:
+        this.contatos =  contextoSalvo.contatos;
+        }
     }
 }

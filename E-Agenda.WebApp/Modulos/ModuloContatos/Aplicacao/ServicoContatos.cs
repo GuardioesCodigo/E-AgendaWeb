@@ -17,7 +17,7 @@ public class ServicoContatos
         _mapper = mapper;
     }
 
-    public void Cadastrar(CadastrarContatosViewModel model)
+    public void Cadastrar(Contatos model)
     {
         // 1. Mapeia a ViewModel para o domínio
         var novoFuncionario = _mapper.Map<Contatos>(model);

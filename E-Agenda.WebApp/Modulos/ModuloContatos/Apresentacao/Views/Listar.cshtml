@@ -1,55 +1,39 @@
-@using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
+@model IEnumerable<E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao.ListarContatosViewModel>
+
 @{
+    ViewData["Title"] = "Contatos";
     Layout = "_Layout";
 }
-@model List<ListarContatosViewModel>
 
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold text-secondary">Contatos</h3>
-        <a asp-action="Cadastrar" class="btn btn-primary rounded-pill px-4">
-            <i class="bi bi-plus-lg me-1"></i> Novo Contato
-        </a>
-    </div>
-
-    <div class="card border-0 shadow-sm rounded-4">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="ps-4">Nome</th>
-                            <th>E-mail</th>
-                            <th>Telefone</th>
-                            <th>Cargo/Empresa</th>
-                            <th class="text-center">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var contato in Model)
-                        {
-                            <tr>
-                                <td class="ps-4 fw-semibold">@contato.Nome</td>
-                                <td>@contato.Email</td>
-                                <td>@contato.Telefone</td>
-                                <td>
-                                    <small class="text-muted">
-                                        @contato.Cargo @(!string.IsNullOrEmpty(contato.Empresa) ? "na " + contato.Empresa : "")
-                                    </small>
-                                </td>
-                                <td class="text-center">
-                                    <a asp-action="Editar" asp-route-id="@contato.Id" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <a asp-action="Excluir" asp-route-id="@contato.Id" class="btn btn-sm btn-outline-danger rounded-pill px-3">
-                                        <i class="bi bi-trash3"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Meus Contatos</h2>
+    <a asp-action="Cadastrar" class="btn btn-primary">Novo Contato</a>
 </div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Nenhum contato encontrado.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var contato in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@contato.Nome</h5>
+                        <p class="card-text">
+                            <strong>Email:</strong> @contato.Email <br />
+                            <strong>Telefone:</strong> @contato.Telefone
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <a asp-action="Editar" asp-route-id="@contato.Id" class="btn btn-sm btn-outline-warning">Editar</a>
+                        <a asp-action="Excluir" asp-route-id="@contato.Id" class="btn btn-sm btn-outline-danger">Excluir</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
