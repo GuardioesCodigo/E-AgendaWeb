@@ -30,17 +30,9 @@
 
     @* Importação do JavaScript do Bootstrap *@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<<<<<<< HEAD
 
     @* ADICIONE ESTA LINHA: É ela que processa o @section Scripts da sua view *@
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>
-=======
-    <!-- Coloque isso no seu _Layout.cshtml, logo após o jQuery -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</html>
->>>>>>> Contatos

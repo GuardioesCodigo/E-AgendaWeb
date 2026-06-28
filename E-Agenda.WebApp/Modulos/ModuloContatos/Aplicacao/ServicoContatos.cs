@@ -4,8 +4,6 @@ using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 using AutoMapper;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
 
-namespace E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
-
 public class ServicoContatos
 {
     private readonly IRepositorio<Contatos> _repositorio;
@@ -19,36 +17,44 @@ public class ServicoContatos
         _mapper = mapper;
     }
 
-    public void Cadastrar(CadastrarContatosViewModel model)
-    {
-        // 1. Mapeia a ViewModel para o domínio
-        var novoContato = _mapper.Map<Contatos>(model);
+    public void Cadastrar(Contatos novoContato) // Receba o objeto já mapeado
+{
+    var todosOsContatos = _repositorio.SelecionarTodos();
+    
+    var erros = novoContato.Validar();
 
-        // 2. Executa as validações do domínio
-        var erros = novoContato.Validar();
-        if (erros.Count > 0)
-            throw new Exception(string.Join(" | ", erros));
+    var contatosExistentes = _repositorio.SelecionarTodos();
+    erros.AddRange(novoContato.ValidarDuplicidade(contatosExistentes));
 
-        // 3. Persistência
-        novoContato.Id = Guid.NewGuid();
-        _repositorio.Cadastrar(novoContato);
-        _contexto.Salvar();
-    }
+    if (erros.Count > 0)
+        throw new Exception(string.Join(" | ", erros));
 
-    public void Editar(EditarContatosViewModel model)
-    {
-        // 1. Mapeia a ViewModel para o domínio
-        var compromissoEditado = _mapper.Map<Contatos>(model);
+    // 2. Persistência
+    novoContato.Id = Guid.NewGuid();
+    _repositorio.Cadastrar(novoContato);
+    _contexto.Salvar();
+}
 
-        // 2. Executa as validações do domínio
-        var erros = compromissoEditado.Validar();
-        if (erros.Count > 0)
-            throw new Exception(string.Join(" | ", erros));
+public void Editar(EditarContatosViewModel model)
+{
+    // Aqui sim usamos o mapper, pois 'model' é uma ViewModel, não um Contatos
+    var contatoEditado = _mapper.Map<Contatos>(model);
+    contatoEditado.Id = model.Id;
 
-        // 3. Persistência
-        _repositorio.Editar(compromissoEditado.Id, compromissoEditado);
-        _contexto.Salvar();
-    }
+    // Agora validamos o objeto que o mapper criou
+    var erros = contatoEditado.Validar();
+    var todosOsContatos = _repositorio.SelecionarTodos();
+    erros.AddRange(contatoEditado.ValidarDuplicidade(todosOsContatos));
+    
+    if (erros.Count > 0)
+        throw new Exception(string.Join(" | ", erros));
+
+    // Persistência
+    _repositorio.Editar(contatoEditado.Id, contatoEditado);
+    _contexto.Salvar();
+}
+
+    
 
     public void Excluir(Guid id)
     {
@@ -57,6 +63,8 @@ public class ServicoContatos
     }
 
     public List<Contatos> SelecionarTodos() => _repositorio.SelecionarTodos();
-
+    
     public Contatos? SelecionarPorId(Guid id) => _repositorio.SelecionarPorId(id);
+
+    // Implementar Editar e Excluir seguindo a mesma lógica...
 }
