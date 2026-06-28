@@ -1,6 +1,5 @@
 using E_Agenda.WebApp.Compartilhado.Dominio;
 using E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
-<<<<<<< HEAD
 using E_Agenda.WebApp.Modulos.ModuloCategoria.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloCategoria.Infra;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
