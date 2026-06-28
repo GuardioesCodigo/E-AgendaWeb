@@ -1,4 +1,5 @@
-﻿@using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio
+﻿@using E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao
+@using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio
 @{
     Layout = "_Layout";
 }
@@ -61,19 +62,20 @@
                         </button>
                     </div>
 
-                    @for (int i = 0; i < (Model.Itens?.Count ?? 0); i++)
+                    @{
+                    List<ItemTarefaViewModel>? itens = Model.Itens ?? [];
+                    }
+                    @for (int i = 0; i < itens.Count; i++)
                     {
                         <div class="input-group mb-2">
-                            <span class="input-group-text bg-light">
-                                <input type="checkbox" name="Itens[@i].StatusConclusao" value="true"
-                                       class="form-check-input mt-0"
-                                       checked="@(Model.Itens[i].StatusConclusao ? "checked" : null)" />
-                            </span>
-                            <input type="hidden" name="Itens[@i].Id" value="@Model.Itens[i].Id" />
-                            <input type="text" name="Itens[@i].Titulo" value="@Model.Itens[i].Titulo"
-                                   class="form-control" placeholder="Título do item" />
-                            <button type="submit" formnovalidate
-                                    formaction="@Url.Action("RemoverItemEditar", new { index = i })"
+                            <input type="text"
+                                name="Itens[@i].Titulo"
+                                value="@itens[i].Titulo"
+                                class="form-control rounded-start-3" />
+
+                            <button type="submit"
+                                    formnovalidate
+                                    formaction="@Url.Action("RemoverItemCadastro", new { index = i })"
                                     class="btn btn-outline-danger">
                                 <i class="bi bi-trash"></i>
                             </button>
