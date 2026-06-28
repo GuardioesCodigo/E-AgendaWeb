@@ -13,6 +13,7 @@
     <div class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-4">
             <h4 class="card-title fw-bold text-secondary mb-4">Editar Contato</h4>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             
             <form asp-action="Editar" method="post">
                 
@@ -59,6 +60,10 @@
                 </div>
 
             </form>
+
+            @section Scripts {
+            <partial name="/Compartilhado/Apresentacao/Views/_ValidationScriptsPartial.cshtml" />
+            }
         </div>
     </div>
 </div>

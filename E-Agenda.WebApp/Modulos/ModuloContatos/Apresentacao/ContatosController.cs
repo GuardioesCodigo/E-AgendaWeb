@@ -8,6 +8,7 @@ using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
 {
+    [Route("Contatos/[action]/{id?}")]
     public class ContatosController : Controller
     {
         private readonly ServicoContatos _servico;
@@ -29,10 +30,11 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
         [HttpGet]
         public IActionResult Cadastrar() => View(new CadastrarContatosViewModel());
 
-        [HttpPost]
-        public IActionResult Cadastrar(CadastrarContatosViewModel model)
-        {
-            if (!ModelState.IsValid) return View(model);
+        // No ContatosController.cs
+[HttpPost]
+public IActionResult Cadastrar(CadastrarContatosViewModel model)
+{
+    if (!ModelState.IsValid) return View(model);
 
             try
             {
