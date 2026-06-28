@@ -30,39 +30,27 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
         [HttpGet]
         public IActionResult Cadastrar() => View(new CadastrarContatosViewModel());
 
-        [HttpPost]
-        public IActionResult Cadastrar(CadastrarContatosViewModel model)
+        // No ContatosController.cs
+[HttpPost]
+public IActionResult Cadastrar(CadastrarContatosViewModel model)
+{
+    if (!ModelState.IsValid) return View(model);
+
+    // O Controller mapeia UMA VEZ
+    var contato = _mapper.Map<Contatos>(model);
+
+    try
     {
-        // 1. Validação automática dos Data Annotations da ViewModel
-        if (!ModelState.IsValid) return View(model);
-
-        // 2. Mapeia para a entidade de Domínio
-        var contato = _mapper.Map<Contatos>(model);
-
-        // 3. CHAMA A SUA VALIDAÇÃO MANUAL
-        List<string> erros = contato.Validar();
-
-        // 4. Se houver erros, devolve para a tela
-        if (erros.Count > 0)
-        {
-            foreach (var erro in erros)
-            {
-                ModelState.AddModelError("", erro); // Adiciona o erro ao ModelState
-            }
-            return View(model); // Retorna a tela com a lista de erros
-        }
-
-        try
-        {
-            _servico.Cadastrar(contato);
-            return RedirectToAction("Listar");
-        }
-        catch (Exception ex)
-        {
-            ModelState.AddModelError("", ex.Message);
-            return View(model);
-        }
+        // O Serviço recebe o objeto já mapeado e o valida
+        _servico.Cadastrar(contato); 
+        return RedirectToAction("Listar");
     }
+    catch (Exception ex)
+    {
+        ModelState.AddModelError("", ex.Message);
+        return View(model);
+    }
+}
 
         [HttpGet]
         public IActionResult Editar(Guid id)

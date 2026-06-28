@@ -21,13 +21,34 @@ else
         {
             <div class="col">
                 <div class="card h-100 shadow-sm">
-                    <div class="card-body">
+                    @* Adicionamos position-relative aqui para servir de base para o ID *@
+                    <div class="card-body position-relative">
+                        
+                        @* ID posicionado no canto superior direito *@
+                        <div class="position-absolute top-0 end-0 p-2">
+                            <span class="badge bg-secondary" style="font-size: 0.7rem; opacity: 0.8;">
+                                ID: @contato.Id.ToString().Substring(0, 8)
+                            </span>
+                        </div>
+
                         <h5 class="card-title">@contato.Nome</h5>
-                        <p class="card-text">
+                        
+                        <p class="card-text mt-3">
                             <strong>Email:</strong> @contato.Email <br />
-                            <strong>Telefone:</strong> @contato.Telefone
+                            <strong>Telefone:</strong> @contato.Telefone <br />
+
+                            @if (!string.IsNullOrWhiteSpace(contato.Cargo))
+                            {
+                                <span><strong>Cargo:</strong> @contato.Cargo</span> <br />
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(contato.Empresa))
+                            {
+                                <span><strong>Empresa:</strong> @contato.Empresa</span>
+                            }
                         </p>
                     </div>
+                    
                     <div class="card-footer bg-transparent border-top-0">
                         <a asp-action="Editar" asp-route-id="@contato.Id" class="btn btn-sm btn-outline-warning">Editar</a>
                         <a asp-action="Excluir" asp-route-id="@contato.Id" class="btn btn-sm btn-outline-danger">Excluir</a>

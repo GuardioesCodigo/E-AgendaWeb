@@ -17,36 +17,42 @@ public class ServicoContatos
         _mapper = mapper;
     }
 
-    public void Cadastrar(Contatos model)
-    {
-        // 1. Mapeia a ViewModel para o domínio
-        var novoFuncionario = _mapper.Map<Contatos>(model);
+    public void Cadastrar(Contatos novoContato) // Receba o objeto já mapeado
+{
+    var todosOsContatos = _repositorio.SelecionarTodos();
+    
+    var erros = novoContato.Validar();
 
-        // 2. Executa as validações do domínio
-        var erros = novoFuncionario.Validar();
-        if (erros.Count > 0)
-            throw new Exception(string.Join(" | ", erros));
+    var contatosExistentes = _repositorio.SelecionarTodos();
+    erros.AddRange(novoContato.ValidarDuplicidade(contatosExistentes));
 
-        // 4. Persistência
-        novoFuncionario.Id = Guid.NewGuid();
-        _repositorio.Cadastrar(novoFuncionario);
-        _contexto.Salvar();
-    }
+    if (erros.Count > 0)
+        throw new Exception(string.Join(" | ", erros));
 
-    public void Editar(EditarContatosViewModel model)
-    {
-        // 1. Mapeia a ViewModel para o domínio
-        var funcionarioEditado = _mapper.Map<Contatos>(model);
+    // 2. Persistência
+    novoContato.Id = Guid.NewGuid();
+    _repositorio.Cadastrar(novoContato);
+    _contexto.Salvar();
+}
 
-        // 2. Executa as validações do domínio
-        var erros = funcionarioEditado.Validar();
-        if (erros.Count > 0)
-            throw new Exception(string.Join(" | ", erros));
+public void Editar(EditarContatosViewModel model)
+{
+    // Aqui sim usamos o mapper, pois 'model' é uma ViewModel, não um Contatos
+    var contatoEditado = _mapper.Map<Contatos>(model);
+    contatoEditado.Id = model.Id;
 
-        // 4. Persistência (não geramos Guid.NewGuid pois o ID já existe)
-        _repositorio.Editar(funcionarioEditado.Id, funcionarioEditado);
-        _contexto.Salvar();
-    }
+    // Agora validamos o objeto que o mapper criou
+    var erros = contatoEditado.Validar();
+    var todosOsContatos = _repositorio.SelecionarTodos();
+    erros.AddRange(contatoEditado.ValidarDuplicidade(todosOsContatos));
+    
+    if (erros.Count > 0)
+        throw new Exception(string.Join(" | ", erros));
+
+    // Persistência
+    _repositorio.Editar(contatoEditado.Id, contatoEditado);
+    _contexto.Salvar();
+}
 
     
 
