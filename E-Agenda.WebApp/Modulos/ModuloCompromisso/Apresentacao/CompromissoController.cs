@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-using E_Agenda.WebApp.Modulos.ModuloCompromissos.Aplicacao;
-using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao;
 
-namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao
+namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
 {
+    [Route("Compromissos/[action]/{id?}")]
     public class CompromissoController : Controller
     {
         private readonly ServicoCompromisso _servico;
@@ -18,15 +20,11 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao
             _mapper = mapper;
         }
 
+        [HttpGet]
         public IActionResult Listar()
         {
-                    // 1. Chame o serviço
-            var listaCompromissos = _servico.SelecionarTodos(); 
-            
-            // 2. O AutoMapper precisa converter de 'Compromisso' (Domínio) para 'ListarCompromissoViewModel'
-            var model = _mapper.Map<IEnumerable<ListarCompromissoViewModel>>(listaCompromissos);
-            
-            // 3. Retorne o modelo mapeado
+            var compromissos = _servico.SelecionarTodos();
+            var model = _mapper.Map<IEnumerable<ListarCompromissoViewModel>>(compromissos);
             return View(model);
         }
 
@@ -38,13 +36,13 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao
         {
             if (!ModelState.IsValid) return View(model);
 
+            // Mapeia no Controller para o Domínio
+            var compromisso = _mapper.Map<Compromisso>(model);
+
             try
             {
-                // O controller apenas passa o modelo para o serviço
-               var dto = _mapper.Map<CadastrarCompromissoDto>(model);
-               _servico.Cadastrar(dto);
-
-               return RedirectToAction("Listar");
+                _servico.Cadastrar(compromisso); // O serviço recebe a entidade
+                return RedirectToAction("Listar");
             }
             catch (Exception ex)
             {
@@ -57,7 +55,7 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao
         public IActionResult Editar(Guid id)
         {
             var compromisso = _servico.SelecionarPorId(id);
-            if (compromisso is null) return NotFound();
+            if (compromisso == null) return NotFound();
 
             var model = _mapper.Map<EditarCompromissoViewModel>(compromisso);
             return View(model);
@@ -66,19 +64,13 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao
         [HttpPost]
         public IActionResult Editar(Guid id, EditarCompromissoViewModel model)
         {
-            // 1. O tipo aqui deve ser o seu modelo de Edição
             if (!ModelState.IsValid) return View(model);
 
             try
             {
-                // 2. Garanta que o ID da URL seja passado para o modelo
                 model.Id = id;
-
-                // 3. O Controller não deve mapear para Funcionario aqui.
-                // O seu serviço já faz o trabalho de Mapear e Salvar!
-                var dto = _mapper.Map<EditarCompromissoDto>(model);
-
-                _servico.Editar(dto);
+                // O serviço recebe a ViewModel e mapeia internamente (padrão Contatos)
+                _servico.Editar(model); 
                 
                 return RedirectToAction("Listar");
             }

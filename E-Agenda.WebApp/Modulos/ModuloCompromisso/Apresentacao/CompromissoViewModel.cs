@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
-namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
+namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao;
 
 public class CadastrarCompromissoViewModel
 {

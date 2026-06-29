@@ -1,64 +1,65 @@
-@using E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao
-@model IEnumerable<ListarCompromissoViewModel>
-
+@using E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
 @{
-    ViewData["Title"] = "Listagem de Compromissos";
     Layout = "_Layout";
 }
+@model IEnumerable<ListarCompromissoViewModel>
 
-<div class="card shadow-sm border-0">
-    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="text-primary m-0"><i class="bi bi-calendar-event"></i> Compromissos</h2>
-            <a asp-action="Cadastrar" class="btn btn-primary px-4">
-                <i class="bi bi-plus-circle"></i> Novo Compromisso
-            </a>
-        </div>
-    </div>
-
-    <div class="card-body">
-        <table class="table table-hover align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>Assunto</th>
-                    <th>Data</th>
-                    <th>Início</th>
-                    <th>Término</th>
-                    <th>Local</th>
-                    <th class="text-center">Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.Any())
-                {
-                    @foreach (var compromisso in Model)
-                    {
-                        <tr>
-                            <td class="fw-bold">@compromisso.Assunto</td>
-                            <td>@compromisso.Data.ToShortDateString()</td>
-                            <td>@compromisso.HoraInicio</td>
-                            <td>@compromisso.HoraTermino</td>
-                            <td>@compromisso.Local</td>
-                            <td class="text-center">
-                                <a asp-action="Editar" asp-route-id="@compromisso.Id" class="btn btn-outline-warning btn-sm me-2">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <a asp-action="Excluir" asp-route-id="@compromisso.Id" class="btn btn-outline-danger btn-sm">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="6" class="text-center py-4 text-muted">
-                            Nenhum compromisso cadastrado até o momento.
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-calendar-event"></i> Compromissos</h2>
+    <a class="btn btn-primary rounded-pill px-4" asp-action="Cadastrar">
+        <i class="bi bi-plus-lg me-1"></i> Novo Compromisso
+    </a>
 </div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+        Nenhum compromisso cadastrado até o momento.
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2">
+        @foreach (var c in Model)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        
+                        @* Cabeçalho do Card *@
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                            <h5 class="card-title mb-0 text-primary">@c.Assunto</h5>
+                            <span class="badge text-bg-primary rounded-pill">
+                                @c.Id.ToString().Substring(0, 8)
+                            </span>
+                        </div>
+
+                        @* Detalhes *@
+                        <dl class="row g-2 mb-4">
+                            <dt class="col-5 text-secondary fw-semibold">Data</dt>
+                            <dd class="col-7 mb-0">@c.Data.ToShortDateString()</dd>
+
+                            <dt class="col-5 text-secondary fw-semibold">Horário</dt>
+                            <dd class="col-7 mb-0">@c.HoraInicio - @c.HoraTermino</dd>
+
+                            @if (!string.IsNullOrWhiteSpace(c.Local))
+                            {
+                                <dt class="col-5 text-secondary fw-semibold">Local</dt>
+                                <dd class="col-7 mb-0">@c.Local</dd>
+                            }
+                        </dl>
+
+                        @* Botões de Ação *@
+                        <div class="d-flex flex-wrap gap-2 mt-auto justify-content-end">
+                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                               asp-action="Editar" asp-route-id="@c.Id">Editar</a>
+                            <a class="btn btn-outline-danger btn-sm rounded-pill px-3"
+                               asp-action="Excluir" asp-route-id="@c.Id">Excluir</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
