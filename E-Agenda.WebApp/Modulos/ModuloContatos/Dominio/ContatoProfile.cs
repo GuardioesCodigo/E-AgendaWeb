@@ -9,8 +9,10 @@ public class ContatosProfile : Profile
         // Se você não tiver uma ViewModel de Listagem específica, 
         // use a FuncionarioViewModel para tudo
         CreateMap<Contatos, CadastrarContatosViewModel>().ReverseMap();
+        CreateMap<CadastrarContatosViewModel, Contatos>();
         CreateMap<Contatos, ExcluirContatosViewModel>();
         CreateMap<Contatos, EditarContatosViewModel>().ReverseMap();
+        CreateMap<Contatos, ListarContatosViewModel>();
 
         // Se você tiver uma classe separada para Listar, mantenha assim:
         // CreateMap<Funcionario, ListarFuncionarioViewModel>();

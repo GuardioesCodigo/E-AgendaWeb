@@ -69,5 +69,6 @@ public sealed class ContextoJson
         despesas = contextoSalvo.despesas;
         tarefas = contextoSalvo.tarefas;
         itensTarefas = contextoSalvo.itensTarefas;
+        contatos = contextoSalvo.contatos;
     }
 }

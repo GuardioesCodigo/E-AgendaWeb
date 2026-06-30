@@ -9,13 +9,17 @@ public class CadastrarContatosViewModel
     [Required(ErrorMessage = "O nome é obrigatório.")]
     [StringLength(100, MinimumLength = 3, ErrorMessage = "O nome deve ter entre 3 e 100 caracteres.")]
     public string Nome { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "O e-mail é obrigatório.")]
+    [EmailAddress(ErrorMessage = "E-mail inválido.")]
     public string Email { get; set; } = string.Empty;
 
     [Phone(ErrorMessage = "Formato de telefone inválido.")]
     [Required(ErrorMessage = "O telefone é obrigatório.")]
+    [RegularExpression(@"^\(\d{2}\) \d{4,5}-\d{4}$", ErrorMessage = "Use o formato (99) 99999-9999")]
     public string Telefone { get; set; } = string.Empty;
-    public string Cargo { get; set; } = string.Empty;
-    public string Empresa { get; set; } = string.Empty;
+    public string? Cargo { get; set; } = string.Empty;
+    public string? Empresa { get; set; } = string.Empty;
 
 }
 
@@ -53,8 +57,9 @@ public class EditarContatosViewModel
 
     [Phone(ErrorMessage = "Formato de telefone inválido.")]
     [Required(ErrorMessage = "O telefone é obrigatório.")]
+    [RegularExpression(@"^\(\d{2}\) \d{4,5}-\d{4}$", ErrorMessage = "Use o formato (99) 99999-9999")]
     public string Telefone { get; set; } = string.Empty;
-    public string Cargo { get; set; } = string.Empty;
-    public string Empresa { get; set; } = string.Empty;
+    public string? Cargo { get; set; } = string.Empty;
+    public string? Empresa { get; set; } = string.Empty;
 
 }

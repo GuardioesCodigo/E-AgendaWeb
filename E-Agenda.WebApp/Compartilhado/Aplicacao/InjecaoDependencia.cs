@@ -24,6 +24,5 @@ public static class InjecaoDependencia
         services.AddScoped<ServicoTarefa>();
         services.AddScoped<ServicoContatos>();
         services.AddScoped<ServicoCompromisso>();
-        services.AddScoped<ServicoContatos>();
     }
 }

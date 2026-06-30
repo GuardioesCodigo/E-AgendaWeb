@@ -37,5 +37,7 @@ public static class InjecaoDependencia
         services.AddScoped<IRepositorio<Contatos>, RepositorioContatosEmArquivo>();
         services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoEmArquivo>();
         services.AddScoped<IRepositorio<Compromisso>, RepositorioCompromissoEmArquivo>();
+        services.AddScoped<IRepositorio<Contatos>, RepositorioContatosEmArquivo>();
+        services.AddScoped<IRepositorioContatos, RepositorioContatosEmArquivo>();
     }
 }
