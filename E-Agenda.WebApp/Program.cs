@@ -8,7 +8,7 @@ builder.Services.AddInfraRepositories();
 
 builder.Services.AddApplicationServices(builder.Logging, builder.Configuration);
 
-builder.Services.AddPresentationConfig();
+builder.Services.AddPresentationConfig(builder.Configuration);
 
 var app = builder.Build();
 

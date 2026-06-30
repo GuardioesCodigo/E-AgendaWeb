@@ -11,6 +11,7 @@
   <ItemGroup>
     <Folder Include="Compartilhado\Aplicacao\Logging\" />
     <Folder Include="Compartilhado\Apresentacao\Extensions\" />
+    <Folder Include="Compartilhado\Apresentacao\Mapping\" />
     <Folder Include="Compartilhado\Apresentacao\Views\" />
     <Folder Include="Compartilhado\Dominio\" />
     <Folder Include="Compartilhado\Infra\" />
