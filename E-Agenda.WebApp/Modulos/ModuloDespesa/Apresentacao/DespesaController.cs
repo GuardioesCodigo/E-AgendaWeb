@@ -42,12 +42,21 @@ public class DespesaController(ServicoDespesa servicoDespesa, IMapper mapeador) 
     [HttpPost]
     public ActionResult Cadastrar(CadastrarDespesaViewModel cadastrarVm)
     {
+        if (ModelState["CategoriaId"]?.Errors.Count > 0 && cadastrarVm.CategoriaId == Guid.Empty)
+        {
+            ModelState["CategoriaId"]!.Errors.Clear();
+            ModelState.AddModelError(nameof(CadastrarDespesaViewModel.CategoriaId), "Selecione uma Categoria");
+        }
+
         if (!ModelState.IsValid)
+        {
+            ViewBag.Categorias = ObterCategoriasDisponiveis();
             return View(cadastrarVm);
- 
+        }
+
         CadastrarDespesaDto dto = mapeador.Map<CadastrarDespesaDto>(cadastrarVm);
         Result resultado = servicoDespesa.Cadastrar(dto);
- 
+
         if (resultado.IsFailed)
         {
             foreach (IError erro in resultado.Errors)
@@ -56,13 +65,14 @@ public class DespesaController(ServicoDespesa servicoDespesa, IMapper mapeador) 
                     erro.Metadata["Campo"] is string
                         ? erro.Metadata["Campo"].ToString()!
                         : string.Empty;
- 
+
                 ModelState.AddModelError(campo, erro.Message);
             }
- 
+
+            ViewBag.Categorias = ObterCategoriasDisponiveis();
             return View(cadastrarVm);
         }
- 
+
         return RedirectToAction(nameof(Listar));
     }
 
@@ -89,22 +99,30 @@ public class DespesaController(ServicoDespesa servicoDespesa, IMapper mapeador) 
     [HttpPost]
     public ActionResult Editar(EditarDespesaViewModel editarVm)
     {
-        if (!ModelState.IsValid)
-            return View(editarVm);
- 
-        EditarDespesaDto dto = mapeador.Map<EditarDespesaDto>(editarVm);
+        if (ModelState["CategoriaId"]?.Errors.Count > 0 && editarVm.CategoriaId == Guid.Empty)
+        {
+            ModelState["CategoriaId"]!.Errors.Clear();
+            ModelState.AddModelError(nameof(EditarDespesaViewModel.CategoriaId), "Selecione uma Categoria");
+        }
 
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Categorias = ObterCategoriasDisponiveis();
+            return View(editarVm);
+        }
+
+        EditarDespesaDto dto = mapeador.Map<EditarDespesaDto>(editarVm);
         Result resultado = servicoDespesa.Editar(dto);
- 
+
         if (resultado.IsFailed)
         {
             ModelState.AddModelError(resultado);
+            ModelState.Remove(nameof(EditarDespesaViewModel.Categorias));
 
-            ModelState.Remove(nameof(CadastrarDespesaViewModel.Categorias));
- 
+            ViewBag.Categorias = ObterCategoriasDisponiveis();
             return View(editarVm);
         }
- 
+
         return RedirectToAction(nameof(Listar));
     }
 
