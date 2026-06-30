@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Compartilhado\Aplicacao\Logging\" />
     <Folder Include="Compartilhado\Apresentacao\Extensions\" />
     <Folder Include="Compartilhado\Apresentacao\Views\" />
     <Folder Include="Compartilhado\Dominio\" />

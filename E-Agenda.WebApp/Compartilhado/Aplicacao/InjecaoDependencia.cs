@@ -7,11 +7,18 @@ using E_Agenda.WebApp.Modulos.ModuloCompromissos.Aplicacao;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Infra;
+using E_Agenda.WebApp.Compartilhado.Aplicacao.Logging;
 
 public static class InjecaoDependencia
 {
-    public static void AddApplicationServices(this IServiceCollection services)
+    public static void AddApplicationServices(this 
+        IServiceCollection services, 
+        ILoggingBuilder logging,
+        IConfiguration configuration
+    )
     {
+        services.AddSerilogLogger(logging, configuration);
+
         services.AddScoped<ServicoCategoria>();
         services.AddScoped<ServicoDespesa>();
         services.AddScoped<ServicoTarefa>();

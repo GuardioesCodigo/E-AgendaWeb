@@ -11,7 +11,7 @@ if (builder.Environment.IsProduction())
 // Configuração de Dependências (Dependency Injection)
 builder.Services.AddInfraRepositories();
 
-builder.Services.AddApplicationServices();
+builder.Services.AddApplicationServices(builder.Logging, builder.Configuration);
 
 builder.Services.AddPresentationConfig();
 
