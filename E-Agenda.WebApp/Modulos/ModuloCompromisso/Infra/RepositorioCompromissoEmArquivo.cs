@@ -1,9 +1,9 @@
 using System;
 using E_Agenda.WebApp.Compartilhado.Dominio;
 using E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
-using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
 
-namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Infra;
+namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Infra;
 
 public class RepositorioCompromissoEmArquivo : RepositorioBaseEmArquivo<Compromisso>, IRepositorioCompromisso
 {

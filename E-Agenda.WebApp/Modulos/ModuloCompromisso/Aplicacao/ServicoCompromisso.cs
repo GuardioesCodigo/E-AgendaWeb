@@ -1,68 +1,64 @@
-using System;
-using System.Collections.Generic;
-using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
+using AutoMapper;
+using E_Agenda.WebApp.Compartilhado.Dominio;
+using E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao;
 
-namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Aplicacao
+namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Aplicacao
 {
     public class ServicoCompromisso
     {
-        private readonly IRepositorioCompromisso _repositorio;
+        private readonly IRepositorio<Compromisso> _repositorio;
+        private readonly ContextoJson _contexto;
+        private readonly IMapper _mapper;
 
-        public ServicoCompromisso(IRepositorioCompromisso repositorio)
+        public ServicoCompromisso(IRepositorio<Compromisso> repositorio, ContextoJson contexto, IMapper mapper)
         {
             _repositorio = repositorio;
+            _contexto = contexto;
+            _mapper = mapper;
         }
 
-        public void Cadastrar(CadastrarCompromissoDto dto)
+        public void Cadastrar(Compromisso novoCompromisso)
         {
-            // 1. Instanciar a entidade CORRETA (Compromisso)
-            var compromisso = new Compromisso(dto.Assunto, dto.Data, dto.HoraInicio, dto.HoraTermino, dto.Tipo, dto.Local);
+            // 1. Mapeia a ViewModel para a Entidade
 
-            // 2. Validar
-            List<string> erros = compromisso.Validar();
-
+            // 2. Validação de Domínio
+            var erros = novoCompromisso.Validar();
+            
             if (erros.Count > 0)
                 throw new Exception(string.Join(" | ", erros));
 
-            // 3. Persistir
-            compromisso.Id = Guid.NewGuid();
-            _repositorio.Cadastrar(compromisso);
+            // 3. Persistência
+            novoCompromisso.Id = Guid.NewGuid();
+            _repositorio.Cadastrar(novoCompromisso);
+            _contexto.Salvar();
         }
 
-        public void Editar(EditarCompromissoDto dto)
+        public void Editar(EditarCompromissoViewModel model)
         {
-            // 1. Buscar o existente
-            var compromissoExistente = _repositorio.SelecionarPorId(dto.Id);
-
-            if (compromissoExistente == null)
-                throw new Exception("Compromisso não encontrado.");
-
-            // 2. Atualizar os dados usando a classe Compromisso
-            var compromissoAtualizado = new Compromisso(dto.Assunto, dto.Data, dto.HoraInicio, dto.HoraTermino, dto.Tipo, dto.Local);
-            compromissoAtualizado.Id = dto.Id;
-
-            // 3. Validar
-            List<string> erros = compromissoAtualizado.Validar();
+            // 1. Mapeia a ViewModel para a Entidade
+            var compromissoEditado = _mapper.Map<Compromisso>(model);
+            
+            // 2. Validação de Domínio
+            var erros = compromissoEditado.Validar();
+            
             if (erros.Count > 0)
                 throw new Exception(string.Join(" | ", erros));
 
-            // 4. Salvar
-            _repositorio.Editar(dto.Id, compromissoAtualizado);
+            // 3. Persistência
+            _repositorio.Editar(compromissoEditado.Id, compromissoEditado);
+            _contexto.Salvar();
         }
 
         public void Excluir(Guid id)
         {
             _repositorio.Excluir(id);
+            _contexto.Salvar();
         }
 
-        public List<Compromisso> SelecionarTodos()
-        {
-            return _repositorio.SelecionarTodos();
-        }
+        public List<Compromisso> SelecionarTodos() => _repositorio.SelecionarTodos();
 
-        public Compromisso? SelecionarPorId(Guid id)
-        {
-            return _repositorio.SelecionarPorId(id);
-        }
+        public Compromisso? SelecionarPorId(Guid id) => _repositorio.SelecionarPorId(id);
     }
 }

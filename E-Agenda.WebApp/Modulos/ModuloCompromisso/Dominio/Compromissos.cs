@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using E_Agenda.WebApp.Compartilhado.Dominio;
 
-namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
+namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
 
 public class Compromisso : EntidadeBase<Compromisso>
 {

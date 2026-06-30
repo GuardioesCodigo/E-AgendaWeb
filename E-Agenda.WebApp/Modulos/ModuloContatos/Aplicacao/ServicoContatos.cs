@@ -3,18 +3,22 @@ using E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 using AutoMapper;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
 
+namespace E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
 public class ServicoContatos
 {
     private readonly IRepositorio<Contatos> _repositorio;
     private readonly ContextoJson _contexto;
     private readonly IMapper _mapper;
+    private readonly IRepositorioCompromisso _repositorioCompromisso;
 
     public ServicoContatos(IRepositorio<Contatos> repositorio, ContextoJson contexto, IMapper mapper)
     {
         _repositorio = repositorio;
         _contexto = contexto;
         _mapper = mapper;
+        _repositorioCompromisso = repositorioCompromisso;
     }
 
     public void Cadastrar(Contatos novoContato) // Receba o objeto já mapeado
@@ -58,6 +62,18 @@ public void Editar(EditarContatosViewModel model)
 
     public void Excluir(Guid id)
     {
+        bool temVinculo = _repositorioCompromisso.ExisteVinculoComContato(id);
+
+        if (temVinculo)
+        {
+            throw new Exception("Não é possível excluir...");
+        }
+
+        if (temVinculo)
+            {
+                throw new Exception("Não é possível excluir este contato, pois existem compromissos vinculados a ele.");
+            }
+
         _repositorio.Excluir(id);
         _contexto.Salvar();
     }

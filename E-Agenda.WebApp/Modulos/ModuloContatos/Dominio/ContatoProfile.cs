@@ -13,6 +13,7 @@ public class ContatosProfile : Profile
         CreateMap<Contatos, ExcluirContatosViewModel>();
         CreateMap<Contatos, EditarContatosViewModel>().ReverseMap();
         CreateMap<Contatos, ListarContatosViewModel>();
+        CreateMap<Contatos, VisualizarContatoViewModel>();
 
         // Se você tiver uma classe separada para Listar, mantenha assim:
         // CreateMap<Funcionario, ListarFuncionarioViewModel>();

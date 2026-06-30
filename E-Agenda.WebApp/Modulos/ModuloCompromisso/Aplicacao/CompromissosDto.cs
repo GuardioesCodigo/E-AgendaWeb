@@ -1,8 +1,6 @@
 using System;
-using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
-using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
-
-namespace E_Agenda.WebApp.Modulos.ModuloCompromissos.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
+namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Aplicacao;
 
 // DTO para a criação de um novo compromisso
 public record CadastrarCompromissoDto(

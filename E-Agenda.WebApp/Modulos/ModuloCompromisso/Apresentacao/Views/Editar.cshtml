@@ -1,69 +1,73 @@
-@using E_Agenda.WebApp.Modulos.ModuloCompromissos.Apresentacao
-@using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio
+@using E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
+@using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio
 @model EditarCompromissoViewModel
 
 @{
     ViewData["Title"] = "Editar Compromisso";
-     Layout = "_Layout";
+    Layout = "_Layout";
 }
 
-<div class="card shadow-sm border-0">
-    <div class="card-header bg-white border-bottom-0 pt-4">
-        <h2 class="text-warning"><i class="bi bi-pencil-square"></i> Editar Compromisso</h2>
-    </div>
-    
-    <div class="card-body">
-        <!-- Notar que passamos o ID na rota -->
-        <form asp-action="Editar" asp-route-id="@Model.Id" method="post">
-            
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<a asp-action="Listar" class="btn btn-outline-secondary rounded-pill px-4 mb-4">
+    <i class="bi bi-arrow-left me-1"></i> Voltar
+</a>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Assunto" class="form-label">Assunto</label>
-                    <input asp-for="Assunto" class="form-control" />
-                    <span asp-validation-for="Assunto" class="text-danger"></span>
+<div class="container d-flex justify-content-center">
+    <div class="card border-0 shadow-sm rounded-4" style="max-width: 620px; width:100%;">
+        <div class="card-body p-4">
+            <form asp-action="Editar" method="post">
+                <input asp-for="Id" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Assunto" class="form-label fw-semibold text-secondary">Assunto</label>
+                    <input asp-for="Assunto" class="form-control rounded-3" placeholder="Ex: Reunião de Planejamento" />
+                    <span asp-validation-for="Assunto" class="text-danger small"></span>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Data" class="form-label">Data</label>
-                    <!-- O C# formata automaticamente para yyyy-MM-dd no type="date" -->
-                    <input asp-for="Data" class="form-control" type="date" />
-                    <span asp-validation-for="Data" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label asp-for="HoraInicio" class="form-label">Hora de Início</label>
-                    <input asp-for="HoraInicio" class="form-control" type="time" />
-                    <span asp-validation-for="HoraInicio" class="text-danger"></span>
+                <div class="mb-3">
+                    <label asp-for="Data" class="form-label fw-semibold text-secondary">Data</label>
+                    <input asp-for="Data" class="form-control rounded-3" type="date" />
+                    <span asp-validation-for="Data" class="text-danger small"></span>
                 </div>
 
-                <div class="col-md-4 mb-3">
-                    <label asp-for="HoraTermino" class="form-label">Hora de Término</label>
-                    <input asp-for="HoraTermino" class="form-control" type="time" />
-                    <span asp-validation-for="HoraTermino" class="text-danger"></span>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="HoraInicio" class="form-label fw-semibold text-secondary">Início</label>
+                        <input asp-for="HoraInicio" class="form-control rounded-3" type="time" />
+                        <span asp-validation-for="HoraInicio" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="HoraTermino" class="form-label fw-semibold text-secondary">Término</label>
+                        <input asp-for="HoraTermino" class="form-control rounded-3" type="time" />
+                        <span asp-validation-for="HoraTermino" class="text-danger small"></span>
+                    </div>
                 </div>
 
-                <div class="col-md-4 mb-3">
-                    <label asp-for="Tipo" class="form-label">Tipo</label>
-                    <select asp-for="Tipo" class="form-select" asp-items="Html.GetEnumSelectList<TipoCompromisso>()">
+                <div class="mb-3">
+                    <label asp-for="Tipo" class="form-label fw-semibold text-secondary">Tipo</label>
+                    <select asp-for="Tipo" class="form-select rounded-3" asp-items="Html.GetEnumSelectList<TipoCompromisso>()">
+                        <option value="">Selecione...</option>
                     </select>
-                    <span asp-validation-for="Tipo" class="text-danger"></span>
+                    <span asp-validation-for="Tipo" class="text-danger small"></span>
                 </div>
-            </div>
 
-            <div class="mb-4">
-                <label asp-for="Local" class="form-label">Local</label>
-                <input asp-for="Local" class="form-control" />
-            </div>
+                <div class="mb-4">
+                    <label asp-for="Local" class="form-label fw-semibold text-secondary">Local</label>
+                    <input asp-for="Local" class="form-control rounded-3" placeholder="Endereço ou link da reunião..." />
+                </div>
 
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-warning px-4">Salvar Alterações</button>
-                <a asp-action="Listar" class="btn btn-outline-secondary px-4">Cancelar</a>
-            </div>
-        </form>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-outline-primary rounded-pill px-4 fw-semibold flex-fill">
+                        <i class="bi bi-check-lg me-1"></i> Salvar Alterações
+                    </button>
+                    <a asp-action="Listar" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
     </div>
 </div>
 

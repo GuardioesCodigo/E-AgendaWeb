@@ -3,7 +3,7 @@ using E_Agenda.WebApp.Modulos.ModuloDespesas.Aplicacao;
 using E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Aplicacao;
 
-using E_Agenda.WebApp.Modulos.ModuloCompromissos.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Aplicacao;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Infra;

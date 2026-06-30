@@ -52,7 +52,16 @@ public IActionResult Cadastrar(CadastrarContatosViewModel model)
         return View(model);
     }
 }
+[HttpGet]
+public IActionResult Visualizar(Guid id)
+{
+    var contato = _servico.SelecionarPorId(id);
+    if (contato == null) return NotFound();
 
+    // Mapeie para uma ViewModel de Visualização se necessário
+    var model = _mapper.Map<VisualizarContatoViewModel>(contato);
+    return View(model);
+}
         [HttpGet]
         public IActionResult Editar(Guid id)
         {

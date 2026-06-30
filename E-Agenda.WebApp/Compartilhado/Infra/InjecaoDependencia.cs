@@ -8,8 +8,8 @@ using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Infra;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Infra;
-using E_Agenda.WebApp.Modulos.ModuloCompromissos.Dominio;
-using E_Agenda.WebApp.Modulos.ModuloCompromissos.Infra;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Infra;
 
 namespace E_Agenda.WebApp.Compartilhado.Infra;
 

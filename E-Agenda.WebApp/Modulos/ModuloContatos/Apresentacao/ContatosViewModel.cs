@@ -35,6 +35,16 @@ public class ListarContatosViewModel
     public string Empresa { get; set; } = string.Empty;
 }
 
+public class VisualizarContatoViewModel
+    {
+        public Guid Id { get; set; }
+        public string Nome { get; set; }
+        public string Email { get; set; }
+        public string Telefone { get; set; }
+        public string Cargo { get; set; }
+        public string Empresa { get; set; }
+    }
+    
 public class ExcluirContatosViewModel
 {
     public string Email { get; set; } = string.Empty;
