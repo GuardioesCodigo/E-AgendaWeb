@@ -6,9 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Configuração de Dependências (Dependency Injection)
 builder.Services.AddInfraRepositories();
 
-builder.Services.AddApplicationServices();
+builder.Services.AddApplicationServices(builder.Logging, builder.Configuration);
 
-builder.Services.AddPresentationConfig();
+builder.Services.AddPresentationConfig(builder.Configuration);
 
 var app = builder.Build();
 
