@@ -29,6 +29,9 @@
             <div class="collapse navbar-collapse" id="menuPrincipal">
                 <ul class="navbar-nav ms-auto gap-1">
                     <li class="nav-item">
+                        <a class="nav-link @(EhAtivo("Home") ? "active" : "")" asp-controller="Home" asp-action="Index">Início</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link @(EhAtivo("Despesa") ? "active" : "")" asp-controller="Despesa" asp-action="Listar">Despesas</a>
                     </li>
                     <li class="nav-item">

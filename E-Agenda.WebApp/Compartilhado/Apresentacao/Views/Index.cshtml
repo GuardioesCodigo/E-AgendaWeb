@@ -1,3 +1,64 @@
 ﻿@{
+    ViewData[index: "Title"] = "Início";
     Layout = "_Layout";
+
+
+    string[] saudacoes = { "Boa madrugada", "Bom dia", "Boa tarde", "Boa noite" };
+    int hora = DateTime.Now.Hour;
+    string? saudacao = hora switch
+    {
+        >= 6 and < 12 => saudacoes[1],
+        >= 12 and < 18 => saudacoes[2],
+        >= 18 and < 24 => saudacoes[3],
+        0 => saudacoes[0]
+    };
 }
+
+<section class="hero-inicio">
+    <h1 class="hero-titulo">@saudacao</h1>
+    <p class="hero-subtitulo">O que você quer organizar hoje?</p>
+</section>
+
+<div class="row g-3">
+
+    <div class="col-12 col-sm-6 col-lg-4">
+        <a class="card card-modulo h-100 p-4 text-decoration-none" asp-controller="Despesa" asp-action="Listar">
+            <span class="modulo-tag">Financeiro</span>
+            <h2 class="modulo-titulo">Despesas</h2>
+            <p class="modulo-descricao">Registre e acompanhe seus gastos.</p>
+        </a>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4">
+        <a class="card card-modulo h-100 p-4 text-decoration-none" asp-controller="Categoria" asp-action="Listar">
+            <span class="modulo-tag">Financeiro</span>
+            <h2 class="modulo-titulo">Categorias</h2>
+            <p class="modulo-descricao">Organize despesas por tipo.</p>
+        </a>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4">
+        <a class="card card-modulo h-100 p-4 text-decoration-none" asp-controller="Tarefa" asp-action="Listar">
+            <span class="modulo-tag">Produtividade</span>
+            <h2 class="modulo-titulo">Tarefas</h2>
+            <p class="modulo-descricao">O que precisa ser feito.</p>
+        </a>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4">
+        <a class="card card-modulo h-100 p-4 text-decoration-none" asp-controller="Contatos" asp-action="Listar">
+            <span class="modulo-tag">Pessoas</span>
+            <h2 class="modulo-titulo">Contatos</h2>
+            <p class="modulo-descricao">Quem está na sua agenda.</p>
+        </a>
+    </div>
+
+    <div class="col-12 col-sm-6 col-lg-4">
+        <a class="card card-modulo h-100 p-4 text-decoration-none" asp-controller="Compromisso" asp-action="Listar">
+            <span class="modulo-tag">Agenda</span>
+            <h2 class="modulo-titulo">Compromissos</h2>
+            <p class="modulo-descricao">Seus próximos eventos.</p>
+        </a>
+    </div>
+
+</div>
