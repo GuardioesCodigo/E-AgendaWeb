@@ -1,46 +1,63 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string? controladorAtual = ViewContext.RouteData.Values[key: "controller"]?.ToString() ?? "";
+
+    bool EhAtivo(string controller) =>
+        string.Equals(controladorAtual, controller, StringComparison.OrdinalIgnoreCase);
+}
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Agenda</title>
+    <title>@ViewData[index: "Title"] E-Agenda</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
 </head>
 <body>
 
-    <div class="col-lg-7">
-        <div class="d-flex flex-wrap gap-2">
-            <a class="btn btn-primary rounded-pill px-4" asp-controller="Despesa" asp-action="Listar">Despesas</a>
+    <nav class="navbar navbar-expand-lg navbar-agenda mb-4">
+        <div class="container">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">E-Agenda</a>
+
+            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <ul class="navbar-nav ms-auto gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link @(EhAtivo("Despesa") ? "active" : "")" asp-controller="Despesa" asp-action="Listar">Despesas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(EhAtivo("Categoria") ? "active" : "")" asp-controller="Categoria" asp-action="Listar">Categorias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(EhAtivo("Tarefa") ? "active" : "")" asp-controller="Tarefa" asp-action="Listar">Tarefas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(EhAtivo("Contatos") ? "active" : "")" asp-controller="Contatos" asp-action="Listar">Contatos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @(EhAtivo("Compromisso") ? "active" : "")" asp-controller="Compromisso" asp-action="Listar">Compromissos</a>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
 
-        <div class="d-flex flex-wrap gap-2">
-            <a class="btn btn-primary rounded-pill px-4" asp-controller="Categoria" asp-action="Listar">Categorias</a>
-        </div>
-
-        <div class="d-flex flex-wrap gap-2">
-            <a class="btn btn-primary rounded-pill px-4" asp-controller="Tarefa" asp-action="Listar">Tarefas</a>
-        </div>
-
-        <div class="d-flex flex-wrap gap-2">
-            <a class="btn btn-primary rounded-pill px-4" asp-controller="Contatos" asp-action="Listar">Contatos</a>
-        </div>
-
-        <div class="d-flex flex-wrap gap-2">
-            <a class="btn btn-primary rounded-pill px-4" asp-controller="Compromisso" asp-action="Listar">Compromissos</a>
-        </div>
-
-    </div>
-
-    @* Conteúdo da Página *@
     <main class="container pb-5">
         @RenderBody()
     </main>
 
-    @* Importação do JavaScript do Bootstrap *@
+    <footer class="container text-center pb-4">
+        E-Agenda Web
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
-    @* ADICIONE ESTA LINHA: É ela que processa o @section Scripts da sua view *@
-    @await RenderSectionAsync("Scripts", required: false)
-
+    @await RenderSectionAsync(name: "Scripts", required: false)
 </body>
 </html>

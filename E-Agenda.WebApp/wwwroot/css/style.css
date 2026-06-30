@@ -1,0 +1,67 @@
+:root {
+    --cor-principal: #2F5D8A;
+    --cor-principal-escura: #244A6E;
+    --cor-fundo: #F5F7FA;
+    --cor-borda: #E2E8F0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--cor-fundo);
+}
+
+.navbar-agenda {
+    background-color: var(--cor-principal);
+}
+
+.navbar-agenda .navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #fff;
+}
+
+.navbar-agenda .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.navbar-agenda .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.navbar-agenda .nav-link.active {
+    background-color: #fff;
+    color: var(--cor-principal-escura);
+}
+
+.titulo-pagina {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: var(--cor-principal-escura);
+    margin-bottom: 1.5rem;
+}
+
+.card {
+    border: 1px solid var(--cor-borda);
+    border-radius: 12px;
+}
+
+.btn-primary {
+    background-color: var(--cor-principal);
+    border-color: var(--cor-principal);
+}
+
+.btn-primary:hover {
+    background-color: var(--cor-principal-escura);
+    border-color: var(--cor-principal-escura);
+}
+
+footer {
+    color: #94A3B8;
+    font-size: 0.85rem;
+}
