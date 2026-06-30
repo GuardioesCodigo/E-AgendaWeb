@@ -4,6 +4,7 @@ using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 using AutoMapper;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
 using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Infra;
 
 namespace E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
 public class ServicoContatos
@@ -18,7 +19,6 @@ public class ServicoContatos
         _repositorio = repositorio;
         _contexto = contexto;
         _mapper = mapper;
-        _repositorioCompromisso = repositorioCompromisso;
     }
 
     public void Cadastrar(Contatos novoContato) // Receba o objeto já mapeado
@@ -66,7 +66,7 @@ public void Editar(EditarContatosViewModel model)
 
         if (temVinculo)
         {
-            throw new Exception("Não é possível excluir...");
+            throw new Exception("Este contato não pode ser excluido pois está vinculado a");
         }
 
         if (temVinculo)

@@ -20,7 +20,6 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
             _mapper = mapper;
         }
 
-        [HttpGet]
         public IActionResult Listar()
         {
             var compromissos = _servico.SelecionarTodos();

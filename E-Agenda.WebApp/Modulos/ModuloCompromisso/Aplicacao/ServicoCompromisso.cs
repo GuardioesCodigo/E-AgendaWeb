@@ -53,9 +53,13 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Aplicacao
 
         public void Excluir(Guid id)
         {
+
+            
             _repositorio.Excluir(id);
             _contexto.Salvar();
         }
+
+
 
         public List<Compromisso> SelecionarTodos() => _repositorio.SelecionarTodos();
 
