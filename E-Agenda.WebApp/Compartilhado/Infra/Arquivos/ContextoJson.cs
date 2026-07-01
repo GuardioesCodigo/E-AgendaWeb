@@ -17,7 +17,7 @@ public sealed class ContextoJson
     public List<Despesa> despesas {get; set;} = new List<Despesa>();
     public List<Tarefa> tarefas {get; set;} = new List<Tarefa>();
     public List<Contatos> contato {get; set;} = new List<Contatos>();
-    public List<ItensTarefa> itensTarefas {get; set;} = new List<ItensTarefa>();
+    public List<ItensDeTarefas> itensTarefas {get; set;} = new List<ItensDeTarefas>();
     public List<Compromisso> compromissos {get; set;} = new List<Compromisso>();
 
 

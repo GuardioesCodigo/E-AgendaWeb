@@ -1,5 +1,6 @@
 using AutoMapper;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Apresentacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao;
 
@@ -9,16 +10,16 @@ public class MapeadorTarefa : Profile
     {
         CreateMap<ListarTarefaDto, ListarTarefaViewModel>();
 
-        CreateMap<ItemTarefaDto, ItemTarefaViewModel>();
+        CreateMap<ItemTarefaDto, ItensDeTarefasViewModel>();
 
         CreateMap<DetalhesTarefaDto, EditarTarefaViewModel>();
         CreateMap<DetalhesTarefaDto, ExcluirTarefaViewModel>();
         CreateMap<DetalhesTarefaDto, DetalhesTarefaViewModel>();
 
-        CreateMap<ItemTarefaViewModel, CadastrarItemTarefaDto>();
+        CreateMap<ItensDeTarefasViewModel, CadastrarItemTarefaDto>();
         CreateMap<CadastrarTarefaViewModel, CadastrarTarefaDto>();
 
-        CreateMap<ItemTarefaViewModel, EditarItemTarefaDto>();
+        CreateMap<ItensDeTarefasViewModel, EditarItemTarefaDto>();
         CreateMap<EditarTarefaViewModel, EditarTarefaDto>();
     }
 }

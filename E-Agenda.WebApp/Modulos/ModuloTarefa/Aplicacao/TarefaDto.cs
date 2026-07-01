@@ -8,7 +8,7 @@ public record ListarTarefaDto(
     PrioridadeTarefa PrioridadeTarefa,
     DateTime DataConclusao,
     bool StatusConclusao,
-    int PercentualConcluido
+    decimal PercentualConcluido
 );
 
 public record ItemTarefaDto(
@@ -24,11 +24,12 @@ public record DetalhesTarefaDto(
     DateTime DataCriacao,
     DateTime DataConclusao,
     bool StatusConclusao,
-    int PercentualConcluido,
+    decimal PercentualConcluido,
     List<ItemTarefaDto> Itens
 );
 
 public record CadastrarItemTarefaDto(
+    Guid TarefaId,
     string Titulo
 );
 
@@ -50,7 +51,7 @@ public record EditarTarefaDto(
     string Titulo,
     PrioridadeTarefa PrioridadeTarefa,
     bool StatusConclusao,
-    int PercentualConcluido,
+    decimal PercentualConcluido,
     DateTime DataConclusao,
     List<EditarItemTarefaDto> Itens
 );
