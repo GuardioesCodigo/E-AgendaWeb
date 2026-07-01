@@ -18,6 +18,6 @@ public class RepositorioContatosEmArquivo : RepositorioBaseEmArquivo<Contatos>, 
     protected override List<Contatos> CarregarRegistros()
     {
         // Se contexto.Paciente for nulo, retorna uma lista vazia, caso contrário retorna a lista
-        return contexto.contatos;
+        return contexto.contato;
     }
 }

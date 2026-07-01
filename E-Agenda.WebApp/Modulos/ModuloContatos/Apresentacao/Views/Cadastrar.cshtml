@@ -47,6 +47,20 @@
                     </div>
                 </div>
 
+                <div class="mb-4">
+                    <label class="form-label fw-semibold text-secondary">Associar Compromissos</label>
+                    <div class="border rounded-3 p-3 bg-light" style="max-height: 200px; overflow-y: auto;">
+                        @for (int i = 0; i < Model.Compromissos.Count; i++)
+                        {
+                            <div class="form-check">
+                                <input type="hidden" asp-for="Compromissos[i].Id" />
+                                <input type="checkbox" asp-for="Compromissos[i].Marcado" class="form-check-input" />
+                                <label class="form-check-label">@Model.Compromissos[i].Assunto</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold flex-fill">
                         <i class="bi bi-floppy me-1"></i> Cadastrar Contato
@@ -57,17 +71,15 @@
                 </div>
 
             </form>
-           @section Scripts {
-            <partial name="/Compartilhado/Apresentacao/Views/_ValidationScriptsPartial.cshtml" />
 
-            <script>
-                $(document).ready(function(){
-                    $('#txtTelefone').mask('(00) 00000-0000');
-                });
-            </script>
+            @section Scripts {
+                <partial name="/Compartilhado/Apresentacao/Views/_ValidationScriptsPartial.cshtml" />
+                <script>
+                    $(document).ready(function(){
+                        $('#telefone').mask('(00) 00000-0000');
+                    });
+                </script>
             }
-
-            
         </div>
     </div>
 </div>

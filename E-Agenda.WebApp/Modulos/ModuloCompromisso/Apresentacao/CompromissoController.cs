@@ -5,6 +5,8 @@ using AutoMapper;
 using E_Agenda.WebApp.Modulos.ModuloCompromisso.Aplicacao;
 using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
 {
@@ -13,11 +15,14 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
     {
         private readonly ServicoCompromisso _servico;
         private readonly IMapper _mapper;
+        private readonly IRepositorioCompromisso _repositorioCompromisso;
+        private readonly IRepositorioContatos _repositorioContato; 
 
-        public CompromissoController(ServicoCompromisso servico, IMapper mapper)
+        public CompromissoController(ServicoCompromisso servico, IMapper mapper,IRepositorioContatos repositorioContato)
         {
             _servico = servico;
             _mapper = mapper;
+            _repositorioContato = repositorioContato;
         }
 
         [HttpGet]
@@ -29,12 +34,27 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
         }
 
         [HttpGet]
-        public IActionResult Cadastrar() => View(new CadastrarCompromissoViewModel());
+        public IActionResult Cadastrar()
+        {
+             
+            var vm = new CadastrarCompromissoViewModel();
+
+            var contatos = _repositorioContato.SelecionarTodos();
+            vm.Contatos = contatos.Select(c => new SelectListItem(c.Nome, c.Id.ToString())).ToList();
+    
+            return View(vm);
+        }
 
         [HttpPost]
         public IActionResult Cadastrar(CadastrarCompromissoViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+           if (!ModelState.IsValid)
+         {
+            // Recarrega a lista antes de retornar a view com erro
+            var contatos = _repositorioContato.SelecionarTodos();
+            model.Contatos = contatos.Select(c => new SelectListItem(c.Nome, c.Id.ToString())).ToList();
+            return View(model);
+        }
 
             // Mapeia no Controller para o Domínio
             var compromisso = _mapper.Map<Compromisso>(model);
@@ -54,11 +74,17 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
         [HttpGet]
         public IActionResult Editar(Guid id)
         {
-            var compromisso = _servico.SelecionarPorId(id);
+           var compromisso = _servico.SelecionarPorId(id);
             if (compromisso == null) return NotFound();
 
             var model = _mapper.Map<EditarCompromissoViewModel>(compromisso);
-            return View(model);
+            
+            // --- Adicione isso para popular o Select na edição ---
+            var contatos = _repositorioContato.SelecionarTodos();
+            model.Contatos = contatos.Select(c => new SelectListItem(c.Nome, c.Id.ToString())).ToList();
+    // -----------------------------------------------------
+
+    return View(model);
         }
 
         [HttpPost]
