@@ -1,0 +1,65 @@
+@using E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
+@{
+    Layout = "_Layout";
+}
+@model IEnumerable<ListarCompromissoViewModel>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-calendar-event"></i> Compromissos</h2>
+    <a class="btn btn-primary rounded-pill px-4" asp-action="Cadastrar">
+        <i class="bi bi-plus-lg me-1"></i> Novo Compromisso
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+        Nenhum compromisso cadastrado até o momento.
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2">
+        @foreach (var c in Model)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        
+                        @* Cabeçalho do Card *@
+                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                            <h5 class="card-title mb-0 text-primary">@c.Assunto</h5>
+                            <span class="badge text-bg-primary rounded-pill">
+                                @c.Id.ToString().Substring(0, 8)
+                            </span>
+                        </div>
+
+                        @* Detalhes *@
+                        <dl class="row g-2 mb-4">
+                            <dt class="col-5 text-secondary fw-semibold">Data</dt>
+                            <dd class="col-7 mb-0">@c.Data.ToShortDateString()</dd>
+
+                            <dt class="col-5 text-secondary fw-semibold">Horário</dt>
+                            <dd class="col-7 mb-0">@c.HoraInicio - @c.HoraTermino</dd>
+
+                            @if (!string.IsNullOrWhiteSpace(c.Local))
+                            {
+                                <dt class="col-5 text-secondary fw-semibold">Local</dt>
+                                <dd class="col-7 mb-0">@c.Local</dd>
+                            }
+                        </dl>
+
+                        @* Botões de Ação *@
+                        <div class="d-flex flex-wrap gap-2 mt-auto justify-content-end">
+                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                               asp-action="Editar" asp-route-id="@c.Id">Editar</a>
+                            <a class="btn btn-outline-danger btn-sm rounded-pill px-3"
+                               asp-action="Excluir" asp-route-id="@c.Id">Excluir</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

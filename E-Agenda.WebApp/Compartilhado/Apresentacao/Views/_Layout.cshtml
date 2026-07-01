@@ -3,19 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    @* Importação do CSS do Bootstrap *@
+    <title>E-Agenda</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
+<body>
 
+    <div class="col-lg-7">
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary rounded-pill px-4" asp-controller="Despesa" asp-action="Listar">Despesas</a>
+        </div>
 
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary rounded-pill px-4" asp-controller="Categoria" asp-action="Listar">Categorias</a>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary rounded-pill px-4" asp-controller="Tarefa" asp-action="Listar">Tarefas</a>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary rounded-pill px-4" asp-controller="Contatos" asp-action="Listar">Contatos</a>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary rounded-pill px-4" asp-controller="Compromisso" asp-action="Listar">Compromissos</a>
+        </div>
+
+    </div>
 
     @* Conteúdo da Página *@
     <main class="container pb-5">
         @RenderBody()
     </main>
-   
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" ...></script>
 
     @* Importação do JavaScript do Bootstrap *@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
@@ -23,4 +42,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+</html>
+
+    @* ADICIONE ESTA LINHA: É ela que processa o @section Scripts da sua view *@
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
 </html>

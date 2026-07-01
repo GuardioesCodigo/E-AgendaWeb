@@ -1,0 +1,40 @@
+@using E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
+@model ExcluirCompromissoViewModel
+
+@{
+    ViewData["Title"] = "Excluir Compromisso";
+    Layout = "_Layout";
+
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white border-bottom-0 pt-4">
+        <h2 class="text-danger"><i class="bi bi-trash"></i> Excluir Compromisso</h2>
+    </div>
+
+    <div class="card-body">
+        <p class="lead">Tem certeza que deseja excluir o compromisso abaixo?</p>
+        
+        <div class="bg-light p-3 rounded mb-4">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">Assunto:</dt>
+                <dd class="col-sm-9">@Model.Assunto</dd>
+
+                <dt class="col-sm-3">Data:</dt>
+                <dd class="col-sm-9">@Model.Data.ToShortDateString()</dd>
+                
+                <dt class="col-sm-3">Hora de Início:</dt>
+                <dd class="col-sm-9">@Model.HoraInicio</dd>
+            </dl>
+        </div>
+
+        <form asp-action="Excluir" asp-route-id="@Model.Id" method="post">
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger px-4">
+                    <i class="bi bi-trash-fill"></i> Confirmar Exclusão
+                </button>
+                <a asp-action="Listar" class="btn btn-outline-secondary px-4">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

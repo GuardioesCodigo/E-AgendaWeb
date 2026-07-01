@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
+
 
 
 namespace E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
@@ -8,7 +9,7 @@ namespace E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
 public sealed class ContextoJson
 {
     private readonly string caminhoArquivo;
-    public List<Contatos> contatos{get; set;} = new List<Contatos>();
+    public List<Compromisso> compromissos {get; set;} = new List<Compromisso>();
 
 
     public ContextoJson()
@@ -56,5 +57,6 @@ public sealed class ContextoJson
             return;
 
         contatos = contextoSalvo.contatos;
+        compromissos = contextoSalvo.compromissos;
     }
 }
