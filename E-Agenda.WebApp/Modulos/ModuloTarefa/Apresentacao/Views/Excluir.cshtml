@@ -1,8 +1,22 @@
-﻿@using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio
+﻿@using E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao
+@using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio
 @{
     Layout = "_Layout";
+    ViewBag.Titulo = "Excluir Tarefa";
 }
-@model E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao.ExcluirTarefaViewModel
+@model ExcluirTarefaViewModel
+@{
+    string corBadgePrioridade = Model.PrioridadeTarefa switch
+    {
+        PrioridadeTarefa.Alta   => "danger",
+        PrioridadeTarefa.Normal => "warning",
+        _                       => "secondary"
+    };
+
+    string corBadgeStatus = Model.StatusConclusao ? "success" : "secondary";
+    string iconeStatus = Model.StatusConclusao ? "bi-check-circle" : "bi-clock-history";
+    string labelStatus = Model.StatusConclusao ? "Concluída" : "Pendente";
+}
 
 <a asp-action="Listar" class="btn btn-outline-secondary rounded-pill px-4 mb-4">
     <i class="bi bi-arrow-left me-1"></i> Voltar
@@ -12,35 +26,50 @@
     <div class="card border-0 shadow-sm rounded-4" style="max-width: 620px; width:100%;">
         <div class="card-body p-4">
 
-            <p class="text-secondary">Tem certeza que deseja excluir esta tarefa?</p>
+            <div class="alert alert-danger border-start border-danger border-4 rounded-3 mb-4" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                Esta ação é permanente e não poderá ser desfeita.
+            </div>
 
-            <dl class="row g-2 mb-4">
-                <dt class="col-5 text-secondary fw-semibold">Título</dt>
-                <dd class="col-7 mb-0">@Model.Titulo</dd>
-
-                <dt class="col-5 text-secondary fw-semibold">Prioridade</dt>
-                <dd class="col-7 mb-0">@Model.PrioridadeTarefa</dd>
-
-                <dt class="col-5 text-secondary fw-semibold">Data de Conclusão</dt>
-                <dd class="col-7 mb-0">@Model.DataConclusao.ToShortDateString()</dd>
-
-                <dt class="col-5 text-secondary fw-semibold">Status</dt>
-                <dd class="col-7 mb-0">@(Model.StatusConclusao ? "Concluída" : "Pendente")</dd>
-            </dl>
-
-            <form asp-action="Excluir" method="post">
-                <input type="hidden" asp-for="Id" />
-
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-semibold flex-fill">
-                        <i class="bi bi-trash me-1"></i> Excluir
-                    </button>
-                    <a asp-action="Listar" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
-                        Cancelar
-                    </a>
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:40px;height:40px;background:#ede9fe;">
+                        <i class="bi bi-check2-square" style="color:#6366f1;"></i>
+                    </div>
+                    <h5 class="card-title mb-0 fw-bold text-dark">@Model.Titulo</h5>
                 </div>
-            </form>
+                <span class="badge rounded-pill bg-@corBadgeStatus px-2 py-1 fw-semibold small">
+                    <i class="bi @iconeStatus me-1"></i>@labelStatus
+                </span>
+            </div>
 
+            <dl class="row g-2 mb-0">
+                <dt class="col-5 text-secondary fw-semibold small">Data de Conclusão</dt>
+                <dd class="col-7 mb-0 small">
+                    <i class="bi bi-calendar3 me-1 text-muted"></i>
+                    @Model.DataConclusao.ToString(format: "dd/MM/yyyy")
+                </dd>
+
+                <dt class="col-5 text-secondary fw-semibold small">Prioridade</dt>
+                <dd class="col-7 mb-0">
+                    <span class="badge rounded-pill bg-@corBadgePrioridade px-2 py-1 fw-semibold small">
+                        @Model.PrioridadeTarefa
+                    </span>
+                </dd>
+            </dl>
         </div>
+
+        <form asp-action="Excluir" method="post">
+            <input asp-for="Id" type="hidden" />
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger rounded-pill px-4 fw-semibold flex-fill">
+                    <i class="bi bi-trash me-1"></i> Confirmar Exclusão
+                </button>
+                <a asp-action="Listar" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
+                    Cancelar
+                </a>
+            </div>
+        </form>
     </div>
 </div>
