@@ -1,6 +1,6 @@
 using AutoMapper;
-using E_Agenda.WebApp.Modulos.ModuloTarefa.Aplicacao;
 using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Apresentacao;
+using E_Agenda.WebApp.Modulos.ModuloTarefa.Aplicacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao;
 

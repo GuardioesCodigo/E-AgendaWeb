@@ -2,16 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Apresentacao;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloTarefa.Aplicacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloItensTarefa.Apresentacao;
 
 public class ItensTarefaController : Controller
 {
+    private readonly ServicoTarefa servicoTarefa;
     private readonly IRepositorioTarefa _repositorioTarefa;
 
-    public ItensTarefaController(IRepositorioTarefa repositorioTarefa)
+    public ItensTarefaController(IRepositorioTarefa repositorioTarefa, ServicoTarefa servicoTarefa)
     {
         _repositorioTarefa = repositorioTarefa;
+        this.servicoTarefa = servicoTarefa;
     }
 
     // GET: Cadastrar (Exibe a tela de cadastro)
@@ -45,7 +48,7 @@ public class ItensTarefaController : Controller
     public IActionResult Editar(Guid id, Guid tarefaId)
     {
         var tarefa = _repositorioTarefa.SelecionarPorId(tarefaId);
-        var item = tarefa?.Itens.FirstOrDefault(i => i.Id == id);
+        var item = tarefa?.ItemTarefa.FirstOrDefault(i => i.Id == id);
         
         if (item == null) return NotFound();
 
@@ -62,7 +65,7 @@ public class ItensTarefaController : Controller
         var tarefa = _repositorioTarefa.SelecionarPorId(vm.ItensDeTarefaId);
         if (tarefa == null) return NotFound();
 
-        var item = tarefa.Itens.FirstOrDefault(i => i.Id == vm.Id);
+        var item = tarefa.ItemTarefa.FirstOrDefault(i => i.Id == vm.Id);
         
         if (item != null)
         {
@@ -78,8 +81,8 @@ public class ItensTarefaController : Controller
 
     private decimal CalcularPercentual(Tarefa tarefa)
     {
-        if (tarefa.Itens.Count == 0) return 0;
-        var concluidos = tarefa.Itens.Count(i => i.StatusConclusao);
-        return (decimal)concluidos * 100 / tarefa.Itens.Count;
+        if (tarefa.ItemTarefa.Count == 0) return 0;
+        var concluidos = tarefa.ItemTarefa.Count(i => i.StatusConclusao);
+        return (decimal)concluidos * 100 / tarefa.ItemTarefa.Count;
     }
 }

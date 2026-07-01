@@ -29,7 +29,6 @@ public record DetalhesTarefaDto(
 );
 
 public record CadastrarItemTarefaDto(
-    Guid TarefaId,
     string Titulo
 );
 

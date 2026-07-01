@@ -1,4 +1,5 @@
 using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloTarefa.Aplicacao;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
 
 namespace E_Agenda.WebApp.Modulos.ModuloItensTarefa.Aplicacao;
@@ -6,11 +7,13 @@ namespace E_Agenda.WebApp.Modulos.ModuloItensTarefa.Aplicacao;
 public class ServicoItensTarefa
 {
     private readonly IRepositorioTarefa _repositorioTarefa;
+    private readonly ServicoTarefa servicoTarefa;
 
     // 1. Você precisa injetar o repositório pelo construtor!
-    public ServicoItensTarefa(IRepositorioTarefa repositorioTarefa)
+    public ServicoItensTarefa(IRepositorioTarefa repositorioTarefa, ServicoTarefa servicoTarefa)
     {
         _repositorioTarefa = repositorioTarefa;
+        this.servicoTarefa = servicoTarefa;
     }
 
     public void AdicionarItem(Guid tarefaId, string titulo)
@@ -31,11 +34,12 @@ public class ServicoItensTarefa
         var tarefa = _repositorioTarefa.SelecionarPorId(tarefaId);
         if (tarefa == null) return;
 
-        var item = tarefa.Itens.FirstOrDefault(i => i.Id == itemId);
+        var item = tarefa.ItemTarefa.FirstOrDefault(i => i.Id == itemId);
         
         if (item != null)
         {
             item.Concluir();
+            tarefa.AtualizarPercentualConcluido();
             _repositorioTarefa.Editar(tarefaId, tarefa); 
         }
     }

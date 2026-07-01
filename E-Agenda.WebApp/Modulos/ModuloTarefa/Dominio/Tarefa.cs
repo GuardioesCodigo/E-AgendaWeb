@@ -11,28 +11,9 @@ public class Tarefa : EntidadeBase<Tarefa>
     public DateTime DataCriacao {get; set;}
     public DateTime DataConclusao {get; set;} = DateTime.Now;
     public bool StatusConclusao { get; set; }
-    public decimal PercentualConcluido { get;set; }
-    public List<ItensDeTarefas> Itens { get; set; } = new List<ItensDeTarefas>();
+    public decimal PercentualConcluido { get; set; }
+    public List<ItensDeTarefas> ItemTarefa { get; set; } = [];
 
-
-    public void CalcularPercentual()
-    {
-        if (Itens.Count == 0)
-        {
-            PercentualConcluido = 0;
-            return;
-        }
-
-        int totalItens = Itens.Count;
-        int itensConcluidos = Itens.Count(i => i.StatusConclusao);
-
-        // Regra de 3: (Concluidos * 100) / Total
-        PercentualConcluido = (int)(decimal)itensConcluidos * 100 / totalItens;
-        
-        // Se 100% concluído, muda status da tarefa
-        if (PercentualConcluido == 100)
-            StatusConclusao = true;
-    }
     public Tarefa() { }
 
     public Tarefa(
@@ -48,7 +29,7 @@ public class Tarefa : EntidadeBase<Tarefa>
         DataConclusao = dataConclusao;
         StatusConclusao = false;
         PercentualConcluido = 0;
-        Itens = itemTarefa ?? new List<ItensDeTarefas>();
+        ItemTarefa = itemTarefa ?? new List<ItensDeTarefas>();
     }
 
     public override List<string> Validar()
@@ -86,11 +67,29 @@ public class Tarefa : EntidadeBase<Tarefa>
         DataConclusao = entidadeAtualizada.DataConclusao;
         StatusConclusao = entidadeAtualizada.StatusConclusao;
         PercentualConcluido = entidadeAtualizada.PercentualConcluido;
-        Itens = entidadeAtualizada.Itens;
+        ItemTarefa = entidadeAtualizada.ItemTarefa;
     }
 
-    internal void AdicionarItem(ItensDeTarefas novoItem)
+    public void AdicionarItem(ItensDeTarefas novoItem)
     {
-        throw new NotImplementedException();
+        ItemTarefa ??= new List<ItensDeTarefas>();
+
+        ItemTarefa.Add(novoItem);
+
+        AtualizarPercentualConcluido();
+    }
+
+    public void AtualizarPercentualConcluido()
+    {
+        if (ItemTarefa is null || ItemTarefa.Count == 0)
+        {
+            PercentualConcluido = StatusConclusao ? 100 : 0;
+            return;
+        }
+
+        int totalItens = ItemTarefa.Count;
+        int itensConcluidos = ItemTarefa.Count(i => i.StatusConclusao);
+
+        PercentualConcluido = (int)((double)itensConcluidos / totalItens * 100);
     }
 }

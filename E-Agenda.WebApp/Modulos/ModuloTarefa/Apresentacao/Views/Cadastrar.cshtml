@@ -1,7 +1,5 @@
 ﻿@using E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao
 @using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio
-@using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Apresentacao;
-
 @{
     Layout = "_Layout";
 }
@@ -18,7 +16,7 @@
 
                 <div class="mb-3">
                     <label asp-for="Titulo" class="form-label fw-semibold text-secondary">Título</label>
-                    <input asp-for="Titulo" class="form-control rounded-3" />
+                    <input asp-for="Titulo" class="form-control rounded-3"/>
                     <span asp-validation-for="Titulo" class="text-danger small"></span>
                 </div>
 
@@ -36,17 +34,43 @@
                     </div>
                 </div>
 
-                <!-- Seção informativa, sem formulários complexos -->
                 <div class="mb-4">
-                    <div class="alert alert-info border-0 rounded-3 small">
-                        <i class="bi bi-info-circle me-1"></i> 
-                        Você poderá adicionar os itens da tarefa logo após salvar o cadastro.
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="form-label fw-semibold text-secondary mb-0">
+                            Itens da Tarefa <span class="fw-normal text-muted small">(opcional)</span>
+                        </label>
+                        <button type="submit" formnovalidate
+                                formaction="@Url.Action("AdicionarItemCadastro")"
+                                class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                            <i class="bi bi-plus-lg me-1"></i> Adicionar
+                        </button>
                     </div>
+
+                    @{
+                            List<E_Agenda.WebApp.Modulos.ModuloItensTarefa.Apresentacao.ItensDeTarefasViewModel>? itens = Model.Itens ?? [];
+                        }
+
+                    @for (int i = 0; i < itens.Count; i++)
+                    {
+                        <div class="input-group mb-2">
+                            <input type="text"
+                                name="Itens[@i].Titulo"
+                                value="@itens[i].Titulo"
+                                class="form-control rounded-start-3" />
+
+                            <button type="submit"
+                                    formnovalidate
+                                    formaction="@Url.Action("RemoverItemCadastro", new { index = i })"
+                                    class="btn btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    }
                 </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold flex-fill">
-                        <i class="bi bi-check-lg me-1"></i> Cadastrar Tarefa
+                        <i class="bi bi-check-lg me-1"></i> Cadastrar
                     </button>
                     <a asp-action="Listar" class="btn btn-outline-secondary rounded-pill px-4 fw-semibold">
                         Cancelar

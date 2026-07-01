@@ -6,7 +6,6 @@ using FluentResults;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Apresentacao;
 
-
 namespace E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao;
 
 public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : Controller
@@ -74,38 +73,22 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
         return RedirectToAction(nameof(Listar));
     }
 
-  [HttpGet]
-public ActionResult Editar(Guid id)
-{
-    var resultado = servicoTarefa.SelecionarPorId(id);
-
-    if (resultado.IsFailed)
+    [HttpGet]
+    public ActionResult Editar(Guid id)
     {
-        TempData.AddErrorMessage(resultado);
-        return RedirectToAction(nameof(Listar));
+        Result<DetalhesTarefaDto> resultado = servicoTarefa.SelecionarPorId(id);
+
+        if (resultado.IsFailed)
+        {
+            TempData.AddErrorMessage(resultado);
+
+            return RedirectToAction(nameof(Listar));
+        }
+
+        EditarTarefaViewModel editarVm = mapeador.Map<EditarTarefaViewModel>(resultado.Value);
+
+        return View(editarVm);
     }
-
-    // 1. Mapeia a tarefa (O AutoMapper faz o grosso, menos a lista de itens)
-    var editarVmBase = mapeador.Map<EditarTarefaViewModel>(resultado.Value);
-
-    // 2. BUSCA DIRETA: Acesse a entidade tarefa original (que está dentro do resultado)
-    // Supondo que resultado.Value contenha a entidade Tarefa ou os dados dela
-    var tarefaEntidade = resultado.Value; 
-
-    // 3. Converte manualmente os itens da entidade para a ViewModel
-    var itensVm = tarefaEntidade.Itens
-        .Select(i => new ItensDeTarefasViewModel(
-            i.Id, 
-            i.Titulo, 
-            i.StatusConclusao, 
-            tarefaEntidade.Id))
-        .ToList();
-
-    // 4. Cria a ViewModel final com os itens populados
-    var editarVm = editarVmBase with { Itens = itensVm };
-
-    return View(editarVm);
-}
 
     [HttpPost]
     public ActionResult Editar(EditarTarefaViewModel editarVm)
@@ -174,7 +157,8 @@ public ActionResult Editar(Guid id)
     public ActionResult AdicionarItemCadastro(CadastrarTarefaViewModel cadastrarVm)
     {
         List<ItensDeTarefasViewModel> itens = cadastrarVm.Itens?.ToList() ?? new List<ItensDeTarefasViewModel>();
-        itens.Add(new ItensDeTarefasViewModel(Guid.NewGuid(), string.Empty, false));
+        itens.Add(new ItensDeTarefasViewModel(null, string.Empty, false));
+
         ModelState.Clear();
 
         return View("Cadastrar", cadastrarVm with { Itens = itens });
@@ -217,4 +201,3 @@ public ActionResult Editar(Guid id)
         return View("Editar", editarVm with { Itens = itens });
     }
 }
-
