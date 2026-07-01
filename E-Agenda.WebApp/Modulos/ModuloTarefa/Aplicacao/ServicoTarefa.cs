@@ -21,7 +21,7 @@ public class ServicoTarefa
         Tarefa novaTarefa = new Tarefa(dto.Titulo, dto.PrioridadeTarefa, dto.DataConclusao);
 
         List<ItensDeTarefas> itens = itensDto
-            .Select(i => new ItensDeTarefas())
+            .Select(i => new ItensDeTarefas(i.Titulo))
             .ToList();
 
         novaTarefa.ItemTarefa = itens;
@@ -47,7 +47,7 @@ public class ServicoTarefa
         };
 
         List<ItensDeTarefas> itens = itensDto
-            .Select(i => new ItensDeTarefas())
+            .Select(i => new ItensDeTarefas(i.Titulo))
             .ToList();
 
         tarefaAtualizada.ItemTarefa = itens;

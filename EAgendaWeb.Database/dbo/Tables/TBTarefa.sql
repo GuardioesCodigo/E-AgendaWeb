@@ -6,11 +6,10 @@ CREATE TABLE [dbo].[TBTarefa] (
     [DataConclusao]       DATETIME2 (0)    NULL,
     [StatusConclusao]     NVARCHAR (50)    NOT NULL,
     [PercentualConcluido] INT              NOT NULL,
-    [ItemTarefa]          UNIQUEIDENTIFIER NOT NULL
+    [ItemTarefa]          UNIQUEIDENTIFIER NULL
 );
 GO
 
 ALTER TABLE [dbo].[TBTarefa]
     ADD CONSTRAINT [PK_TBTarefa] PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
-

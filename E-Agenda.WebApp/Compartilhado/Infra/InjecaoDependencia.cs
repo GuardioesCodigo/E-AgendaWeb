@@ -6,7 +6,6 @@ using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Infra;
 using E_Agenda.WebApp.Modulos.ModuloDespesas.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
-using E_Agenda.WebApp.Modulos.ModuloTarefa.Infra;
 using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloCompromisso.Infra;
 using E_Agenda.WebApp.Modulos.ModuloDespesa.Infra;
@@ -30,7 +29,7 @@ public static class InjecaoDependencia
 
         services.AddScoped<IRepositorioCategoria, RepositorioCategoriaEmSql>();
         services.AddScoped<IRepositorioDepesa, RepositorioDespesaEmSql>();
-        services.AddScoped<IRepositorioTarefa, RepositorioTarefaEmArquivo>();
+        services.AddScoped<IRepositorioTarefa, RepositorioTarefaEmSql>();
 
         services.AddScoped<IRepositorio<Contatos>, RepositorioContatosEmArquivo>();
         services.AddScoped<IRepositorioContatos, RepositorioContatosEmArquivo>();
