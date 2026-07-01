@@ -130,6 +130,35 @@ public class ServicoTarefa
             );
     }
 
+    public Result ConcluirItem(Guid tarefaId, Guid itemId)
+    {
+        Tarefa? tarefa = repositorioTarefa.SelecionarPorId(tarefaId);
+
+        if (tarefa == null)
+            return Result.Fail("Tarefa não encontrada.");
+
+        ItensDeTarefas? item = tarefa.ItemTarefa
+            .FirstOrDefault(i => i.Id == itemId);
+
+        if (item == null)
+            return Result.Fail("Item não encontrado nesta tarefa.");
+
+        item.StatusConclusao = !item.StatusConclusao;
+
+        int totalItens = tarefa.ItemTarefa.Count;
+        int itensConcluidos = tarefa.ItemTarefa.Count(i => i.StatusConclusao);
+
+        tarefa.PercentualConcluido = totalItens > 0
+            ? (int)Math.Round((itensConcluidos * 100.0) / totalItens)
+            : 0;
+
+        tarefa.StatusConclusao = tarefa.PercentualConcluido == 100;
+
+        repositorioTarefa.Editar(tarefaId, tarefa);
+
+        return Result.Ok();
+    }
+
     private static Result ValidarEntidade(Tarefa tarefa)
     {
         List<string> erros = tarefa.Validar();

@@ -212,4 +212,15 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
 
         return View("Editar", editarVm with { Itens = itens });
     }
+
+    [HttpPost]
+    public ActionResult ConcluirItem(Guid tarefaId, Guid itemId)
+    {
+        Result resultado = servicoTarefa.ConcluirItem(tarefaId, itemId);
+
+        if (resultado.IsFailed)
+            TempData.AddErrorMessage(resultado);
+
+        return RedirectToAction(nameof(Visualizar), new { id = tarefaId });
+    }
 }
