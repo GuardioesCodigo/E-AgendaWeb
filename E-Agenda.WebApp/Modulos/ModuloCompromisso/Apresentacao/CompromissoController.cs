@@ -8,8 +8,6 @@ using E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
 {
-    [Route("Contatos/[action]/{id?}")]
-    public class ContatosController : Controller
     [Route("Compromissos/[action]/{id?}")]
     public class CompromissoController : Controller
     {
@@ -33,27 +31,6 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
         [HttpGet]
         public IActionResult Cadastrar() => View(new CadastrarCompromissoViewModel());
 
-        // No ContatosController.cs
-[HttpPost]
-public IActionResult Cadastrar(CadastrarContatosViewModel model)
-{
-    if (!ModelState.IsValid) return View(model);
-
-    // O Controller mapeia UMA VEZ
-    var contato = _mapper.Map<Contatos>(model);
-
-    try
-    {
-        // O Serviço recebe o objeto já mapeado e o valida
-        _servico.Cadastrar(contato); 
-        return RedirectToAction("Listar");
-    }
-    catch (Exception ex)
-    {
-        ModelState.AddModelError("", ex.Message);
-        return View(model);
-    }
-}
         [HttpPost]
         public IActionResult Cadastrar(CadastrarCompromissoViewModel model)
         {
@@ -77,10 +54,6 @@ public IActionResult Cadastrar(CadastrarContatosViewModel model)
         [HttpGet]
         public IActionResult Editar(Guid id)
         {
-            var contato = _servico.SelecionarPorId(id);
-            if (contato == null) return NotFound();
-
-            var model = _mapper.Map<EditarContatosViewModel>(contato);
             var compromisso = _servico.SelecionarPorId(id);
             if (compromisso == null) return NotFound();
 
