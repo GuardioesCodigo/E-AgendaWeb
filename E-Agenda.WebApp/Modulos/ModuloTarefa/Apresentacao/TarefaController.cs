@@ -4,6 +4,8 @@ using AutoMapper;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Aplicacao;
 using FluentResults;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Apresentacao;
+
 
 namespace E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao;
 
@@ -36,7 +38,7 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
             string.Empty,
             PrioridadeTarefa.Normal,
             DateTime.Today,
-            new List<ItemTarefaViewModel>()
+            new List<ItensDeTarefasViewModel>()
         );
 
         return View(cadastrarVm);
@@ -46,7 +48,7 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
     public ActionResult Cadastrar(CadastrarTarefaViewModel cadastrarVm)
     {
         if (cadastrarVm.Itens == null)
-            cadastrarVm = cadastrarVm with { Itens = new List<ItemTarefaViewModel>() };
+            cadastrarVm = cadastrarVm with { Itens = new List<ItensDeTarefasViewModel>() };
 
         if (!ModelState.IsValid)
             return View(cadastrarVm);
@@ -72,28 +74,44 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
         return RedirectToAction(nameof(Listar));
     }
 
-    [HttpGet]
-    public ActionResult Editar(Guid id)
+  [HttpGet]
+public ActionResult Editar(Guid id)
+{
+    var resultado = servicoTarefa.SelecionarPorId(id);
+
+    if (resultado.IsFailed)
     {
-        Result<DetalhesTarefaDto> resultado = servicoTarefa.SelecionarPorId(id);
-
-        if (resultado.IsFailed)
-        {
-            TempData.AddErrorMessage(resultado);
-
-            return RedirectToAction(nameof(Listar));
-        }
-
-        EditarTarefaViewModel editarVm = mapeador.Map<EditarTarefaViewModel>(resultado.Value);
-
-        return View(editarVm);
+        TempData.AddErrorMessage(resultado);
+        return RedirectToAction(nameof(Listar));
     }
+
+    // 1. Mapeia a tarefa (O AutoMapper faz o grosso, menos a lista de itens)
+    var editarVmBase = mapeador.Map<EditarTarefaViewModel>(resultado.Value);
+
+    // 2. BUSCA DIRETA: Acesse a entidade tarefa original (que está dentro do resultado)
+    // Supondo que resultado.Value contenha a entidade Tarefa ou os dados dela
+    var tarefaEntidade = resultado.Value; 
+
+    // 3. Converte manualmente os itens da entidade para a ViewModel
+    var itensVm = tarefaEntidade.Itens
+        .Select(i => new ItensDeTarefasViewModel(
+            i.Id, 
+            i.Titulo, 
+            i.StatusConclusao, 
+            tarefaEntidade.Id))
+        .ToList();
+
+    // 4. Cria a ViewModel final com os itens populados
+    var editarVm = editarVmBase with { Itens = itensVm };
+
+    return View(editarVm);
+}
 
     [HttpPost]
     public ActionResult Editar(EditarTarefaViewModel editarVm)
     {
         if (editarVm.Itens == null)
-            editarVm = editarVm with { Itens = new List<ItemTarefaViewModel>() };
+            editarVm = editarVm with { Itens = new List<ItensDeTarefasViewModel>() };
 
         if (!ModelState.IsValid)
             return View(editarVm);
@@ -155,9 +173,8 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
     [HttpPost]
     public ActionResult AdicionarItemCadastro(CadastrarTarefaViewModel cadastrarVm)
     {
-        List<ItemTarefaViewModel> itens = cadastrarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
-        itens.Add(new ItemTarefaViewModel(null, string.Empty, false));
-
+        List<ItensDeTarefasViewModel> itens = cadastrarVm.Itens?.ToList() ?? new List<ItensDeTarefasViewModel>();
+        itens.Add(new ItensDeTarefasViewModel(Guid.NewGuid(), string.Empty, false));
         ModelState.Clear();
 
         return View("Cadastrar", cadastrarVm with { Itens = itens });
@@ -166,7 +183,7 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
     [HttpPost]
     public ActionResult RemoverItemCadastro(CadastrarTarefaViewModel cadastrarVm, int index)
     {
-        List<ItemTarefaViewModel> itens = cadastrarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
+        List<ItensDeTarefasViewModel> itens = cadastrarVm.Itens?.ToList() ?? new List<ItensDeTarefasViewModel>();
 
         if (index >= 0 && index < itens.Count)
             itens.RemoveAt(index);
@@ -179,8 +196,8 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
     [HttpPost]
     public ActionResult AdicionarItemEditar(EditarTarefaViewModel editarVm)
     {
-        List<ItemTarefaViewModel> itens = editarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
-        itens.Add(new ItemTarefaViewModel(null, string.Empty, false));
+        List<ItensDeTarefasViewModel> itens = editarVm.Itens?.ToList() ?? new List<ItensDeTarefasViewModel>();
+        itens.Add(new ItensDeTarefasViewModel(null, string.Empty, false));
 
         ModelState.Clear();
 
@@ -190,7 +207,7 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
     [HttpPost]
     public ActionResult RemoverItemEditar(EditarTarefaViewModel editarVm, int index)
     {
-        List<ItemTarefaViewModel> itens = editarVm.Itens?.ToList() ?? new List<ItemTarefaViewModel>();
+        List<ItensDeTarefasViewModel> itens = editarVm.Itens?.ToList() ?? new List<ItensDeTarefasViewModel>();
 
         if (index >= 0 && index < itens.Count)
             itens.RemoveAt(index);

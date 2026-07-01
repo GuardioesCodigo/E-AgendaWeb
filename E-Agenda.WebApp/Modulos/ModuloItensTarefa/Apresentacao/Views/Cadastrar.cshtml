@@ -1,0 +1,59 @@
+@using E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao
+@model CadastrarTarefaViewModel
+
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Cadastro de Tarefa</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Cadastrar" method="post">
+            
+            <div class="mb-3">
+                <label asp-for="Titulo" class="form-label">Título</label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+
+            <!-- ... outros campos como Prioridade e Data ... -->
+
+            <hr />
+            <h5>Itens da Tarefa</h5>
+            
+            <table class="table table-striped table-hover mt-3">
+                <thead>
+                    <tr>
+                        <th>Título do Item</th>
+                        <th class="text-center" style="width: 100px;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Itens.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <input asp-for="Itens[i].Titulo" class="form-control" placeholder="Descrição do item" />
+                                <span asp-validation-for="Itens[i].Titulo" class="text-danger"></span>
+                            </td>
+                            <td class="text-center">
+                                <button type="submit" asp-action="RemoverItemCadastro" asp-route-index="@i" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Remover
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="mt-2">
+                <button type="submit" asp-action="AdicionarItemCadastro" class="btn btn-secondary btn-sm">
+                    <i class="bi bi-plus-circle"></i> + Adicionar Item
+                </button>
+            </div>
+
+            <div class="mt-4 text-end">
+                <a asp-action="Listar" class="btn btn-outline-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Salvar Tarefa</button>
+            </div>
+        </form>
+    </div>
+</div>

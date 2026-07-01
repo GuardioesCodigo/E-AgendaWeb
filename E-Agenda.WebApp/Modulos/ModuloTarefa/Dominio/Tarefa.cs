@@ -11,16 +11,35 @@ public class Tarefa : EntidadeBase<Tarefa>
     public DateTime DataCriacao {get; set;}
     public DateTime DataConclusao {get; set;} = DateTime.Now;
     public bool StatusConclusao { get; set; }
-    public int PercentualConcluido { get; set; }
-    public List<ItensTarefa> ItemTarefa { get; set; } = [];
+    public decimal PercentualConcluido { get;set; }
+    public List<ItensDeTarefas> Itens { get; set; } = new List<ItensDeTarefas>();
 
+
+    public void CalcularPercentual()
+    {
+        if (Itens.Count == 0)
+        {
+            PercentualConcluido = 0;
+            return;
+        }
+
+        int totalItens = Itens.Count;
+        int itensConcluidos = Itens.Count(i => i.StatusConclusao);
+
+        // Regra de 3: (Concluidos * 100) / Total
+        PercentualConcluido = (int)(decimal)itensConcluidos * 100 / totalItens;
+        
+        // Se 100% concluído, muda status da tarefa
+        if (PercentualConcluido == 100)
+            StatusConclusao = true;
+    }
     public Tarefa() { }
 
     public Tarefa(
         string titulo,
         PrioridadeTarefa prioridadeTarefa,
         DateTime dataConclusao,
-        List<ItensTarefa>? itemTarefa = null
+        List<ItensDeTarefas>? itemTarefa = null
     )
     {
         Titulo = titulo;
@@ -29,7 +48,7 @@ public class Tarefa : EntidadeBase<Tarefa>
         DataConclusao = dataConclusao;
         StatusConclusao = false;
         PercentualConcluido = 0;
-        ItemTarefa = itemTarefa ?? new List<ItensTarefa>();
+        Itens = itemTarefa ?? new List<ItensDeTarefas>();
     }
 
     public override List<string> Validar()
@@ -67,6 +86,11 @@ public class Tarefa : EntidadeBase<Tarefa>
         DataConclusao = entidadeAtualizada.DataConclusao;
         StatusConclusao = entidadeAtualizada.StatusConclusao;
         PercentualConcluido = entidadeAtualizada.PercentualConcluido;
-        ItemTarefa = entidadeAtualizada.ItemTarefa;
+        Itens = entidadeAtualizada.Itens;
+    }
+
+    internal void AdicionarItem(ItensDeTarefas novoItem)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using E_Agenda.WebApp.Modulos.ModuloItensTarefa.Apresentacao;
+
 
 namespace E_Agenda.WebApp.Modulos.ModuloTarefa.Apresentacao;
 
@@ -14,15 +16,7 @@ public record ListarTarefaViewModel(
     int PercentualConcluido
 );
 
-public record ItemTarefaViewModel(
-    Guid? Id,
 
-    [Required(ErrorMessage = "O campo \"Título\" do item deve ser preenchido.")]
-    [StringLength(100, MinimumLength = 2, ErrorMessage = "O campo \"Título\" do item deve conter entre 2 e 100 caracteres.")]
-    string Titulo,
-
-    bool StatusConclusao
-);
 
 public record CadastrarTarefaViewModel(
     [Required(ErrorMessage = "O campo \"Título\" deve ser preenchido.")]
@@ -36,7 +30,7 @@ public record CadastrarTarefaViewModel(
     DateTime DataConclusao,
 
     [ValidateNever]
-    List<ItemTarefaViewModel> Itens
+    List<ItensDeTarefasViewModel> Itens
 );
 
 public record EditarTarefaViewModel(
@@ -58,7 +52,7 @@ public record EditarTarefaViewModel(
     int PercentualConcluido,
 
     [ValidateNever]
-    List<ItemTarefaViewModel> Itens
+    List<ItensDeTarefasViewModel> Itens
 );
 
 public record ExcluirTarefaViewModel(
@@ -78,5 +72,5 @@ public record DetalhesTarefaViewModel(
     DateTime DataConclusao,
     bool StatusConclusao,
     int PercentualConcluido,
-    List<ItemTarefaViewModel> Itens
+    List<ItensDeTarefasViewModel> Itens
 );

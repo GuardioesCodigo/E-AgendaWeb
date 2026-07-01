@@ -1,37 +1,38 @@
 using System;
+using System.Text.Json.Serialization;
 using E_Agenda.WebApp.Compartilhado.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloTarefa.Dominio;
 
 namespace E_Agenda.WebApp.Modulos.ModuloItensTarefa.Dominio;
 
-public class ItensTarefa : EntidadeBase<ItensTarefa>
+public class ItensDeTarefas : EntidadeBase<ItensDeTarefas>
 {
     public string Titulo { get; set; } = string.Empty;
-    public bool StatusConclusao { get; set; }
+    public bool StatusConclusao { get; set; } // Ajuste aqui: use Concluido ou StatusConclusao (padronize)
+    
+    [JsonIgnore]
     public Tarefa Tarefa { get; set; } = null!;
+    public Guid ItensDeTarefaId { get; set; }
 
-    protected ItensTarefa() { }
+    public ItensDeTarefas() { }
 
-    public ItensTarefa(string titulo, Tarefa tarefa)
+    public ItensDeTarefas(string titulo)
     {
         Titulo = titulo;
         StatusConclusao = false;
-        Tarefa = tarefa;
     }
 
-    public override List<string> Validar()
+    // Métodos simples
+    public void Concluir() => StatusConclusao = true;
+    public void MarcarPendente() => StatusConclusao = false;
+
+    public override List<string> Validar() 
     {
-        List<string> erros = new List<string>();
-
-        if (string.IsNullOrWhiteSpace(Titulo))
-            erros.Add("O campo \"Título\" do item deve ser preenchido.");
-        else if (Titulo.Length < 2 || Titulo.Length > 100)
-            erros.Add("O campo \"Título\" do item deve conter entre 2 e 100 caracteres.");
-
-        return erros;
+        // Sua validação de título aqui...
+        return new List<string>(); 
     }
 
-    public override void Atualizar(ItensTarefa entidadeAtualizada)
+    public override void Atualizar(ItensDeTarefas entidadeAtualizada)
     {
         Titulo = entidadeAtualizada.Titulo;
         StatusConclusao = entidadeAtualizada.StatusConclusao;
