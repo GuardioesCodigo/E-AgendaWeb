@@ -93,6 +93,8 @@ public class DespesaController(ServicoDespesa servicoDespesa, IMapper mapeador) 
             Categorias = ObterCategoriasDisponiveis()
         };
 
+        ViewBag.Categorias = ObterCategoriasDisponiveis();
+
         return View(editarVm);
     }
  
