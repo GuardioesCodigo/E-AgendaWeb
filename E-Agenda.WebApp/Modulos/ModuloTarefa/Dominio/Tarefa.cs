@@ -9,7 +9,7 @@ public class Tarefa : EntidadeBase<Tarefa>
     public string Titulo {get; set;} = string.Empty;
     public PrioridadeTarefa PrioridadeTarefa {get; set;}
     public DateTime DataCriacao {get; set;}
-    public DateTime DataConclusao {get; set;} = DateTime.Now;
+    public DateTime DataConclusao {get; set;}
     public bool StatusConclusao { get; set; }
     public decimal PercentualConcluido { get; set; }
     public List<ItensDeTarefas> ItemTarefa { get; set; } = [];
@@ -48,7 +48,7 @@ public class Tarefa : EntidadeBase<Tarefa>
         if (DataConclusao == default)
             erros.Add("A \"Data de Conclusão\" deve ser preenchida.");
 
-        else if (DataConclusao < DataCriacao)
+        else if (DataConclusao.Date < DataCriacao.Date)
             erros.Add("A \"Data de Conclusão\" não pode ser anterior à \"Data de Criação\".");
 
         if (PercentualConcluido < 0 || PercentualConcluido > 100)

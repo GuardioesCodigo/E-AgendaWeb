@@ -97,13 +97,25 @@ public class TarefaController(IMapper mapeador, ServicoTarefa servicoTarefa) : C
             editarVm = editarVm with { Itens = new List<ItensDeTarefasViewModel>() };
 
         if (!ModelState.IsValid)
+        {
+            foreach (var erro in ModelState.Where(x => x.Value?.Errors.Count > 0))
+            {
+                Console.WriteLine($"  {erro.Key}: {string.Join(", ", erro.Value!.Errors.Select(e => e.ErrorMessage))}");
+            }
+
             return View(editarVm);
+        }
 
         EditarTarefaDto dto = mapeador.Map<EditarTarefaDto>(editarVm);
         Result resultado = servicoTarefa.Editar(dto);
 
         if (resultado.IsFailed)
         {
+            foreach (var erro in resultado.Errors)
+            {
+                Console.WriteLine($"  {erro.Message}");
+            }
+
             ModelState.AddModelError(resultado);
 
             return View(editarVm);
