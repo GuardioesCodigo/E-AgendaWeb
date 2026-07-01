@@ -16,12 +16,15 @@ public class ServicoTarefa
 
     public Result Cadastrar(CadastrarTarefaDto dto)
     {
+        if (ExisteTarefaComTitulo(dto.Titulo))
+            return Falha(nameof(dto.Titulo), "Já existe uma Tarefa com este Título.");
+
         List<CadastrarItemTarefaDto> itensDto = dto.Itens ?? new List<CadastrarItemTarefaDto>();
 
         Tarefa novaTarefa = new Tarefa(dto.Titulo, dto.PrioridadeTarefa, dto.DataConclusao);
 
         List<ItensDeTarefas> itens = itensDto
-            .Select(i => new ItensDeTarefas(i.Titulo))
+            .Select(i => new ItensDeTarefas())
             .ToList();
 
         novaTarefa.ItemTarefa = itens;
@@ -37,6 +40,9 @@ public class ServicoTarefa
 
         if (tarefa == null)
             return Result.Fail("Tarefa não encontrada.");
+
+        if (ExisteTarefaComTitulo(dto.Titulo, dto.Id))
+            return Falha(nameof(dto.Titulo), "Já existe uma Tarefa com este Título.");
 
         List<EditarItemTarefaDto> itensDto = dto.Itens ?? new List<EditarItemTarefaDto>();
 
@@ -62,7 +68,7 @@ public class ServicoTarefa
         repositorioTarefa.Editar(dto.Id, tarefa);
 
         return Result.Ok();
-    }  
+    }
 
     public Result Excluir(Guid id)
     {
@@ -113,6 +119,15 @@ public class ServicoTarefa
                 tarefa.PercentualConcluido,
                 itens
             ));
+    }
+
+    private bool ExisteTarefaComTitulo(string titulo, Guid? idIgnorado = null)
+    {
+        return repositorioTarefa.SelecionarTodos()
+            .Any(t =>
+                t.Titulo.Trim().Equals(titulo.Trim(), StringComparison.OrdinalIgnoreCase) &&
+                t.Id != idIgnorado
+            );
     }
 
     private static Result ValidarEntidade(Tarefa tarefa)
