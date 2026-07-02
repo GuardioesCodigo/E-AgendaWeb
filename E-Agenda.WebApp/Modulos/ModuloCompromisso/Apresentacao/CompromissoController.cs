@@ -120,8 +120,17 @@ namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao
         [HttpPost, ActionName("Excluir")]
         public IActionResult ConfirmarExcluir(Guid id)
         {
-            _servico.Excluir(id);
-            return RedirectToAction("Listar");
+           try
+            {
+                _servico.Excluir(id);
+                return RedirectToAction("Listar");
+            }
+            catch (Exception ex)
+            {
+                // Agora o erro é capturado e enviado via TempData
+                TempData["MensagemErro"] = ex.Message;
+                return RedirectToAction("Listar");
+            }
         }
     }
 }

@@ -152,7 +152,7 @@ public IActionResult Visualizar(Guid id)
             catch (Exception ex)
             {
                 // Se ocorrer um erro (como ter vínculo com compromisso), volta para a lista com a mensagem
-                TempData["Erro"] = ex.Message;
+                TempData["MensagemErro"] = ex.Message;
                 return RedirectToAction("Listar");
             }
         }

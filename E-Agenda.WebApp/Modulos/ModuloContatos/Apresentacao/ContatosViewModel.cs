@@ -16,7 +16,6 @@ public class CadastrarContatosViewModel
 
     [Phone(ErrorMessage = "Formato de telefone inválido.")]
     [Required(ErrorMessage = "O telefone é obrigatório.")]
-    [RegularExpression(@"^\(\d{2}\) \d{4,5}-\d{4}$", ErrorMessage = "Use o formato (99) 99999-9999")]
     public string Telefone { get; set; } = string.Empty;
     public List<CompromissoCheckboxViewModel> Compromissos { get; set; } = new();
     public string? Cargo { get; set; } = string.Empty;

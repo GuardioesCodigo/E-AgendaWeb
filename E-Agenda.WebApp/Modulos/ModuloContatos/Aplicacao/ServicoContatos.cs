@@ -25,15 +25,22 @@ public class ServicoContatos
     public void Cadastrar(CadastrarContatosViewModel model)
 {
     // 1. Mapeamento
-    var contato = _mapper.Map<Contatos>(model); // Usei 'contato' em vez de 'novoContato'
-    contato.Id = Guid.NewGuid();
-    
-    // 2. Persistência (Verifique o nome correto do seu campo de repositório!)
-    // Se o seu campo no construtor for _repositorio, use _repositorio aqui
-    _repositorio.Cadastrar(contato); 
+    var novoContato = _mapper.Map<Contatos>(model);
+    novoContato.Id = Guid.NewGuid();
 
-    // 3. Vinculação de Compromissos
-    // Verifica se a lista de compromissos no model não está vazia antes do foreach
+    // 2. APLIQUE AS VALIDAÇÕES AQUI (Mesmo do Editar)
+    var erros = novoContato.Validar();
+    var todosOsContatos = _repositorio.SelecionarTodos();
+    erros.AddRange(novoContato.ValidarDuplicidade(todosOsContatos));
+
+    if (erros.Any())
+        throw new Exception(string.Join(" | ", erros));
+
+    // 3. Persistência
+    _repositorio.Cadastrar(novoContato);
+    _contexto.Salvar(); // IMPORTANTE: Lembre-se de salvar o contexto!
+
+    // 4. Vinculação de Compromissos (Mantém como estava)
     if (model.Compromissos != null)
     {
         foreach (var item in model.Compromissos.Where(c => c.Marcado))
@@ -41,7 +48,7 @@ public class ServicoContatos
             var compromisso = _repositorioCompromisso.SelecionarPorId(item.Id);
             if (compromisso != null)
             {
-                compromisso.ContatoId = contato.Id;
+                compromisso.ContatoId = novoContato.Id;
                 _repositorioCompromisso.Editar(compromisso.Id, compromisso);
             }
         }

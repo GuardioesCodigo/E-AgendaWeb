@@ -16,7 +16,6 @@
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             
             <form asp-action="Cadastrar" method="post">
-                
                 <div class="mb-3">
                     <label asp-for="Nome" class="form-label fw-semibold text-secondary">Nome</label>
                     <input asp-for="Nome" class="form-control rounded-3" placeholder="Nome completo" />
@@ -72,14 +71,17 @@
 
             </form>
 
-            @section Scripts {
-                <partial name="/Compartilhado/Apresentacao/Views/_ValidationScriptsPartial.cshtml" />
-                <script>
-                    $(document).ready(function(){
-                        $('#telefone').mask('(00) 00000-0000');
-                    });
-                </script>
-            }
+           @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Certifique-se de que o seletor busca pelo name ou adicione a classe
+            $('input[name="Telefone"]').mask('(00) 00000-0000');
+        });
+    </script>
+}
         </div>
     </div>
 </div>
