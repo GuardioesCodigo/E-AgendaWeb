@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using E_Agenda.WebApp.Compartilhado.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 
 namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
 
@@ -12,6 +13,8 @@ public class Compromisso : EntidadeBase<Compromisso>
     public TimeSpan HoraInicio { get; set; }
     public TimeSpan HoraTermino { get; set; }
     public TipoCompromisso Tipo { get; set; }
+    public Guid? ContatoId { get; set; } // O '?' permite compromissos sem contato (opcional)
+    public Contatos? Contato { get; set; }
     public string? Local { get; set; }
 
     // Construtor padrão necessário para frameworks (ex: EF ou Serialização)

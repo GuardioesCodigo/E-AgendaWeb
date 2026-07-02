@@ -3,11 +3,14 @@ using System.Linq; // Necessário para o .All()
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using E_Agenda.WebApp.Compartilhado.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
+// using E_Agenda.WebApp.Modulos.ModuloCompromisso
 namespace E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 public class Contatos : EntidadeBase<Contatos>
 {
     public string Nome {get; set;}
     public string Email {get ;set;}
+    public List<Compromisso> Compromissos { get; set; } = new();
     public string ValidarEmail()
     {
         try

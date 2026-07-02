@@ -1,71 +1,71 @@
-@using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
+@model IEnumerable<E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao.ListarContatosViewModel>
+
 @{
+    ViewData["Title"] = "Contatos";
     Layout = "_Layout";
 }
-@model IEnumerable<ListarContatosViewModel>
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        @TempData["MensagemErro"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
 
-    
-    <a class="btn btn-primary rounded-pill px-4 mb-3" asp-action="Cadastrar">
-        <i class="bi bi-plus-lg me-1"></i> Novo Contato
-    </a>
+<a class="btn btn-primary rounded-pill px-4 mb-3" asp-action="Cadastrar">
+    <i class="bi bi-plus-lg me-1"></i> Novo Contato
+</a>
 
 @if (!Model.Any())
 {
-    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
-        Nenhum contato cadastrado até o momento.
-    </div>
+    <div class="alert alert-info">Nenhum contato encontrado.</div>
 }
 else
 {
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-2">
-        @foreach (var c in Model)
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var contato in Model)
         {
             <div class="col">
-                <div class="card h-100">
-                    <div class="card-body">
-
-                        @* Cabeçalho do Card *@
-                        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
-                            <h5 class="card-title mb-0">@c.Nome</h5>
-                            <span class="badge text-bg-primary rounded-pill">
-                                @c.Id.ToString().Substring(0, 8)
+                <div class="card h-100 shadow-sm">
+                    @* Adicionamos position-relative aqui para servir de base para o ID *@
+                    <div class="card-body position-relative">
+                        
+                        @* ID posicionado no canto superior direito *@
+                        <div class="position-absolute top-0 end-0 p-2">
+                            <span class="badge bg-secondary" style="font-size: 0.7rem; opacity: 0.8;">
+                                ID: @contato.Id.ToString().Substring(0, 8)
                             </span>
                         </div>
 
-                        @* Detalhes *@
-                        <dl class="row g-2 mb-4">
-                            <dt class="col-5 text-secondary fw-semibold">Email</dt>
-                            <dd class="col-7 mb-0 text-truncate" title="@c.Email">@c.Email</dd>
+                        <h5 class="card-title">@contato.Nome</h5>
+                        
+                        <p class="card-text mt-3">
+                            <strong>Email:</strong> @contato.Email <br />
+                            <strong>Telefone:</strong> @contato.Telefone <br />
 
-                            <dt class="col-5 text-secondary fw-semibold">Telefone</dt>
-                            <dd class="col-7 mb-0">@c.Telefone</dd>
-
-                            @if (!string.IsNullOrWhiteSpace(c.Cargo))
+                            @if (!string.IsNullOrWhiteSpace(contato.Cargo))
                             {
-                                <dt class="col-5 text-secondary fw-semibold">Cargo</dt>
-                                <dd class="col-7 mb-0">@c.Cargo</dd>
+                                <span><strong>Cargo:</strong> @contato.Cargo</span> <br />
                             }
 
-                            @if (!string.IsNullOrWhiteSpace(c.Empresa))
+                            @if (!string.IsNullOrWhiteSpace(contato.Empresa))
                             {
-                                <dt class="col-5 text-secondary fw-semibold">Empresa</dt>
-                                <dd class="col-7 mb-0">@c.Empresa</dd>
+                                <span><strong>Empresa:</strong> @contato.Empresa</span>
                             }
-                        </dl>
-
-                        @* Botões de Ação *@
-                        <div class="d-flex flex-wrap gap-2 mt-auto justify-content-end">
-                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3"
-                               asp-action="Visualizar" asp-route-id="@c.Id">
-                                Ver Detalhes
+                        </p>
+                    </div>
+                    
+                    <div class="card-footer bg-transparent border-top-0">
+                        <td>
+                            <a asp-action="Visualizar" asp-route-id="@contato.Id" class="btn btn-sm btn-outline-info">
+                                <i class="bi bi-eye"></i> Visualizar
                             </a>
-                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3"
-                               asp-action="Editar" asp-route-id="@c.Id">Editar</a>
-                            <a class="btn btn-outline-danger btn-sm rounded-pill px-3"
-                               asp-action="Excluir" asp-route-id="@c.Id">Excluir</a>
-                        </div>
-
+                        </td>
+                        <a asp-action="Editar" asp-route-id="@contato.Id" class="btn btn-sm btn-outline-warning">Editar</a>
+                        <a asp-action="Excluir" asp-route-id="@contato.Id" class="btn btn-sm btn-outline-danger">Excluir</a>
                     </div>
                 </div>
             </div>

@@ -30,7 +30,6 @@ public static class InjecaoDependencia
         services.AddScoped<IRepositorioCategoria, RepositorioCategoriaEmSql>();
         services.AddScoped<IRepositorioDepesa, RepositorioDespesaEmSql>();
         services.AddScoped<IRepositorioTarefa, RepositorioTarefaEmSql>();
-
         services.AddScoped<IRepositorio<Contatos>, RepositorioContatosEmArquivo>();
         services.AddScoped<IRepositorioContatos, RepositorioContatosEmArquivo>();
         services.AddScoped<IRepositorio<Contatos>, RepositorioContatosEmArquivo>();

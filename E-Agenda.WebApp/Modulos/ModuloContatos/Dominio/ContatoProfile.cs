@@ -1,5 +1,7 @@
 using AutoMapper;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
+
 namespace E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 
 public class ContatosProfile : Profile
@@ -15,7 +17,10 @@ public class ContatosProfile : Profile
         CreateMap<Contatos, ListarContatosViewModel>();
         CreateMap<Contatos, VisualizarContatoViewModel>();
 
-        // Se você tiver uma classe separada para Listar, mantenha assim:
-        // CreateMap<Funcionario, ListarFuncionarioViewModel>();
+        CreateMap<EditarContatosViewModel, Contatos>()
+            .ForMember(dest => dest.Compromissos, opt => opt.Ignore());
+            
+        CreateMap<Contatos, EditarContatosViewModel>();
+
     }
 }

@@ -1,36 +1,61 @@
 @using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
 @{
-    Layout = "_Layout";
+    Layout = "_Layout"; // Define o layout padrão que você usa nas outras telas
 }
 @model VisualizarContatoViewModel
 
-<a class="btn btn-outline-secondary rounded-pill px-4 mb-4" asp-action="Listar">
-    <i class="bi bi-arrow-left me-1"></i> Voltar
-</a>
+<div style="max-width:640px;">
 
-<h2 class="mb-4"><i class="bi bi-person-badge"></i> @Model.Nome</h2>
+    <a asp-action="Listar" class="btn btn-outline-secondary rounded-pill px-4 mb-4">
+        <i class="bi bi-arrow-left me-1"></i> Voltar
+    </a>
 
-<div class="card border-0 shadow-sm rounded-4" style="max-width: 640px;">
-    <div class="card-body p-4">
-        <h5 class="card-title text-primary mb-3">Informações de Contato</h5>
-        
-        <dl class="row g-2 mb-0">
-            <dt class="col-5 text-secondary fw-semibold">Email</dt>
-            <dd class="col-7 mb-2">@Model.Email</dd>
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <h4 class="card-title fw-bold text-secondary mb-4">Detalhes do Contato</h4>
+            
+            <h3 class="fw-bold text-primary">@Model.Nome</h3>
+            <hr class="my-3" />
+            
+            <div class="row mb-3">
+                <div class="col-6">
+                    <p class="mb-1 text-muted small">Cargo</p>
+                    <p class="fw-semibold">@Model.Cargo</p>
+                </div>
+                <div class="col-6">
+                    <p class="mb-1 text-muted small">Empresa</p>
+                    <p class="fw-semibold">@Model.Empresa</p>
+                </div>
+            </div>
 
-            <dt class="col-5 text-secondary fw-semibold">Telefone</dt>
-            <dd class="col-7 mb-2">@Model.Telefone</dd>
+            <div class="mb-3">
+                <p class="mb-1 text-muted small">E-mail</p>
+                <p class="fw-semibold">@Model.Email</p>
+            </div>
+            
+            <div class="mb-4">
+                <p class="mb-1 text-muted small">Telefone</p>
+                <p class="fw-semibold">@Model.Telefone</p>
+            </div>
 
-            <dt class="col-5 text-secondary fw-semibold">Cargo</dt>
-            <dd class="col-7 mb-2">@(string.IsNullOrWhiteSpace(Model.Cargo) ? "-" : Model.Cargo)</dd>
-
-            <dt class="col-5 text-secondary fw-semibold">Empresa</dt>
-            <dd class="col-7 mb-0">@(string.IsNullOrWhiteSpace(Model.Empresa) ? "-" : Model.Empresa)</dd>
-        </dl>
-    </div>
-    <div class="card-footer bg-white border-0 p-4 pt-0">
-        <a asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-outline-primary rounded-pill px-4">
-            <i class="bi bi-pencil me-1"></i> Editar Contato
-        </a>
+            <h5 class="mt-4 fw-bold text-secondary">Compromissos Vinculados</h5>
+            @if (Model.Compromissos.Any())
+            {
+                <ul class="list-group list-group-flush border-top mt-2">
+                    @foreach (var comp in Model.Compromissos)
+                    {
+                        <li class="list-group-item bg-transparent ps-0 py-2">
+                            <i class="bi bi-calendar-event me-2 text-primary"></i>@comp
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <div class="alert alert-light border-0 text-muted mt-2">
+                    <i class="bi bi-info-circle me-2"></i>Nenhum compromisso associado.
+                </div>
+            }
+        </div>
     </div>
 </div>

@@ -1,12 +1,12 @@
+using AutoMapper;
 using E_Agenda.WebApp.Compartilhado.Dominio;
 using E_Agenda.WebApp.Compartilhado.Infra.Arquivos;
-using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
-using AutoMapper;
-using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
 using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
-using E_Agenda.WebApp.Modulos.ModuloCompromisso.Infra;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 
 namespace E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
+
 public class ServicoContatos
 {
     private readonly IRepositorio<Contatos> _repositorio;
@@ -14,51 +14,60 @@ public class ServicoContatos
     private readonly IMapper _mapper;
     private readonly IRepositorioCompromisso _repositorioCompromisso;
 
-    public ServicoContatos(IRepositorio<Contatos> repositorio, ContextoJson contexto, IMapper mapper)
+    public ServicoContatos(IRepositorio<Contatos> repositorio, ContextoJson contexto, IMapper mapper, IRepositorioCompromisso repositorioCompromisso)
     {
         _repositorio = repositorio;
         _contexto = contexto;
         _mapper = mapper;
+        _repositorioCompromisso = repositorioCompromisso;
     }
 
-    public void Cadastrar(Contatos novoContato) // Receba o objeto já mapeado
+    public void Cadastrar(CadastrarContatosViewModel model)
 {
-    var todosOsContatos = _repositorio.SelecionarTodos();
-    
-    var erros = novoContato.Validar();
-
-    var contatosExistentes = _repositorio.SelecionarTodos();
-    erros.AddRange(novoContato.ValidarDuplicidade(contatosExistentes));
-
-    if (erros.Count > 0)
-        throw new Exception(string.Join(" | ", erros));
-
-    // 2. Persistência
+    // 1. Mapeamento
+    var novoContato = _mapper.Map<Contatos>(model);
     novoContato.Id = Guid.NewGuid();
-    _repositorio.Cadastrar(novoContato);
-    _contexto.Salvar();
-}
 
-public void Editar(EditarContatosViewModel model)
-{
-    // Aqui sim usamos o mapper, pois 'model' é uma ViewModel, não um Contatos
-    var contatoEditado = _mapper.Map<Contatos>(model);
-    contatoEditado.Id = model.Id;
-
-    // Agora validamos o objeto que o mapper criou
-    var erros = contatoEditado.Validar();
+    // 2. APLIQUE AS VALIDAÇÕES AQUI (Mesmo do Editar)
+    var erros = novoContato.Validar();
     var todosOsContatos = _repositorio.SelecionarTodos();
-    erros.AddRange(contatoEditado.ValidarDuplicidade(todosOsContatos));
-    
-    if (erros.Count > 0)
+    erros.AddRange(novoContato.ValidarDuplicidade(todosOsContatos));
+
+    if (erros.Any())
         throw new Exception(string.Join(" | ", erros));
 
-    // Persistência
-    _repositorio.Editar(contatoEditado.Id, contatoEditado);
-    _contexto.Salvar();
-}
+    // 3. Persistência
+    _repositorio.Cadastrar(novoContato);
+    _contexto.Salvar(); // IMPORTANTE: Lembre-se de salvar o contexto!
 
-    
+    // 4. Vinculação de Compromissos (Mantém como estava)
+    if (model.Compromissos != null)
+    {
+        foreach (var item in model.Compromissos.Where(c => c.Marcado))
+        {
+            var compromisso = _repositorioCompromisso.SelecionarPorId(item.Id);
+            if (compromisso != null)
+            {
+                compromisso.ContatoId = novoContato.Id;
+                _repositorioCompromisso.Editar(compromisso.Id, compromisso);
+            }
+        }
+    }
+}
+    public void Editar(EditarContatosViewModel model)
+    {
+        var contatoEditado = _mapper.Map<Contatos>(model);
+        
+        var erros = contatoEditado.Validar();
+        var todosOsContatos = _repositorio.SelecionarTodos();
+        erros.AddRange(contatoEditado.ValidarDuplicidade(todosOsContatos));
+        
+        if (erros.Any())
+            throw new Exception(string.Join(" | ", erros));
+
+        _repositorio.Editar(contatoEditado.Id, contatoEditado);
+        _contexto.Salvar();
+    }
 
     public void Excluir(Guid id)
     {
@@ -66,13 +75,8 @@ public void Editar(EditarContatosViewModel model)
 
         if (temVinculo)
         {
-            throw new Exception("Este contato não pode ser excluido pois está vinculado a");
+            throw new Exception("Não é possível excluir este contato, pois existem compromissos vinculados a ele.");
         }
-
-        if (temVinculo)
-            {
-                throw new Exception("Não é possível excluir este contato, pois existem compromissos vinculados a ele.");
-            }
 
         _repositorio.Excluir(id);
         _contexto.Salvar();
@@ -81,6 +85,4 @@ public void Editar(EditarContatosViewModel model)
     public List<Contatos> SelecionarTodos() => _repositorio.SelecionarTodos();
     
     public Contatos? SelecionarPorId(Guid id) => _repositorio.SelecionarPorId(id);
-
-    // Implementar Editar e Excluir seguindo a mesma lógica...
 }

@@ -9,6 +9,7 @@ using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Infra;
 using E_Agenda.WebApp.Compartilhado.Aplicacao.Logging;
 
+
 public static class InjecaoDependencia
 {
     public static void AddApplicationServices(this 
@@ -18,7 +19,8 @@ public static class InjecaoDependencia
     )
     {
         services.AddSerilogLogger(logging, configuration);
-
+        services.AddScoped<ServicoContatos>();
+        services.AddScoped<ServicoCompromisso>();
         services.AddScoped<ServicoCategoria>();
         services.AddScoped<ServicoDespesa>();
         services.AddScoped<ServicoTarefa>();

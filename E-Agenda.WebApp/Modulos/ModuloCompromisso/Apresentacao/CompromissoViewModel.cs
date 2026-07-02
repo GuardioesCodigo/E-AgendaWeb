@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using E_Agenda.WebApp.Modulos.ModuloCompromisso.Dominio;
+using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
+using Microsoft.AspNetCore.Mvc.Rendering;
 namespace E_Agenda.WebApp.Modulos.ModuloCompromisso.Apresentacao;
 
 public class CadastrarCompromissoViewModel
@@ -19,6 +21,10 @@ public class CadastrarCompromissoViewModel
 
     [Required(ErrorMessage = "O tipo de compromisso é obrigatório.")]
     public TipoCompromisso Tipo { get; set; }
+    public Guid? ContatoId { get; set; } // ID do contato selecionado
+
+    // Lista para popular o <select> na View
+    public List<SelectListItem>? Contatos { get; set; }
 
     public string? Local { get; set; }
 }
@@ -28,10 +34,12 @@ public class ListarCompromissoViewModel
     public Guid Id { get; set; }
     public string Assunto { get; set; } = string.Empty;
     public DateTime Data { get; set; }
+    public string NomeContato { get; set; }
     public TimeSpan HoraTermino { get; set; } // Adicionado
     public string? Local { get; set; }
     public TimeSpan HoraInicio { get; set; }
     public TipoCompromisso Tipo { get; set; }
+    public string? ContatoNome { get; set; }
 }
 
 public class ExcluirCompromissoViewModel
@@ -65,5 +73,9 @@ public class EditarCompromissoViewModel
     [Required(ErrorMessage = "O tipo de compromisso é obrigatório.")]
     public TipoCompromisso Tipo { get; set; }
 
+    public Guid? ContatoId { get; set; } // ID do contato selecionado
+
+    // Lista para popular o <select> na View
+    public List<SelectListItem>? Contatos { get; set; }
     public string? Local { get; set; }
 }

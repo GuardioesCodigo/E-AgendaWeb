@@ -6,6 +6,7 @@ using E_Agenda.WebApp.Modulos.ModuloContatos.Dominio;
 
 using E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao;
 using E_Agenda.WebApp.Modulos.ModuloContatos.Aplicacao;
+using E_Agenda.WebApp.Modulos.ModuloCompromisso.Aplicacao;
 
 namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
 {
@@ -14,11 +15,13 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
     {
         private readonly ServicoContatos _servico;
         private readonly IMapper _mapper;
+        private readonly ServicoCompromisso _servicoCompromisso;
 
-        public ContatosController(ServicoContatos servico, IMapper mapper)
+        public ContatosController(ServicoContatos servico, IMapper mapper, ServicoCompromisso servicoCompromisso)
         {
-            _servico = servico;
-            _mapper = mapper;
+           _servico = servico;
+           _servicoCompromisso = servicoCompromisso; // <--- A LINHA MÁGICA
+           _mapper = mapper;
         }
 
         public IActionResult Listar()
@@ -28,22 +31,36 @@ namespace E_Agenda.WebApp.Modulos.ModuloContatos.Apresentacao
             return View(model);
         }
 
-        [HttpGet]
-        public IActionResult Cadastrar() => View(new CadastrarContatosViewModel());
-
+[HttpGet]
+public IActionResult Cadastrar()
+{
+    var vm = new CadastrarContatosViewModel();
+    
+    // Busca todos os compromissos que não têm contato (ou todos)
+    var todosCompromissos = _servicoCompromisso.SelecionarTodos();
+    
+    vm.Compromissos = todosCompromissos.Select(c => new CompromissoCheckboxViewModel
+    {
+        Id = c.Id,
+        Assunto = c.Assunto
+    }).ToList();
+    
+    return View(vm);
+}
         // No ContatosController.cs
 [HttpPost]
 public IActionResult Cadastrar(CadastrarContatosViewModel model)
 {
-    if (!ModelState.IsValid) return View(model);
-
-    // O Controller mapeia UMA VEZ
-    var contato = _mapper.Map<Contatos>(model);
+    if (!ModelState.IsValid)
+    {
+        // ERRO ESTAVA AQUI: Você precisa converter a entidade de volta para ViewModel
+        // ou simplesmente retornar o 'model' original que já veio da tela.
+        return View(model); 
+    }
 
     try
     {
-        // O Serviço recebe o objeto já mapeado e o valida
-        _servico.Cadastrar(contato); 
+        _servico.Cadastrar(model);
         return RedirectToAction("Listar");
     }
     catch (Exception ex)
@@ -52,16 +69,30 @@ public IActionResult Cadastrar(CadastrarContatosViewModel model)
         return View(model);
     }
 }
+
 [HttpGet]
 public IActionResult Visualizar(Guid id)
 {
     var contato = _servico.SelecionarPorId(id);
-    if (contato == null) return NotFound();
+    
+    if (contato == null)
+    {
+        TempData["Erro"] = "Contato não encontrado.";
+        return RedirectToAction("Listar");
+    }
 
-    // Mapeie para uma ViewModel de Visualização se necessário
+    // Mapeia para o ViewModel que criamos
     var model = _mapper.Map<VisualizarContatoViewModel>(contato);
+
+    // Filtra os compromissos vinculados a este contato
+    model.Compromissos = _servicoCompromisso.SelecionarTodos()
+        .Where(c => c.ContatoId == id)
+        .Select(c => c.Assunto)
+        .ToList();
+
     return View(model);
 }
+
         [HttpGet]
         public IActionResult Editar(Guid id)
         {
@@ -99,18 +130,31 @@ public IActionResult Visualizar(Guid id)
         [HttpGet]
         public IActionResult Excluir(Guid id)
         {
-            var funcionario = _servico.SelecionarPorId(id);
-            if (funcionario == null) return NotFound();
+            var contato = _servico.SelecionarPorId(id);
+            
+            if (contato == null)
+                return RedirectToAction("Listar");
 
-            var model = _mapper.Map<ExcluirContatosViewModel>(funcionario);
-            return View(model);
+            // Aqui você transforma a entidade em ViewModel para a View
+            var model = _mapper.Map<ExcluirContatosViewModel>(contato);
+            
+            return View(model); // Agora ele vai encontrar a view 'Excluir.cshtml' que você criar
         }
 
-        [HttpPost, ActionName("Excluir")]
-        public IActionResult ConfirmarExcluir(Guid id)
+        [HttpPost]
+        public IActionResult Excluir(ExcluirContatosViewModel model)
         {
-            _servico.Excluir(id);
-            return RedirectToAction("Listar");
+            try
+            {
+                _servico.Excluir(model.Id);
+                return RedirectToAction("Listar");
+            }
+            catch (Exception ex)
+            {
+                // Se ocorrer um erro (como ter vínculo com compromisso), volta para a lista com a mensagem
+                TempData["MensagemErro"] = ex.Message;
+                return RedirectToAction("Listar");
+            }
         }
     }
 }

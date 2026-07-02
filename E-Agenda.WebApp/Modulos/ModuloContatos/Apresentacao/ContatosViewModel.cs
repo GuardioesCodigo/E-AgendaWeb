@@ -16,11 +16,32 @@ public class CadastrarContatosViewModel
 
     [Phone(ErrorMessage = "Formato de telefone inválido.")]
     [Required(ErrorMessage = "O telefone é obrigatório.")]
-    [RegularExpression(@"^\(\d{2}\) \d{4,5}-\d{4}$", ErrorMessage = "Use o formato (99) 99999-9999")]
     public string Telefone { get; set; } = string.Empty;
+    public List<CompromissoCheckboxViewModel> Compromissos { get; set; } = new();
     public string? Cargo { get; set; } = string.Empty;
     public string? Empresa { get; set; } = string.Empty;
 
+}
+
+
+public class VisualizarContatoViewModel
+{
+    public Guid Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Telefone { get; set; } = string.Empty;
+    public string Cargo { get; set; } = string.Empty;
+    public string Empresa { get; set; } = string.Empty;
+    
+    // Lista de compromissos vinculados
+    public List<string> Compromissos { get; set; } = new();
+}
+
+public class CompromissoCheckboxViewModel
+{
+    public Guid Id { get; set; }
+    public string Assunto { get; set; } = string.Empty;
+    public bool Marcado { get; set; }
 }
 
 public class ListarContatosViewModel
@@ -33,18 +54,9 @@ public class ListarContatosViewModel
     public string Telefone { get; set; } = string.Empty;
     public string Cargo { get; set; } = string.Empty;
     public string Empresa { get; set; } = string.Empty;
+    public List<string> Compromissos { get; set; } = new();
 }
 
-public class VisualizarContatoViewModel
-    {
-        public Guid Id { get; set; }
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Telefone { get; set; }
-        public string Cargo { get; set; }
-        public string Empresa { get; set; }
-    }
-    
 public class ExcluirContatosViewModel
 {
     public string Email { get; set; } = string.Empty;
